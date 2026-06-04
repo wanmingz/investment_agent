@@ -1,4 +1,7 @@
+from datetime import date
+
 from investment_agent.config import Settings
+from investment_agent.dates import format_date_display, format_date_iso
 from investment_agent.llm import LLMClient
 from investment_agent.models import MacroReport
 
@@ -6,10 +9,14 @@ SYSTEM = """You are Agent 1: a senior global macro economist at a top asset mana
 
 Your job: identify 4-6 investable THEMES for the current macro environment.
 
-For each theme, classify lifecycle stage:
+Write ALL output in English only.
+
+For each theme, classify lifecycle stage (use all five when appropriate):
 - early: macro tailwind forming, policy/liquidity supportive, theme not yet consensus
+- early_mid: tailwinds visible, early positioning, narrative spreading but not mainstream
 - mid: theme in expansion, earnings/policy confirming, moderate crowding
-- late: theme fully priced in macro terms, late-cycle positioning, reversal risk rising
+- mid_late: widely recognized, late-cycle macro positioning, crowding and policy risk rising
+- late: theme fully priced in macro terms, reversal risk dominant
 
 Output valid JSON matching this schema:
 {
@@ -18,9 +25,9 @@ Output valid JSON matching this schema:
   "themes": [
     {
       "name": "English theme name",
-      "name_zh": "中文主题名",
+      "subtitle": "optional short label",
       "thesis": "why now from macro lens",
-      "stage": "early" | "mid" | "late",
+      "stage": "early" | "early_mid" | "mid" | "mid_late" | "late",
       "stage_rationale": "macro-specific stage reasoning",
       "confidence": 0.0-1.0,
       "key_drivers": ["driver1", "driver2"],
@@ -39,11 +46,16 @@ class MacroEconomist:
         self._llm = llm
         self._region = settings.market_region
 
-    def analyze(self) -> MacroReport:
-        user = f"""Analyze investable themes as of today for market region: {self._region}.
+    def analyze(self, *, as_of: date | None = None) -> MacroReport:
+        as_of = as_of or date.today()
+        user = f"""Analysis as-of date: {format_date_display(as_of)} ({format_date_iso(as_of)}).
+Use this as "today" — do not use any other date.
+Respond in English only.
+
+Analyze investable themes for market region: {self._region}.
 
 Consider: rates path, inflation, fiscal policy, USD, China/emerging markets,
 geopolitics, credit cycle, and sector rotation implications.
 
-Return 4-6 themes with stage (early/mid/late) from a MACRO perspective only."""
+Return 4-6 themes with stage (early/early_mid/mid/mid_late/late) from a MACRO perspective only."""
         return self._llm.structured(system=SYSTEM, user=user, schema=MacroReport)

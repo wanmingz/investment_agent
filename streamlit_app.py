@@ -2,30 +2,57 @@
 
 from __future__ import annotations
 
+import sys
+from datetime import date as date_cls
+from pathlib import Path
+
+_ROOT = Path(__file__).resolve().parent
+_SRC = _ROOT / "src"
+if _SRC.is_dir() and str(_SRC) not in sys.path:
+    sys.path.insert(0, str(_SRC))
+
 import streamlit as st
 
 from investment_agent.config import Settings
-from investment_agent.models import FinalTheme, InvestmentBrief, ThemeStage
-from investment_agent.orchestrator import STAGE_ZH, ThemeOrchestrator
+from investment_agent.dates import analysis_date, format_date_iso
+from investment_agent.models import (
+    STAGE_LABELS,
+    STAGE_ORDER,
+    FinalTheme,
+    InvestmentBrief,
+    coerce_theme_stage,
+    stage_label,
+)
+from investment_agent.orchestrator import ThemeOrchestrator
 from investment_agent.storage import DEFAULT_REPORT_PATH, load_brief, save_brief
 
+try:
+    from investment_agent.dates import format_date_display
+except ImportError:
+    def format_date_display(d: date_cls | None = None) -> str:
+        d = d or analysis_date()
+        return d.strftime("%B %d, %Y")
+
+
 st.set_page_config(
-    page_title="投资主题分析",
+    page_title="Investment Theme Analysis",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-STAGE_COLORS = {
-    ThemeStage.EARLY: ("#10b981", "#064e3b"),
-    ThemeStage.MID: ("#f59e0b", "#78350f"),
-    ThemeStage.LATE: ("#ef4444", "#7f1d1d"),
+STAGE_COLORS: dict[str, tuple[str, str]] = {
+    "early": ("#10b981", "#064e3b"),
+    "early_mid": ("#34d399", "#065f46"),
+    "mid": ("#f59e0b", "#78350f"),
+    "mid_late": ("#fb923c", "#7c2d12"),
+    "late": ("#ef4444", "#7f1d1d"),
 }
 
 AGENT_LABELS = {
-    "macro": "宏观",
-    "equity": "股票",
-    "quant": "量化",
+    "macro": "Macro",
+    "equity": "Equity",
+    "quant": "Quant",
 }
 
 
@@ -79,8 +106,8 @@ def _inject_css() -> None:
     )
 
 
-def _stage_badge(stage: ThemeStage, label: str) -> str:
-    fg, bg = STAGE_COLORS.get(stage, ("#e2e8f0", "#334155"))
+def _stage_badge(stage_key: str, label: str) -> str:
+    fg, bg = STAGE_COLORS.get(stage_key, ("#e2e8f0", "#334155"))
     return (
         f'<span class="stage-badge" style="color:{fg};background:{bg};border:1px solid {fg}40">'
         f"{label}</span>"
@@ -89,16 +116,21 @@ def _stage_badge(stage: ThemeStage, label: str) -> str:
 
 def _agent_pills(theme: FinalTheme) -> str:
     parts = []
-    for key, stage in theme.agent_stages.items():
-        label = AGENT_LABELS.get(key, key)
-        stage_zh = STAGE_ZH.get(stage, stage.value if hasattr(stage, "value") else str(stage))
-        parts.append(f'<span class="agent-pill">{label}: {stage_zh}</span>')
+    for key, stg in theme.agent_stages.items():
+        agent = AGENT_LABELS.get(key, key)
+        lbl = stage_label(stg)
+        parts.append(f'<span class="agent-pill">{agent}: {lbl}</span>')
     return "".join(parts)
 
 
+def _theme_title(theme: FinalTheme) -> str:
+    return theme.subtitle or theme.name
+
+
 def _render_theme_card(rank: int, theme: FinalTheme) -> None:
-    stage = theme.stage if isinstance(theme.stage, ThemeStage) else ThemeStage(theme.stage)
-    label = theme.stage_label_zh or STAGE_ZH.get(stage, stage.value)
+    stage = coerce_theme_stage(theme.stage)
+    stage_key = stage.value
+    label = theme.stage_label or stage_label(stage)
 
     st.markdown(
         f"""
@@ -107,11 +139,11 @@ def _render_theme_card(rank: int, theme: FinalTheme) -> None:
                 <div>
                     <span style="color:#64748b;font-size:0.85rem;">#{rank}</span>
                     <span style="font-size:1.15rem;font-weight:700;margin-left:0.5rem;">
-                        {theme.name_zh or theme.name}
+                        {_theme_title(theme)}
                     </span>
                     <span style="color:#64748b;font-size:0.85rem;margin-left:0.5rem;">{theme.name}</span>
                 </div>
-                {_stage_badge(stage, label)}
+                {_stage_badge(stage_key, label)}
             </div>
             <p style="color:#cbd5e1;margin:0.75rem 0 0.5rem;line-height:1.6;">{theme.thesis}</p>
             <p style="color:#94a3b8;font-size:0.9rem;margin:0;">{theme.synthesis}</p>
@@ -125,34 +157,54 @@ def _render_theme_card(rank: int, theme: FinalTheme) -> None:
     with c1:
         st.progress(
             theme.investability_score,
-            text=f"可投资性 {theme.investability_score:.0%}",
+            text=f"Investability {theme.investability_score:.0%}",
         )
     with c2:
-        st.progress(theme.consensus_score, text=f"共识度 {theme.consensus_score:.0%}")
+        st.progress(theme.consensus_score, text=f"Consensus {theme.consensus_score:.0%}")
 
-    with st.expander("驱动因素 · 风险 · 标的"):
+    with st.expander("Drivers · Risks · Tickers"):
         if theme.key_drivers:
-            st.markdown("**驱动因素**")
+            st.markdown("**Key drivers**")
             for d in theme.key_drivers:
                 st.markdown(f"- {d}")
         if theme.risks:
-            st.markdown("**风险**")
+            st.markdown("**Risks**")
             for r in theme.risks:
                 st.markdown(f"- {r}")
         if theme.tickers_or_sectors:
-            st.markdown("**标的 / 板块**")
+            st.markdown("**Tickers / sectors**")
             st.markdown(", ".join(f"`{t}`" for t in theme.tickers_or_sectors))
 
 
+def _brief_date_label(brief: InvestmentBrief) -> str:
+    if brief.report_date:
+        try:
+            return format_date_display(date_cls.fromisoformat(brief.report_date))
+        except ValueError:
+            pass
+    ctx = brief.as_of_context
+    if ctx.lower().startswith("as of"):
+        return ctx.split("(")[0].replace("As of ", "").strip()
+    return format_date_display()
+
+
 def _render_brief(brief: InvestmentBrief) -> None:
-    st.markdown('<p class="main-header">📊 投资主题简报</p>', unsafe_allow_html=True)
+    date_label = _brief_date_label(brief)
+    st.markdown(
+        '<p class="main-header">📊 Investment Theme Brief</p>',
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        f'<p class="sub-header">Analysis date: {date_label}</p>',
+        unsafe_allow_html=True,
+    )
     if brief.as_of_context:
         st.markdown(f'<p class="sub-header">{brief.as_of_context}</p>', unsafe_allow_html=True)
 
     st.markdown(f'<div class="summary-box">{brief.executive_summary}</div>', unsafe_allow_html=True)
 
-    st.markdown("### 三 Agent 观点")
-    tab1, tab2, tab3 = st.tabs(["🌍 宏观经济学家", "📈 股票研究员", "📉 量化波动"])
+    st.markdown("### Three agent views")
+    tab1, tab2, tab3 = st.tabs(["🌍 Macro Economist", "📈 Equity Research", "📉 Quant / Volatility"])
     with tab1:
         st.markdown(brief.macro_view)
     with tab2:
@@ -160,19 +212,24 @@ def _render_brief(brief: InvestmentBrief) -> None:
     with tab3:
         st.markdown(brief.quant_view)
 
-    st.markdown("### 推荐投资主题")
-    st.caption("按可投资性排序 · 早期=布局期 · 中期=主升期 · 晚期=过热观察")
+    st.markdown("### Recommended themes")
+    st.caption(
+        "Sorted by investability · Early → Early-Mid → Mid → Mid-Late → Late (5-stage lifecycle)"
+    )
 
     sorted_themes = sorted(brief.themes, key=lambda t: t.investability_score, reverse=True)
-    early = sum(1 for t in sorted_themes if t.stage == ThemeStage.EARLY)
-    mid = sum(1 for t in sorted_themes if t.stage == ThemeStage.MID)
-    late = sum(1 for t in sorted_themes if t.stage == ThemeStage.LATE)
+    stage_counts = {s.value: 0 for s in STAGE_ORDER}
+    for t in sorted_themes:
+        try:
+            key = coerce_theme_stage(t.stage).value
+            stage_counts[key] = stage_counts.get(key, 0) + 1
+        except ValueError:
+            pass
 
-    m1, m2, m3, m4 = st.columns(4)
-    m1.metric("主题数", len(sorted_themes))
-    m2.metric("早期", early)
-    m3.metric("中期", mid)
-    m4.metric("晚期", late)
+    cols = st.columns(1 + len(STAGE_ORDER))
+    cols[0].metric("Themes", len(sorted_themes))
+    for i, stage in enumerate(STAGE_ORDER, start=1):
+        cols[i].metric(STAGE_LABELS[stage.value], stage_counts.get(stage.value, 0))
 
     for i, theme in enumerate(sorted_themes, 1):
         _render_theme_card(i, theme)
@@ -187,24 +244,24 @@ def main() -> None:
         st.session_state.brief = load_brief()
 
     with st.sidebar:
-        st.header("控制面板")
+        st.header("Controls")
         region = st.selectbox(
-            "市场区域",
+            "Market region",
             ["global", "China", "US", "Europe", "Japan"],
             index=0,
         )
         st.divider()
-        run_btn = st.button("🚀 开始分析", type="primary", use_container_width=True)
-        st.caption("分析需 1–3 分钟（3 个 Agent + CIO 合成）")
+        run_btn = st.button("🚀 Run analysis", type="primary", use_container_width=True)
+        st.caption("Takes 1–3 min (3 agents + CIO synthesis)")
         if DEFAULT_REPORT_PATH.is_file():
-            st.success("已有缓存报告")
-            if st.button("📂 加载上次结果", use_container_width=True):
+            st.success("Cached report available")
+            if st.button("📂 Load last result", use_container_width=True):
                 st.session_state.brief = load_brief()
                 st.rerun()
         st.divider()
         try:
             s = Settings.from_env()
-            st.text(f"模型: {s.provider}\n{s.model}")
+            st.text(f"Model: {s.provider}\n{s.model}")
         except ValueError as e:
             st.error(str(e))
 
@@ -218,41 +275,32 @@ def main() -> None:
             st.error(str(e))
             st.stop()
 
-        with st.status("正在运行三 Agent 分析…", expanded=True) as status:
-            st.write("Agent 1: 宏观经济学家")
-            st.write("Agent 2: 股票研究员")
-            st.write("Agent 3: 量化波动分析师")
-            st.write("CIO: 合成投资简报")
+        with st.status("Running 3-agent analysis…", expanded=True) as status:
+            st.write("Agent 1: Macro Economist")
+            st.write("Agent 2: Equity Research Analyst")
+            st.write("Agent 3: Quant / Volatility Analyst")
+            st.write("CIO: Synthesizing investment brief")
             try:
                 brief = ThemeOrchestrator(settings).run()
                 path = save_brief(brief)
                 st.session_state.brief = brief
-                status.update(label="分析完成", state="complete")
-                st.success(f"结果已保存至 `{path}`")
+                status.update(label="Analysis complete", state="complete")
+                st.success(f"Saved to `{path}`")
             except Exception as e:
-                status.update(label="分析失败", state="error")
-                st.error(f"运行失败: {e}")
+                status.update(label="Analysis failed", state="error")
+                st.error(f"Run failed: {e}")
                 st.stop()
 
     brief: InvestmentBrief | None = st.session_state.get("brief")
 
     if brief is None:
-        st.info("👈 点击侧边栏 **「开始分析」** 运行，或 **「加载上次结果」** 查看缓存。")
-        st.markdown(
-            """
-            **也可通过命令行生成报告后在此查看：**
-            ```bash
-            python main.py --json > reports/latest.json
-            ```
-            然后点击「加载上次结果」。
-            """
-        )
+        st.info("👈 Click **Run analysis** in the sidebar, or **Load last result** to view cache.")
         return
 
     _render_brief(brief)
 
-    with st.expander("原始 JSON"):
-        st.json(brief.model_dump(mode="json"))
+    with st.expander("Raw JSON"):
+        st.json(brief.model_dump(mode="json", by_alias=True))
 
 
 if __name__ == "__main__":

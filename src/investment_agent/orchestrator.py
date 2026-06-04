@@ -1,8 +1,15 @@
 import json
 from collections import defaultdict
+from datetime import date
 
 from investment_agent.agents import EquityResearchAnalyst, MacroEconomist, QuantAnalyst
 from investment_agent.config import Settings
+from investment_agent.dates import (
+    analysis_date,
+    build_as_of_context,
+    format_date_display,
+    format_date_iso,
+)
 from investment_agent.llm import LLMClient
 from investment_agent.market_data import fetch_vol_snapshot
 from investment_agent.models import (
@@ -13,13 +20,8 @@ from investment_agent.models import (
     MacroReport,
     QuantReport,
     ThemeStage,
+    stage_label,
 )
-
-STAGE_ZH = {
-    ThemeStage.EARLY: "早期",
-    ThemeStage.MID: "中期",
-    ThemeStage.LATE: "晚期",
-}
 
 SYNTHESIS_SYSTEM = """You are the Chief Investment Officer synthesizing three specialist agents.
 
@@ -28,24 +30,27 @@ Agents:
 2. Equity Research Analyst — fundamentals, valuations, earnings
 3. Quant Analyst — volatility regime and risk-adjusted timing
 
+Write ALL narrative fields in English only.
+
 Produce a unified investment brief in JSON:
 {
-  "as_of_context": "brief date/market context note",
-  "executive_summary": "3-5 sentences in Chinese, actionable overview",
-  "macro_view": "1 paragraph Chinese summary of macro agent",
-  "equity_view": "1 paragraph Chinese summary of equity agent",
-  "quant_view": "1 paragraph Chinese summary of quant agent",
+  "report_date": "YYYY-MM-DD (must match the analysis date provided in the prompt)",
+  "as_of_context": "brief market context note (date will be prefixed automatically)",
+  "executive_summary": "3-5 sentences, actionable overview in English",
+  "macro_view": "1 paragraph English summary of macro agent",
+  "equity_view": "1 paragraph English summary of equity agent",
+  "quant_view": "1 paragraph English summary of quant agent",
   "themes": [
     {
-      "name": "English",
-      "name_zh": "中文",
-      "thesis": "combined thesis in Chinese",
-      "stage": "early"|"mid"|"late",
-      "stage_label_zh": "早期|中期|晚期",
+      "name": "English theme name",
+      "subtitle": "optional short label",
+      "thesis": "combined thesis in English",
+      "stage": "early"|"early_mid"|"mid"|"mid_late"|"late",
+      "stage_label": "Early|Early-Mid|Mid|Mid-Late|Late",
       "consensus_score": 0-1,
       "investability_score": 0-1,
-      "agent_stages": {"macro": "early", "equity": "mid", "quant": "early"},
-      "synthesis": "why final stage, 2-3 sentences Chinese",
+      "agent_stages": {"macro": "early_mid", "equity": "mid", "quant": "early"},
+      "synthesis": "why final stage, 2-3 sentences English",
       "key_drivers": [],
       "risks": [],
       "tickers_or_sectors": []
@@ -56,7 +61,9 @@ Produce a unified investment brief in JSON:
 Rules:
 - Include 4-6 themes ranked by investability_score descending
 - Final stage = weighted judgment; if agents disagree, explain in synthesis and lower consensus_score
-- early = 布局期, mid = 主升/兑现期, late = 过热/退出观察期
+- early = positioning, early_mid = validation/diffusion, mid = expansion/monetization,
+  mid_late = mature/crowded/vol rising, late = overheated/exit watch
+- Use all five stages; prefer early_mid and mid_late when theme is between two pure stages
 - Be direct about what to invest NOW vs watch"""
 
 
@@ -69,17 +76,23 @@ class ThemeOrchestrator:
         self._quant = QuantAnalyst(self._llm, self._settings)
 
     def run(self) -> InvestmentBrief:
+        as_of = analysis_date()
         vol = fetch_vol_snapshot()
 
-        macro = self._macro.analyze()
-        equity = self._equity.analyze(macro)
-        quant = self._quant.analyze(macro, equity, vol)
+        macro = self._macro.analyze(as_of=as_of)
+        equity = self._equity.analyze(macro, as_of=as_of)
+        quant = self._quant.analyze(macro, equity, vol, as_of=as_of)
 
-        brief = self._synthesize(macro, equity, quant)
-        return self._enrich_stages(brief)
+        brief = self._synthesize(macro, equity, quant, as_of=as_of)
+        return self._enrich_brief(brief, as_of=as_of)
 
     def _synthesize(
-        self, macro: MacroReport, equity: EquityReport, quant: QuantReport
+        self,
+        macro: MacroReport,
+        equity: EquityReport,
+        quant: QuantReport,
+        *,
+        as_of: date,
     ) -> InvestmentBrief:
         payload = {
             "macro_report": macro.model_dump(),
@@ -87,6 +100,10 @@ class ThemeOrchestrator:
             "quant_report": quant.model_dump(),
         }
         user = f"""Synthesize the three agent reports into a unified CIO brief.
+
+Analysis date (today): {format_date_display(as_of)} ({format_date_iso(as_of)})
+Set report_date to "{format_date_iso(as_of)}" exactly.
+Respond in English only.
 
 Reports:
 {json.dumps(payload, indent=2, ensure_ascii=False)}
@@ -96,21 +113,32 @@ Return ranked themes with final stage and per-agent stage breakdown."""
             system=SYNTHESIS_SYSTEM, user=user, schema=InvestmentBrief, temperature=0.2
         )
 
-    def _enrich_stages(self, brief: InvestmentBrief) -> InvestmentBrief:
-        """Ensure stage_label_zh is set; merge rule-based consensus if LLM omitted."""
+    def _enrich_brief(self, brief: InvestmentBrief, *, as_of: date) -> InvestmentBrief:
+        """Set report date, as_of_context prefix, and stage labels."""
+        iso = format_date_iso(as_of)
         themes: list[FinalTheme] = []
         for t in brief.themes:
             stage = t.stage if isinstance(t.stage, ThemeStage) else ThemeStage(t.stage)
-            label = t.stage_label_zh or STAGE_ZH.get(stage, stage.value)
+            label = t.stage_label or stage_label(stage)
             themes.append(
                 t.model_copy(
                     update={
                         "stage": stage,
-                        "stage_label_zh": label,
+                        "stage_label": label,
                     }
                 )
             )
-        return brief.model_copy(update={"themes": themes})
+        return brief.model_copy(
+            update={
+                "report_date": iso,
+                "as_of_context": build_as_of_context(
+                    brief.as_of_context,
+                    as_of=as_of,
+                    region=self._settings.market_region,
+                ),
+                "themes": themes,
+            }
+        )
 
 
 def _normalize_name(name: str) -> str:

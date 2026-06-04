@@ -1,24 +1,26 @@
-# Investment Agent — 多 Agent 投资主题分析
+# Investment Agent — Multi-Agent Theme Analysis
 
-三个专业 Agent 协作，输出**当前值得投资的主题**，并标注生命周期阶段：**早期 / 中期 / 晚期**。
+Three specialist agents collaborate to output **investable themes** with lifecycle stage: **Early / Early-Mid / Mid / Mid-Late / Late**.
 
-| Agent | 角色 | 职责 |
-|-------|------|------|
-| **Agent 1** | 宏观经济学家 (Macro Economist) | 利率、通胀、政策、地缘、跨资产信号 → 宏观视角主题与阶段 |
-| **Agent 2** | 股票研究员 (Equity Research Analyst) | 估值、盈利修正、风格与板块 → 股票基本面视角验证/修正阶段 |
-| **Agent 3** | 量化分析师 (Quant Analyst) | 波动率、VIX、板块 realized vol → 风险与时机视角阶段判断 |
+| Agent | Role | Focus |
+|-------|------|--------|
+| **Agent 1** | Macro Economist | Rates, inflation, policy, geopolitics, cross-asset signals |
+| **Agent 2** | Equity Research Analyst | Valuations, earnings revisions, style and sector |
+| **Agent 3** | Quant Analyst | Volatility, VIX, sector realized vol, risk timing |
 
-CIO 合成层汇总三方观点，给出最终阶段、共识度与可投资性评分。
+A CIO synthesis layer merges views into final stage, consensus, and investability scores. **All prompts and outputs are in English.**
 
-## 阶段定义
+## Stage definitions
 
-| 阶段 | 英文 | 含义 |
-|------|------|------|
-| 早期 | `early` | 主题刚形成，宏观/盈利/波动尚未充分定价，适合布局 |
-| 中期 | `mid` | 趋势确认、盈利与资金流入，主升或兑现期 |
-| 晚期 | `late` | 拥挤、估值极端或波动飙升，过热或应退出观察 |
+| Stage | Code | Meaning |
+|-------|------|---------|
+| Early | `early` | Theme forming, not fully priced — positioning |
+| Early-Mid | `early_mid` | Thesis validating, narrative spreading |
+| Mid | `mid` | Trend confirmed, earnings and flows supporting |
+| Mid-Late | `mid_late` | Crowded, rich valuations, vol rising |
+| Late | `late` | Overheated — exit watch |
 
-## 快速开始
+## Quick start
 
 ```bash
 cd investment_agent
@@ -27,76 +29,63 @@ source .venv/bin/activate
 pip install -e .
 
 cp .env.example .env
-# 编辑 .env，填入 GEMINI_API_KEY（推荐）或 OPENAI_API_KEY
+# Set GEMINI_API_KEY or OPENAI_API_KEY in .env
 ```
 
-### 使用 Gemini
+### Gemini
 
-1. 打开 [Google AI Studio](https://aistudio.google.com/apikey) 创建 API Key  
-2. 在 `.env` 中设置：
+1. Create an API key at [Google AI Studio](https://aistudio.google.com/apikey)
+2. In `.env`:
 
 ```bash
 LLM_PROVIDER=gemini
-GEMINI_API_KEY=你的密钥
-GEMINI_MODEL=gemini-2.0-flash
+GEMINI_API_KEY=your-key
+GEMINI_MODEL=gemini-2.5-flash-lite
 ```
 
-程序通过 Gemini 的 [OpenAI 兼容接口](https://ai.google.dev/gemini-api/docs/openai) 调用模型。
-
-运行：
+Run:
 
 ```bash
 python main.py
-# 或
 invest-themes
 
-# JSON 输出
 python main.py --json
-
-# 指定市场区域
-python main.py --region China
-
-# 保存 JSON 供前端加载
+python main.py --region US
 python main.py -o reports/latest.json
 ```
 
-### Web 前端（Streamlit）
+### Streamlit dashboard
 
 ```bash
 streamlit run streamlit_app.py
-# 或
+# or
 invest-dashboard
 ```
 
-浏览器打开后：
-1. 侧边栏选择市场区域，点击 **「开始分析」**
-2. 或点击 **「加载上次结果」** 查看 `reports/latest.json`
-```
+1. Select market region, click **Run analysis**
+2. Or **Load last result** for `reports/latest.json`
 
-## 环境变量
+## Environment variables
 
-| 变量 | 说明 |
-|------|------|
-| `GEMINI_API_KEY` | Gemini 密钥（与 `LLM_PROVIDER=gemini` 配合） |
-| `GEMINI_MODEL` | 可选，默认 `gemini-2.0-flash` |
-| `LLM_PROVIDER` | `gemini` 或 `openai` |
-| `OPENAI_API_KEY` | OpenAI 或其它兼容服务密钥 |
-| `OPENAI_BASE_URL` | 可选；Gemini 默认已指向 Google 兼容端点 |
-| `MARKET_REGION` | 可选，`global` / `US` / `China` 等 |
+| Variable | Description |
+|----------|-------------|
+| `GEMINI_API_KEY` | Gemini key (with `LLM_PROVIDER=gemini`) |
+| `GEMINI_MODEL` | Default `gemini-2.5-flash-lite` |
+| `LLM_PROVIDER` | `gemini` or `openai` |
+| `OPENAI_API_KEY` | OpenAI or compatible API key |
+| `MARKET_REGION` | `global`, `US`, `China`, etc. |
 
-## 架构
+## Architecture
 
 ```
-main.py / CLI
+CLI / Streamlit
     └── ThemeOrchestrator
-            ├── Agent 1: MacroEconomist      → MacroReport
-            ├── Agent 2: EquityResearchAnalyst → EquityReport (读 macro)
-            ├── Agent 3: QuantAnalyst        → QuantReport (读 macro+equity + yfinance vol)
-            └── CIO Synthesis                → InvestmentBrief
+            ├── Agent 1: MacroEconomist
+            ├── Agent 2: EquityResearchAnalyst (reads macro)
+            ├── Agent 3: QuantAnalyst (reads macro+equity + yfinance vol)
+            └── CIO synthesis → InvestmentBrief
 ```
 
-Agent 3 会尝试通过 `yfinance` 拉取 VIX 与板块 ETF 的 20 日年化波动率，作为量化判断的硬数据输入。
+## Disclaimer
 
-## 免责声明
-
-输出仅供研究参考，不构成投资建议。
+Output is for research only. Not investment advice.

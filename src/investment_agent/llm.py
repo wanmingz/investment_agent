@@ -67,5 +67,6 @@ class LLMClient:
                 continue
 
         raise RuntimeError(
-            f"LLM 返回无法解析为 {schema.__name__}（provider={self._settings.provider}）: {last_error}"
+            f"LLM response could not be parsed as {schema.__name__} "
+            f"(provider={self._settings.provider}): {last_error}"
         ) from last_error

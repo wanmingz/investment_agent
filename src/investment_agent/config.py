@@ -26,8 +26,8 @@ class Settings:
         if provider == "gemini" or (gemini_key and provider != "openai"):
             if not gemini_key:
                 raise ValueError(
-                    "LLM_PROVIDER=gemini 但未设置 GEMINI_API_KEY。\n"
-                    "请在 .env 填入从 https://aistudio.google.com/apikey 获取的密钥。"
+                    "LLM_PROVIDER=gemini but GEMINI_API_KEY is not set.\n"
+                    "Add your key from https://aistudio.google.com/apikey to .env"
                 )
             return cls(
                 api_key=gemini_key,
@@ -56,7 +56,7 @@ class Settings:
             )
 
         raise ValueError(
-            "未找到 API Key。请复制 .env.example 为 .env，并设置其一：\n"
-            "  GEMINI_API_KEY=...   （推荐，Google AI Studio）\n"
-            "  OPENAI_API_KEY=...   （OpenAI 或其它兼容服务）"
+            "No API key found. Copy .env.example to .env and set one of:\n"
+            "  GEMINI_API_KEY=...   (recommended, Google AI Studio)\n"
+            "  OPENAI_API_KEY=...   (OpenAI or compatible API)"
         )

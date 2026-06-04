@@ -1,18 +1,60 @@
 from enum import Enum
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class ThemeStage(str, Enum):
     EARLY = "early"
+    EARLY_MID = "early_mid"
     MID = "mid"
+    MID_LATE = "mid_late"
     LATE = "late"
 
 
+STAGE_ORDER: tuple[ThemeStage, ...] = (
+    ThemeStage.EARLY,
+    ThemeStage.EARLY_MID,
+    ThemeStage.MID,
+    ThemeStage.MID_LATE,
+    ThemeStage.LATE,
+)
+
+STAGE_LABELS: dict[str, str] = {
+    "early": "Early",
+    "early_mid": "Early-Mid",
+    "mid": "Mid",
+    "mid_late": "Mid-Late",
+    "late": "Late",
+}
+
+# Backward compatibility
+STAGE_LABELS_ZH = STAGE_LABELS
+
+
+def coerce_theme_stage(value: str | ThemeStage) -> ThemeStage:
+    if isinstance(value, ThemeStage):
+        return value
+    return ThemeStage(value)
+
+
+def stage_label(value: str | ThemeStage, fallback: str = "") -> str:
+    key = value.value if isinstance(value, ThemeStage) else str(value)
+    return STAGE_LABELS.get(key, fallback or key)
+
+
+stage_label_zh = stage_label
+
+
 class AgentTheme(BaseModel):
-    name: str = Field(description="Investment theme name (English or bilingual)")
-    name_zh: str = Field(default="", description="Chinese name if applicable")
+    model_config = ConfigDict(populate_by_name=True)
+
+    name: str = Field(description="Investment theme name in English")
+    subtitle: str = Field(
+        default="",
+        alias="name_zh",
+        description="Optional short subtitle",
+    )
     thesis: str = Field(description="Why this theme matters now")
     stage: ThemeStage
     stage_rationale: str
@@ -43,11 +85,13 @@ class QuantReport(BaseModel):
 
 
 class FinalTheme(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+
     name: str
-    name_zh: str
+    subtitle: str = Field(default="", alias="name_zh")
     thesis: str
     stage: ThemeStage
-    stage_label_zh: str
+    stage_label: str = Field(default="", alias="stage_label_zh")
     consensus_score: float = Field(
         description="0-1 agreement across agents on stage classification"
     )
@@ -62,6 +106,10 @@ class FinalTheme(BaseModel):
 
 
 class InvestmentBrief(BaseModel):
+    report_date: str = Field(
+        default="",
+        description="Analysis date in ISO format YYYY-MM-DD (local calendar day)",
+    )
     as_of_context: str
     executive_summary: str
     macro_view: str
@@ -69,5 +117,6 @@ class InvestmentBrief(BaseModel):
     quant_view: str
     themes: list[FinalTheme]
     disclaimer: str = (
-        "本输出仅供研究参考，不构成投资建议。请结合自身风险承受能力独立决策。"
+        "For research purposes only. Not investment advice. "
+        "Make your own decisions based on your risk tolerance."
     )

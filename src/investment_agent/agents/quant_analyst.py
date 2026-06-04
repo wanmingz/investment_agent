@@ -1,4 +1,7 @@
+from datetime import date
+
 from investment_agent.config import Settings
+from investment_agent.dates import format_date_display, format_date_iso
 from investment_agent.llm import LLMClient
 from investment_agent.market_data import VolSnapshot
 from investment_agent.models import EquityReport, MacroReport, QuantReport
@@ -7,9 +10,13 @@ SYSTEM = """You are Agent 3: a quantitative analyst specializing in volatility a
 
 Your job: assess investable THEMES through volatility, correlation, and positioning risk.
 
-Stage classification from QUANT / vol lens:
-- early: vol compressed or declining from elevated levels, positive momentum with low realized vol, options not expensive
+Write ALL output in English only.
+
+Stage classification from QUANT / vol lens (use all five when appropriate):
+- early: vol compressed or declining from elevated levels, positive momentum with low realized vol
+- early_mid: vol picking up from low base, momentum strengthening, options still reasonably priced
 - mid: vol normalizing upward, trend strong but drawdowns increasing, vol risk premium building
+- mid_late: elevated but stable vol, correlation rising within theme, skew starting to price tail risk
 - late: vol spike or persistently elevated, correlation breakdown risk, skew expensive, mean-reversion signals
 
 You receive live volatility data when available — weight it heavily for stage calls.
@@ -33,7 +40,10 @@ class QuantAnalyst:
         macro: MacroReport,
         equity: EquityReport,
         vol: VolSnapshot,
+        *,
+        as_of: date | None = None,
     ) -> QuantReport:
+        as_of = as_of or date.today()
         context = {
             "macro": macro.model_dump(),
             "equity": equity.model_dump(),
@@ -45,7 +55,11 @@ class QuantAnalyst:
         }
         import json
 
-        user = f"""Region: {self._region}
+        user = f"""Analysis as-of date: {format_date_display(as_of)} ({format_date_iso(as_of)}).
+Use this as "today" — do not use any other date.
+Respond in English only.
+
+Region: {self._region}
 
 Prior agent outputs:
 {json.dumps(context, indent=2, ensure_ascii=False)}
@@ -53,6 +67,6 @@ Prior agent outputs:
 Live vol data block:
 {vol.to_prompt_block()}
 
-Produce 4-6 themes with quant/vol-based stage (early/mid/late).
+Produce 4-6 themes with quant/vol-based stage (early/early_mid/mid/mid_late/late).
 Set vix_proxy_level from live data if provided."""
         return self._llm.structured(system=SYSTEM, user=user, schema=QuantReport)
