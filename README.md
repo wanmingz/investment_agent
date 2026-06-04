@@ -332,6 +332,31 @@ If you see `429 RESOURCE_EXHAUSTED` / daily quota:
 - Macro agent does **not** use FRED/Bloomberg APIs.
 - Verify URLs and facts independently before trading.
 
+## Future roadmap
+
+Planned extensions (not implemented in the current PoC):
+
+### Bloomberg as a news and market data backbone
+
+- **News ingest:** Replace or augment TickerTick/Finnhub with **Bloomberg News** (e.g. `BN` feed or equivalent API) for licensed, timestamped headlines aligned with portfolio systems.
+- **Cross-asset context:** Pull macro and security-level fields (rates, FX, indices, corporate actions) from Bloomberg where available, so Agent 1 (Macro) and Agent 4 (Quant) can ground narratives in the same data vendor as production research desks.
+- **Requirements:** Firm Bloomberg entitlement, API credentials (e.g. B-PIPE / BQL / server API per deployment), compliance logging, and rate/cost controls in the orchestrator.
+
+### Sell-side research agent (replacing or complementing News RAG)
+
+- **Research Agent:** Add a dedicated **equity research report** agent that ingests authorized sell-side PDFs/HTML (broker, date, sector, rating, target price) via Bloomberg Document Search, internal research library, or approved file drop.
+- **RAG:** Chunk reports by section (summary, thesis, risks, valuation); retrieval with embeddings + **citation to document id / page** (same pattern as today’s `citation_ids`, extended to `report_id` and page ranges).
+- **Pipeline:** `Macro → Research (RAG) → Equity → Quant → CIO`, with Equity using structured yfinance/BBG fundamentals to **validate** stages against cited research—not duplicate broker numbers without a source.
+- **Governance:** Entitlement checks per user/team, no storage of reports outside licensed systems, audit trail on retrieved chunks.
+
+### Other enhancements (backlog)
+
+- Vector RAG for news and research with offline evaluation (citation accuracy, faithfulness).
+- Production deployment: API service, scheduled ingest, monitoring, model versioning.
+- Optional retention of a **fast news** path (Bloomberg headlines) alongside a **deep research** path (sell-side reports) for a six-agent or dual-track workflow.
+
+*Until Bloomberg and research feeds are connected, the repo uses free-tier news APIs, lexical RAG, and yfinance/Finnhub proxies as documented above.*
+
 ## Disclaimer
 
 Output is for research only. Not investment advice.
