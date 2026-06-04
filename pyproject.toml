@@ -1,7 +1,7 @@
 [project]
 name = "investment-agent"
 version = "0.1.0"
-description = "Multi-agent investment theme analyzer (macro, news RAG, equity, quant)"
+description = "Multi-agent investment theme analyzer (macro, news RAG, equity fundamentals, quant)"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [

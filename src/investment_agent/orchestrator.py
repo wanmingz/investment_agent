@@ -15,7 +15,10 @@ from investment_agent.dates import (
     format_date_display,
     format_date_iso,
 )
+from investment_agent import checkpoint
 from investment_agent.llm import LLMClient
+from investment_agent.data import fetch_fundamentals_snapshot
+from investment_agent.data.snapshot import FundamentalsSnapshot
 from investment_agent.market_data import fetch_vol_snapshot
 from investment_agent.models import (
     AgentTheme,
@@ -87,17 +90,62 @@ class ThemeOrchestrator:
         self._equity = EquityResearchAnalyst(self._llm, self._settings)
         self._quant = QuantAnalyst(self._llm, self._settings)
 
-    def run(self) -> InvestmentBrief:
+    def run(self, *, resume: bool | None = None) -> InvestmentBrief:
         as_of = analysis_date()
+        region = self._settings.market_region
+        use_resume = resume if resume is not None else checkpoint.is_resume_enabled()
         vol = fetch_vol_snapshot()
 
-        macro = self._macro.analyze(as_of=as_of)
-        news = self._news.analyze(macro, as_of=as_of)
-        equity = self._equity.analyze(macro, news, as_of=as_of)
-        quant = self._quant.analyze(macro, equity, vol, as_of=as_of)
+        if use_resume and not checkpoint.meta_matches(as_of=as_of, region=region):
+            checkpoint.clear_checkpoint()
+        if use_resume:
+            checkpoint.save_run_meta(as_of=as_of, region=region)
 
-        brief = self._synthesize(macro, news, equity, quant, as_of=as_of)
-        return self._enrich_brief(brief, news=news, as_of=as_of)
+        macro = checkpoint.load_macro() if use_resume else None
+        if macro is None:
+            macro = self._macro.analyze(as_of=as_of)
+            if use_resume:
+                checkpoint.save_macro(macro)
+
+        news = checkpoint.load_news() if use_resume else None
+        if news is None:
+            news = self._news.analyze(macro, as_of=as_of)
+            if use_resume:
+                checkpoint.save_news(news)
+
+        fundamentals = checkpoint.load_fundamentals() if use_resume else None
+        if fundamentals is None:
+            fundamentals = fetch_fundamentals_snapshot(
+                macro.themes,
+                as_of=as_of,
+                finnhub_key=self._settings.finnhub_api_key,
+            )
+            if use_resume:
+                checkpoint.save_fundamentals(fundamentals)
+
+        equity = checkpoint.load_equity() if use_resume else None
+        if equity is None:
+            equity = self._equity.analyze(
+                macro, news, fundamentals=fundamentals, as_of=as_of
+            )
+            if use_resume:
+                checkpoint.save_equity(equity)
+
+        quant = checkpoint.load_quant() if use_resume else None
+        if quant is None:
+            quant = self._quant.analyze(macro, equity, vol, as_of=as_of)
+            if use_resume:
+                checkpoint.save_quant(quant)
+
+        brief = self._synthesize(
+            macro, news, equity, quant, fundamentals=fundamentals, as_of=as_of
+        )
+        brief = self._enrich_brief(
+            brief, news=news, fundamentals=fundamentals, as_of=as_of
+        )
+        if use_resume:
+            checkpoint.clear_checkpoint()
+        return brief
 
     def _synthesize(
         self,
@@ -105,6 +153,7 @@ class ThemeOrchestrator:
         news: NewsReport,
         equity: EquityReport,
         quant: QuantReport,
+        fundamentals: FundamentalsSnapshot | None = None,
         *,
         as_of: date,
     ) -> InvestmentBrief:
@@ -114,6 +163,8 @@ class ThemeOrchestrator:
             "equity_report": equity.model_dump(),
             "quant_report": quant.model_dump(),
         }
+        if fundamentals:
+            payload["structured_fundamentals_summary"] = fundamentals.summary_lines()
         user = f"""Synthesize the four agent reports into a unified CIO brief.
 
 Analysis date (today): {format_date_display(as_of)} ({format_date_iso(as_of)})
@@ -121,6 +172,7 @@ Set report_date to "{format_date_iso(as_of)}" exactly.
 Respond in English only.
 
 News report includes citations with ids — use them in key_drivers_sourced / risks_sourced on themes.
+Equity agent had live yfinance price/valuation (and optional Finnhub revision proxy) — prefer equity_view when citing P/E or returns.
 
 Reports:
 {json.dumps(payload, indent=2, ensure_ascii=False)}
@@ -131,7 +183,12 @@ Return ranked themes with final stage and per-agent stage breakdown (macro, news
         )
 
     def _enrich_brief(
-        self, brief: InvestmentBrief, *, news: NewsReport, as_of: date
+        self,
+        brief: InvestmentBrief,
+        *,
+        news: NewsReport,
+        fundamentals: FundamentalsSnapshot | None = None,
+        as_of: date,
     ) -> InvestmentBrief:
         """Set report date, as_of_context prefix, stage labels, and data_sources."""
         iso = format_date_iso(as_of)
@@ -158,6 +215,17 @@ Return ranked themes with final stage and per-agent stage breakdown (macro, news
                 sources.append("Finnhub market news API")
             sources.append("TickerTick curated feed (free)")
             sources.append("yfinance — VIX and sector ETF volatility (quant agent)")
+            sources.append(
+                "yfinance — sector ETF prices, valuations (equity agent structured block)"
+            )
+            if self._settings.finnhub_api_key:
+                sources.append(
+                    "Finnhub recommendation trends — revision proxy for theme tickers"
+                )
+
+        fund_notes = list(brief.fundamentals_notes) if brief.fundamentals_notes else []
+        if fundamentals and not fund_notes:
+            fund_notes = fundamentals.summary_lines()
 
         news_view = brief.news_view or news.news_backdrop
 
@@ -173,6 +241,7 @@ Return ranked themes with final stage and per-agent stage breakdown (macro, news
                 "news_view": news_view,
                 "news_citations": news.citations,
                 "data_sources": sources,
+                "fundamentals_notes": fund_notes,
             }
         )
 

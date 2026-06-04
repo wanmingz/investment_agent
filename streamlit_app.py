@@ -15,6 +15,7 @@ import streamlit as st
 
 from investment_agent.brief_compat import (
     brief_data_sources,
+    brief_fundamentals_notes,
     brief_news_citations,
     brief_news_view,
     theme_drivers_sourced,
@@ -30,6 +31,8 @@ from investment_agent.models import (
     coerce_theme_stage,
     stage_label,
 )
+from investment_agent import checkpoint
+from investment_agent.errors import QuotaExhaustedError
 from investment_agent.orchestrator import ThemeOrchestrator
 from investment_agent.storage import DEFAULT_REPORT_PATH, load_brief, save_brief
 
@@ -231,6 +234,11 @@ def _render_brief(brief: InvestmentBrief) -> None:
         st.markdown(brief_news_view(brief) or "_No news view — run a new analysis with News RAG_")
     with tab3:
         st.markdown(brief.equity_view)
+        fund_notes = brief_fundamentals_notes(brief)
+        if fund_notes:
+            with st.expander("Structured fundamentals (yfinance / Finnhub)"):
+                for line in fund_notes:
+                    st.markdown(f"- {line}")
     with tab4:
         st.markdown(brief.quant_view)
 
@@ -290,7 +298,18 @@ def main() -> None:
         )
         st.divider()
         run_btn = st.button("🚀 Run analysis", type="primary", use_container_width=True)
-        st.caption("Takes 2–4 min (4 agents + news RAG + CIO)")
+        st.caption("Takes 2–4 min (~5 LLM calls: macro, news, equity, quant, CIO)")
+        resume_ckpt = st.checkbox(
+            "Resume from checkpoint (skip completed agents)",
+            value=checkpoint.is_resume_enabled(),
+            help="Saves progress under reports/cache/. After a 429 error, rerun to continue.",
+        )
+        cached_steps = checkpoint.list_checkpoint_steps()
+        if cached_steps:
+            st.caption(f"Checkpoint: {', '.join(cached_steps)}")
+            if st.button("Clear checkpoint", use_container_width=True):
+                checkpoint.clear_checkpoint()
+                st.rerun()
         if DEFAULT_REPORT_PATH.is_file():
             st.success("Cached report available")
             if st.button("📂 Load last result", use_container_width=True):
@@ -322,14 +341,30 @@ def main() -> None:
             st.write("Agent 4: Quant / Volatility Analyst")
             st.write("CIO: Synthesizing investment brief")
             try:
-                brief = ThemeOrchestrator(settings).run()
+                brief = ThemeOrchestrator(settings).run(resume=resume_ckpt)
                 path = save_brief(brief)
                 st.session_state.brief = brief
                 status.update(label="Analysis complete", state="complete")
                 st.success(f"Saved to `{path}`")
+            except QuotaExhaustedError as e:
+                status.update(label="API quota exceeded", state="error")
+                st.error(e.user_hint())
+                steps = checkpoint.list_checkpoint_steps()
+                if steps:
+                    st.info(
+                        f"Progress saved: **{', '.join(steps)}**. "
+                        "Keep **Resume from checkpoint** on and run again later."
+                    )
+                st.stop()
             except Exception as e:
                 status.update(label="Analysis failed", state="error")
                 st.error(f"Run failed: {e}")
+                steps = checkpoint.list_checkpoint_steps()
+                if steps:
+                    st.warning(
+                        f"Partial progress saved ({', '.join(steps)}). "
+                        "Enable resume and retry."
+                    )
                 st.stop()
 
     brief: InvestmentBrief | None = st.session_state.get("brief")

@@ -3,9 +3,10 @@ from datetime import date
 from investment_agent.config import Settings
 from investment_agent.dates import format_date_display, format_date_iso
 from investment_agent.llm import LLMClient
+from investment_agent.data.snapshot import FundamentalsSnapshot
 from investment_agent.models import EquityReport, MacroReport, NewsReport
 
-SYSTEM = """You are Agent 2: a senior equity research analyst covering global sectors.
+SYSTEM = """You are Agent 3: a senior equity research analyst covering global sectors.
 
 Your job: refine and validate investable THEMES from an equity fundamentals lens.
 
@@ -20,6 +21,13 @@ For each theme, classify lifecycle stage (use all five when appropriate):
 
 You will receive macro economist and news (RAG) reports — you may agree, disagree on stage, or add equity-specific themes.
 News-backed drivers should align with cited headlines when relevant.
+
+You will receive a "## Structured fundamentals" block with live price, valuation, and optional revision-proxy numbers.
+Rules for structured data:
+- Use those numbers in valuation_notes and stage_rationale when relevant.
+- Do NOT invent P/E, returns, or revision scores not present in that block.
+- If a metric is missing, say "data unavailable" rather than guessing.
+- revision_proxy is a Finnhub recommendation-trend proxy, not IBES EPS revision.
 
 Output valid JSON:
 {
@@ -37,11 +45,21 @@ class EquityResearchAnalyst:
         self._region = settings.market_region
 
     def analyze(
-        self, macro: MacroReport, news: NewsReport, *, as_of: date | None = None
+        self,
+        macro: MacroReport,
+        news: NewsReport,
+        fundamentals: FundamentalsSnapshot | None = None,
+        *,
+        as_of: date | None = None,
     ) -> EquityReport:
         as_of = as_of or date.today()
         macro_summary = macro.model_dump_json(indent=2)
         news_summary = news.model_dump_json(indent=2)
+        fund_block = (
+            fundamentals.to_prompt_block()
+            if fundamentals
+            else "## Structured fundamentals\nNot available — use qualitative judgment only."
+        )
         user = f"""Analysis as-of date: {format_date_display(as_of)} ({format_date_iso(as_of)}).
 Use this as "today" — do not use any other date.
 Respond in English only.
@@ -54,6 +72,9 @@ Macro economist output (use as starting point, challenge stage if equity data di
 News / RAG output (recent headlines with citations — factor into sector sentiment):
 {news_summary}
 
+{fund_block}
+
 Produce 4-6 equity-investable themes with stage (early/early_mid/mid/mid_late/late) from EQUITY RESEARCH perspective.
-Include specific sectors, style factors, and example tickers/ETFs where relevant."""
+Include specific sectors, style factors, and example tickers/ETFs where relevant.
+Reference structured metrics in valuation_notes when they support your stage calls."""
         return self._llm.structured(system=SYSTEM, user=user, schema=EquityReport)

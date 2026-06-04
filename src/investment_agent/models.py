@@ -146,6 +146,10 @@ class InvestmentBrief(BaseModel):
     news_view: str = ""
     news_citations: list[NewsCitation] = Field(default_factory=list)
     data_sources: list[str] = Field(default_factory=list)
+    fundamentals_notes: list[str] = Field(
+        default_factory=list,
+        description="Structured price/valuation/revision highlights (yfinance, optional Finnhub)",
+    )
     themes: list[FinalTheme]
     disclaimer: str = (
         "For research purposes only. Not investment advice. "

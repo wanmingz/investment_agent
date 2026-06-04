@@ -15,6 +15,8 @@ from investment_agent.brief_compat import (
 )
 from investment_agent.config import Settings
 from investment_agent.models import stage_label
+from investment_agent import checkpoint
+from investment_agent.errors import QuotaExhaustedError
 from investment_agent.orchestrator import ThemeOrchestrator
 from investment_agent.storage import save_brief
 
@@ -179,8 +181,19 @@ def main() -> None:
     except ValueError as e:
         console.print(f"[red]Configuration error:[/red] {e}")
         sys.exit(1)
+    except QuotaExhaustedError as e:
+        console.print(f"[red]API quota exceeded:[/red]\n{e.user_hint()}")
+        steps = checkpoint.list_checkpoint_steps()
+        if steps:
+            console.print(f"[yellow]Checkpoint saved:[/yellow] {', '.join(steps)}")
+        sys.exit(1)
     except Exception as e:
         console.print(f"[red]Run failed:[/red] {e}")
+        steps = checkpoint.list_checkpoint_steps()
+        if steps:
+            console.print(
+                f"[yellow]Partial checkpoint:[/yellow] {', '.join(steps)} — rerun with RESUME_CHECKPOINT=1"
+            )
         sys.exit(1)
 
 

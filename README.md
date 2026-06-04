@@ -6,7 +6,7 @@ Four specialist agents plus a CIO layer output **investable themes** with lifecy
 |-------|------|--------|
 | **Agent 1** | Macro Economist | Rates, inflation, policy, geopolitics, cross-asset signals |
 | **Agent 2** | News / RAG Analyst | Retrieved headlines (Finnhub + TickerTick), cited drivers/risks |
-| **Agent 3** | Equity Research Analyst | Valuations, earnings revisions; reads macro + news |
+| **Agent 3** | Equity Research Analyst | Valuations, earnings revisions; macro + news + yfinance fundamentals |
 | **Agent 4** | Quant Analyst | Volatility, VIX, sector realized vol, risk timing |
 
 A CIO synthesis layer merges views into final stage, consensus, and investability scores. **All prompts and outputs are in English.**
@@ -78,36 +78,163 @@ invest-dashboard
 | `FINNHUB_API_KEY` | Optional; more news via [Finnhub](https://finnhub.io/) |
 | `NEWS_MAX_ARTICLES` | Max headlines to ingest (default `40`) |
 | `RAG_TOP_K` | Articles passed to News Agent after retrieval (default `12`) |
-
-## Workflow
-
-The analysis pipeline is defined in code (not a separate workflow engine). Entry points call `ThemeOrchestrator.run()` in `src/investment_agent/orchestrator.py`:
-
-```
-MacroEconomist.analyze()
-  → fetch_news_articles() + lexical RAG retrieve
-    → NewsAnalyst.analyze(macro)  → NewsReport with citations
-      → EquityResearchAnalyst.analyze(macro, news)
-        → QuantAnalyst.analyze(macro, equity, vol_snapshot)
-          → CIO synthesis (LLM) → InvestmentBrief
-            → _enrich_brief() (date, data_sources, news_citations)
-```
-
-- **CLI:** `main.py` → `investment_agent/cli.py`
-- **Dashboard:** `streamlit_app.py`
-- **News RAG:** `src/investment_agent/news/ingest.py`, `news/rag.py`
+| `FUNDAMENTALS_MAX_TICKERS` | Max theme tickers for yfinance fundamentals (default `8`) |
+| `RESUME_CHECKPOINT` | Save agent outputs under `reports/cache/` for resume (default `1`) |
+| `LLM_MAX_RETRIES_ON_429` | Short rate-limit retries in `llm.py` (default `2`) |
 
 ## Architecture
 
+Multi-agent **investment theme research** prototype: four specialist agents plus a CIO synthesis layer, orchestrated in Python (no separate workflow engine). Outputs are structured JSON (`InvestmentBrief`) and optional Streamlit/CLI views.
+
+### System layers
+
 ```
-CLI / Streamlit
-    └── ThemeOrchestrator
-            ├── Agent 1: MacroEconomist
-            ├── Agent 2: NewsAnalyst (Finnhub + TickerTick → RAG → LLM)
-            ├── Agent 3: EquityResearchAnalyst (reads macro + news)
-            ├── Agent 4: QuantAnalyst (reads macro+equity + yfinance vol)
-            └── CIO synthesis → InvestmentBrief
+┌─────────────────────────────────────────────────────────────┐
+│  Entry: main.py / cli.py  ·  streamlit_app.py                │
+└────────────────────────────┬────────────────────────────────┘
+                             ▼
+┌─────────────────────────────────────────────────────────────┐
+│  ThemeOrchestrator (orchestrator.py)                        │
+│  · Settings (.env)  · LLMClient (Gemini/OpenAI JSON)        │
+│  · Checkpoint resume (reports/cache/)  · storage (latest.json)│
+└────────────────────────────┬────────────────────────────────┘
+                             ▼
+┌──────────────┬──────────────┬──────────────┬────────────────┐
+│ Agent 1      │ Agent 2      │ Agent 3      │ Agent 4        │
+│ Macro        │ News + RAG   │ Equity       │ Quant          │
+│ (LLM)        │ (ingest+RAG  │ (LLM +       │ (LLM +         │
+│              │  + LLM)      │  structured) │  yfinance vol) │
+└──────────────┴──────────────┴──────────────┴────────────────┘
+                             ▼
+                    CIO synthesis (LLM)
+                             ▼
+                    InvestmentBrief + _enrich_brief()
 ```
+
+| Layer | Components | Role |
+|-------|------------|------|
+| **Entry** | `main.py`, `cli.py`, `streamlit_app.py` | Run analysis, load cache, display UI |
+| **Orchestration** | `ThemeOrchestrator`, `checkpoint.py` | Sequential pipeline, resume on 429 |
+| **Agents** | `agents/*.py` | One structured LLM call each (+ shared `LLMClient`) |
+| **Data (non-LLM)** | `news/`, `data/`, `market_data.py` | Ingest, RAG, fundamentals, volatility |
+| **Core** | `models.py`, `llm.py`, `config.py`, `dates.py`, `storage.py` | Schemas, API, env, persistence |
+
+### Runtime pipeline
+
+Entry points call `ThemeOrchestrator.run()` in `src/investment_agent/orchestrator.py`. A full run uses **~5 LLM requests** (macro → news → equity → quant → CIO).
+
+```
+fetch_vol_snapshot()                         [yfinance — no LLM]
+MacroEconomist.analyze()                     [LLM → MacroReport]
+fetch_news_articles() + lexical RAG        [Finnhub optional + TickerTick]
+NewsAnalyst.analyze(macro)                   [LLM → NewsReport + citations]
+fetch_fundamentals_snapshot(macro.themes)    [yfinance + optional Finnhub]
+EquityResearchAnalyst.analyze(...)           [LLM → EquityReport]
+QuantAnalyst.analyze(..., vol)               [LLM → QuantReport]
+CIO synthesis                                [LLM → InvestmentBrief]
+_enrich_brief()                              [dates, labels, data_sources, citations]
+```
+
+With `RESUME_CHECKPOINT=1` (default), each completed step is saved under `reports/cache/` (`macro.json`, `news.json`, `fundamentals.json`, `equity.json`, `quant.json`). After a quota error, rerun with **Resume from checkpoint** to skip finished agents.
+
+```mermaid
+flowchart TB
+    subgraph entry [Entry]
+        CLI[CLI]
+        ST[Streamlit]
+    end
+    subgraph orch [Orchestrator]
+        ORCH[ThemeOrchestrator]
+        LLM[LLMClient]
+    end
+    subgraph agents [Agents — 1 LLM call each]
+        A1[MacroEconomist]
+        A2[NewsAnalyst]
+        A3[EquityResearchAnalyst]
+        A4[QuantAnalyst]
+        CIO[CIO synthesis]
+    end
+    subgraph external [External data]
+        NEWS[news/ingest + rag]
+        FUND[data/snapshot]
+        VOL[market_data]
+    end
+    CLI --> ORCH
+    ST --> ORCH
+    ORCH --> A1 --> A2
+    A2 --> NEWS
+    A2 --> A3
+    A1 --> FUND --> A3
+    A1 --> A4
+    A3 --> A4
+    VOL --> A4
+    A1 --> CIO
+    A2 --> CIO
+    A3 --> CIO
+    A4 --> CIO
+    A1 & A2 & A3 & A4 & CIO --> LLM
+```
+
+### Agent inputs and external data
+
+| Agent | Reads | External data |
+|-------|--------|-----------------|
+| **1 Macro** | `MARKET_REGION`, analysis date | None (LLM only) |
+| **2 News** | `MacroReport` | Finnhub (optional), TickerTick; **lexical RAG** (`news/rag.py`) |
+| **3 Equity** | Macro + News + `FundamentalsSnapshot` | **yfinance** price/valuation; **Finnhub** recommendation proxy (optional, theme tickers) |
+| **4 Quant** | Macro + Equity + `VolSnapshot` | **yfinance** VIX, sector ETF realized vol |
+| **CIO** | All four reports (JSON) | None |
+
+### Repository layout (`src/investment_agent/`)
+
+| Path | Responsibility |
+|------|----------------|
+| `orchestrator.py` | Pipeline, CIO prompt, `_enrich_brief()` |
+| `agents/macro_economist.py` | Macro themes and regime |
+| `agents/news_analyst.py` | News backdrop, cited drivers/risks |
+| `agents/equity_analyst.py` | Equity stage lens + structured metrics block |
+| `agents/quant_analyst.py` | Vol regime and risk timing |
+| `news/ingest.py` | Headline fetch (Finnhub + TickerTick) |
+| `news/rag.py` | Query build, lexical retrieve, context formatting |
+| `data/universe.py` | Sector ETFs, ticker extraction from themes |
+| `data/price.py`, `valuation.py`, `revisions.py` | Per-symbol metrics |
+| `data/snapshot.py` | `FundamentalsSnapshot` aggregation |
+| `market_data.py` | `VolSnapshot` for quant agent |
+| `llm.py` | OpenAI-compatible API, JSON schema output, 429 handling |
+| `checkpoint.py` | Partial-run cache for resume |
+| `errors.py` | `QuotaExhaustedError` with user hints |
+| `models.py` | Pydantic reports and `InvestmentBrief` |
+| `config.py`, `dates.py`, `storage.py`, `brief_compat.py` | Env, dates, `reports/latest.json`, schema migration |
+
+Console entry points: `invest-themes` (CLI), `invest-dashboard` (Streamlit).
+
+### Output model
+
+**Intermediate reports** (each includes `themes[]` with five stages: `early` … `late`):
+
+- `MacroReport`, `NewsReport`, `EquityReport`, `QuantReport`
+
+**Final artifact** — `InvestmentBrief`:
+
+- Views: `macro_view`, `news_view`, `equity_view`, `quant_view`, `executive_summary`
+- `themes[]` → `FinalTheme` with `agent_stages`, `investability_score`, `consensus_score`, optional `key_drivers_sourced` / `risks_sourced`
+- `news_citations`, `data_sources`, `fundamentals_notes`, `report_date`, `as_of_context`
+
+### Cross-cutting behavior
+
+| Concern | Implementation |
+|---------|----------------|
+| **LLM provider** | Gemini (OpenAI-compatible endpoint) or OpenAI via `config.py` / `.env` |
+| **Persistence** | `storage.py` → `reports/latest.json` |
+| **Quota / 429** | `llm.py` + `errors.py`; see [Gemini free-tier quota](#gemini-free-tier-quota-429) below |
+| **Resume** | `checkpoint.py` + `RESUME_CHECKPOINT` |
+| **Language** | All agent and CIO prompts/outputs in English |
+
+### Scope (PoC vs production)
+
+**In scope today:** multi-agent LLM workflow, lightweight news RAG with citations, free-tier structured market data, theme lifecycle staging, CLI + Streamlit demo.
+
+**Not in scope:** vector embeddings / vector DB, trained ML or forecasting models, CI/CD or model governance, integration with portfolio management or enterprise research platforms.
 
 ## Data sources
 
@@ -120,7 +247,8 @@ What each part of the report is based on.
 | `news_view`, `news_citations`, `key_drivers_sourced`, `risks_sourced` | **News RAG + LLM** (Agent 2) | Headlines from ingest; claims should cite `citation_ids` |
 | Headlines ingested | **Finnhub** (if `FINNHUB_API_KEY`) + **TickerTick** (free) | See `news/ingest.py` |
 | RAG retrieval | **Lexical match** (no embedding API) | `news/rag.py` — query from macro themes + region |
-| Equity themes, `market_style`, `valuation_notes` | **LLM** (Agent 3) | Reads macro + news JSON; no live quotes API |
+| Equity themes, `market_style`, `valuation_notes` | **LLM** (Agent 3) + **yfinance** / optional **Finnhub** | Structured price, P/E, revision proxy in `data/snapshot.py` |
+| `fundamentals_notes` | **Program** | Highlights from structured snapshot in `_enrich_brief()` |
 | Quant themes, `vol_regime`, `vol_signals` | **LLM** (Agent 4) + **yfinance** | Live vol block in quant prompt |
 | VIX level, sector 20d ann. vol | **yfinance** | `market_data.py` |
 | `executive_summary`, theme `thesis`, `synthesis` | **LLM** (CIO) | Merges four agent reports |
@@ -154,6 +282,38 @@ Fetched at run time in `src/investment_agent/market_data.py`:
 
 If yfinance fails or is unavailable, quant analysis continues with LLM-only context (`notes` in the vol snapshot).
 
+### Structured fundamentals (free tier)
+
+Fetched before the equity agent in `src/investment_agent/data/`:
+
+| Data | Source | Symbols |
+|------|--------|---------|
+| 20d / 60d returns, vs 52w high, vs SPY | **yfinance** | Sector ETFs (XLK, XLE, …), SPY, theme tickers from macro |
+| Forward / trailing P/E, P/B | **yfinance** `.info` | Same universe (delayed) |
+| Revision proxy | **Finnhub** `stock/recommendation` (optional) | Theme tickers only, if `FINNHUB_API_KEY` set |
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `FUNDAMENTALS_MAX_TICKERS` | `8` | Max extra tickers from macro themes |
+
+Revision proxy = normalized net buy/(sell) from latest recommendation period — **not** IBES EPS revision. For research PoC only.
+
+### Gemini free-tier quota (429)
+
+A full run uses **~5 LLM requests** (macro, news, equity, quant, CIO).  
+`gemini-2.5-flash-lite` free tier is often **~20 requests/day per project** — about **4 full runs per day**.
+
+If you see `429 RESOURCE_EXHAUSTED` / daily quota:
+
+1. Wait for quota reset (UTC) or use another API key / `LLM_PROVIDER=openai`
+2. Sidebar: **Load last result** for `reports/latest.json`
+3. Enable **Resume from checkpoint** — partial steps are saved under `reports/cache/` so a retry only calls agents that did not finish
+
+| Variable | Default | Role |
+|----------|---------|------|
+| `RESUME_CHECKPOINT` | `1` | Save each agent output; resume on next run |
+| `LLM_MAX_RETRIES_ON_429` | `2` | Short rate-limit retries (not daily cap) |
+
 ### LLM configuration
 
 | Variable | Role |
@@ -168,7 +328,8 @@ If yfinance fails or is unavailable, quant analysis continues with LLM-only cont
 
 - **News-sourced** bullets use `key_drivers_sourced` / `risks_sourced` with `citation_ids` → `news_citations[]` (title, url, source).
 - Plain `key_drivers` / `risks` without citations remain **model synthesis**.
-- Macro and equity views do **not** use FRED/Bloomberg-style fundamentals APIs.
+- Equity structured metrics use **yfinance** (free, delayed); not Bloomberg/FactSet.
+- Macro agent does **not** use FRED/Bloomberg APIs.
 - Verify URLs and facts independently before trading.
 
 ## Disclaimer
