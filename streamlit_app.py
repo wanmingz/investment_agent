@@ -13,6 +13,13 @@ if _SRC.is_dir() and str(_SRC) not in sys.path:
 
 import streamlit as st
 
+from investment_agent.brief_compat import (
+    brief_data_sources,
+    brief_news_citations,
+    brief_news_view,
+    theme_drivers_sourced,
+    theme_risks_sourced,
+)
 from investment_agent.config import Settings
 from investment_agent.dates import analysis_date, format_date_iso
 from investment_agent.models import (
@@ -51,6 +58,7 @@ STAGE_COLORS: dict[str, tuple[str, str]] = {
 
 AGENT_LABELS = {
     "macro": "Macro",
+    "news": "News",
     "equity": "Equity",
     "quant": "Quant",
 }
@@ -164,13 +172,23 @@ def _render_theme_card(rank: int, theme: FinalTheme) -> None:
 
     with st.expander("Drivers · Risks · Tickers"):
         if theme.key_drivers:
-            st.markdown("**Key drivers**")
+            st.markdown("**Key drivers** (model synthesis)")
             for d in theme.key_drivers:
                 st.markdown(f"- {d}")
+        drivers_sourced = theme_drivers_sourced(theme)
+        if drivers_sourced:
+            st.markdown("**Key drivers (news-sourced)**")
+            for item in drivers_sourced:
+                st.markdown(f"- {item.text} — `{', '.join(item.citation_ids)}`")
         if theme.risks:
-            st.markdown("**Risks**")
+            st.markdown("**Risks** (model synthesis)")
             for r in theme.risks:
                 st.markdown(f"- {r}")
+        risks_sourced = theme_risks_sourced(theme)
+        if risks_sourced:
+            st.markdown("**Risks (news-sourced)**")
+            for item in risks_sourced:
+                st.markdown(f"- {item.text} — `{', '.join(item.citation_ids)}`")
         if theme.tickers_or_sectors:
             st.markdown("**Tickers / sectors**")
             st.markdown(", ".join(f"`{t}`" for t in theme.tickers_or_sectors))
@@ -203,14 +221,34 @@ def _render_brief(brief: InvestmentBrief) -> None:
 
     st.markdown(f'<div class="summary-box">{brief.executive_summary}</div>', unsafe_allow_html=True)
 
-    st.markdown("### Three agent views")
-    tab1, tab2, tab3 = st.tabs(["🌍 Macro Economist", "📈 Equity Research", "📉 Quant / Volatility"])
+    st.markdown("### Agent views")
+    tab1, tab2, tab3, tab4 = st.tabs(
+        ["🌍 Macro", "📰 News RAG", "📈 Equity", "📉 Quant"]
+    )
     with tab1:
         st.markdown(brief.macro_view)
     with tab2:
-        st.markdown(brief.equity_view)
+        st.markdown(brief_news_view(brief) or "_No news view — run a new analysis with News RAG_")
     with tab3:
+        st.markdown(brief.equity_view)
+    with tab4:
         st.markdown(brief.quant_view)
+
+    citations = brief_news_citations(brief)
+    if citations:
+        with st.expander(f"News citations ({len(citations)})"):
+            for c in citations:
+                st.markdown(f"**[{c.id}]** {c.title} — _{c.source}_")
+                if c.url:
+                    st.markdown(f"[Link]({c.url})")
+                if c.published_at:
+                    st.caption(c.published_at)
+
+    sources = brief_data_sources(brief)
+    if sources:
+        with st.expander("Data sources"):
+            for s in sources:
+                st.markdown(f"- {s}")
 
     st.markdown("### Recommended themes")
     st.caption(
@@ -252,11 +290,13 @@ def main() -> None:
         )
         st.divider()
         run_btn = st.button("🚀 Run analysis", type="primary", use_container_width=True)
-        st.caption("Takes 1–3 min (3 agents + CIO synthesis)")
+        st.caption("Takes 2–4 min (4 agents + news RAG + CIO)")
         if DEFAULT_REPORT_PATH.is_file():
             st.success("Cached report available")
             if st.button("📂 Load last result", use_container_width=True):
-                st.session_state.brief = load_brief()
+                loaded = load_brief()
+                if loaded is not None:
+                    st.session_state.brief = loaded
                 st.rerun()
         st.divider()
         try:
@@ -275,10 +315,11 @@ def main() -> None:
             st.error(str(e))
             st.stop()
 
-        with st.status("Running 3-agent analysis…", expanded=True) as status:
+        with st.status("Running 4-agent analysis…", expanded=True) as status:
             st.write("Agent 1: Macro Economist")
-            st.write("Agent 2: Equity Research Analyst")
-            st.write("Agent 3: Quant / Volatility Analyst")
+            st.write("Agent 2: News / RAG (Finnhub + TickerTick)")
+            st.write("Agent 3: Equity Research Analyst")
+            st.write("Agent 4: Quant / Volatility Analyst")
             st.write("CIO: Synthesizing investment brief")
             try:
                 brief = ThemeOrchestrator(settings).run()

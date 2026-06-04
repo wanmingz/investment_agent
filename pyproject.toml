@@ -1,7 +1,7 @@
 [project]
 name = "investment-agent"
 version = "0.1.0"
-description = "Multi-agent investment theme analyzer (macro, equity, quant)"
+description = "Multi-agent investment theme analyzer (macro, news RAG, equity, quant)"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
@@ -11,6 +11,7 @@ dependencies = [
     "rich>=13.7.0",
     "yfinance>=0.2.40",
     "streamlit>=1.32.0",
+    "httpx>=0.27.0",
 ]
 
 [project.scripts]

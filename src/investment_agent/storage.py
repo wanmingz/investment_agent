@@ -1,5 +1,7 @@
+import json
 from pathlib import Path
 
+from investment_agent.brief_compat import migrate_brief_dict
 from investment_agent.dates import analysis_date, build_as_of_context, format_date_iso
 from investment_agent.models import InvestmentBrief
 
@@ -20,7 +22,8 @@ def load_brief(path: Path | None = None) -> InvestmentBrief | None:
     target = path or DEFAULT_REPORT_PATH
     if not target.is_file():
         return None
-    brief = InvestmentBrief.model_validate_json(target.read_text(encoding="utf-8"))
+    raw = json.loads(target.read_text(encoding="utf-8"))
+    brief = InvestmentBrief.model_validate(migrate_brief_dict(raw))
     return _normalize_loaded_brief(brief)
 
 

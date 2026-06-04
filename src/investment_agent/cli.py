@@ -6,6 +6,13 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 
+from investment_agent.brief_compat import (
+    brief_data_sources,
+    brief_news_citations,
+    brief_news_view,
+    theme_drivers_sourced,
+    theme_risks_sourced,
+)
 from investment_agent.config import Settings
 from investment_agent.models import stage_label
 from investment_agent.orchestrator import ThemeOrchestrator
@@ -43,8 +50,9 @@ def print_brief(brief) -> None:
 
     views = [
         ("Macro (Agent 1)", brief.macro_view),
-        ("Equity (Agent 2)", brief.equity_view),
-        ("Quant / Vol (Agent 3)", brief.quant_view),
+        ("News / RAG (Agent 2)", brief_news_view(brief) or "—"),
+        ("Equity (Agent 3)", brief.equity_view),
+        ("Quant / Vol (Agent 4)", brief.quant_view),
     ]
     for view_title, text in views:
         console.print(Panel(text, title=view_title, border_style="dim"))
@@ -75,16 +83,40 @@ def print_brief(brief) -> None:
         )
     console.print(table)
 
+    sources = brief_data_sources(brief)
+    if sources:
+        console.print("[dim]Data sources:[/dim] " + "; ".join(sources))
+
+    cite_by_id = {c.id: c for c in brief_news_citations(brief)}
+
     for i, t in enumerate(brief.themes, 1):
         drivers = "\n".join(f"  • {d}" for d in t.key_drivers[:4])
         risks = "\n".join(f"  • {r}" for r in t.risks[:3])
+        src_drv = []
+        for item in theme_drivers_sourced(t):
+            refs = ", ".join(
+                cite_by_id[cid].title[:40] if cid in cite_by_id else cid
+                for cid in item.citation_ids
+            )
+            src_drv.append(f"  • {item.text} [news: {refs}]")
+        src_risk = []
+        for item in theme_risks_sourced(t):
+            refs = ", ".join(
+                cite_by_id[cid].title[:40] if cid in cite_by_id else cid
+                for cid in item.citation_ids
+            )
+            src_risk.append(f"  • {item.text} [news: {refs}]")
         tickers = ", ".join(t.tickers_or_sectors[:6])
         label = t.stage_label or stage_label(t.stage)
         console.print(
             Panel(
                 f"{t.thesis}\n\n"
                 f"[bold]Key drivers[/bold]\n{drivers or '  —'}\n\n"
+                f"[bold]Key drivers (news-sourced)[/bold]\n"
+                f"{chr(10).join(src_drv) if src_drv else '  —'}\n\n"
                 f"[bold]Risks[/bold]\n{risks or '  —'}\n\n"
+                f"[bold]Risks (news-sourced)[/bold]\n"
+                f"{chr(10).join(src_risk) if src_risk else '  —'}\n\n"
                 f"[bold]Tickers / sectors[/bold] {tickers or '—'}",
                 title=f"#{i} {_theme_display_name(t)} · {label}",
                 border_style=_stage_style(
@@ -98,7 +130,7 @@ def print_brief(brief) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Multi-agent investment theme analyzer (Macro + Equity + Quant)"
+        description="Multi-agent investment theme analyzer (Macro + News RAG + Equity + Quant)"
     )
     parser.add_argument(
         "--json",
@@ -126,11 +158,12 @@ def main() -> None:
 
             settings = replace(settings, market_region=args.region)
 
-        console.print("[bold]Running 3-agent analysis…[/bold]")
+        console.print("[bold]Running 4-agent analysis…[/bold]")
         console.print(f"  Model: {settings.provider} / {settings.model}")
         console.print("  Agent 1: Macro Economist")
-        console.print("  Agent 2: Equity Research Analyst")
-        console.print("  Agent 3: Quant / Volatility Analyst\n")
+        console.print("  Agent 2: News / RAG")
+        console.print("  Agent 3: Equity Research Analyst")
+        console.print("  Agent 4: Quant / Volatility Analyst\n")
 
         orchestrator = ThemeOrchestrator(settings)
         brief = orchestrator.run()

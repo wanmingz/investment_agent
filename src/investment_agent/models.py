@@ -84,6 +84,32 @@ class QuantReport(BaseModel):
     vol_signals: list[str] = Field(default_factory=list)
 
 
+class NewsCitation(BaseModel):
+    id: str
+    title: str
+    source: str
+    url: str
+    published_at: str = ""
+
+
+class SourcedItem(BaseModel):
+    text: str
+    citation_ids: list[str] = Field(default_factory=list)
+
+
+class NewsReport(BaseModel):
+    news_backdrop: str
+    narrative_sentiment: Literal["risk-on", "neutral", "risk-off"] = "neutral"
+    retrieval_query: str = ""
+    articles_retrieved: int = 0
+    ingest_notes: list[str] = Field(default_factory=list)
+    citations: list[NewsCitation] = Field(default_factory=list)
+    news_signals: list[str] = Field(default_factory=list)
+    key_drivers_sourced: list[SourcedItem] = Field(default_factory=list)
+    risks_sourced: list[SourcedItem] = Field(default_factory=list)
+    themes: list[AgentTheme] = Field(default_factory=list)
+
+
 class FinalTheme(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
@@ -103,6 +129,8 @@ class FinalTheme(BaseModel):
     key_drivers: list[str]
     risks: list[str]
     tickers_or_sectors: list[str]
+    key_drivers_sourced: list[SourcedItem] = Field(default_factory=list)
+    risks_sourced: list[SourcedItem] = Field(default_factory=list)
 
 
 class InvestmentBrief(BaseModel):
@@ -115,6 +143,9 @@ class InvestmentBrief(BaseModel):
     macro_view: str
     equity_view: str
     quant_view: str
+    news_view: str = ""
+    news_citations: list[NewsCitation] = Field(default_factory=list)
+    data_sources: list[str] = Field(default_factory=list)
     themes: list[FinalTheme]
     disclaimer: str = (
         "For research purposes only. Not investment advice. "
