@@ -2,15 +2,18 @@ from datetime import date
 
 from investment_agent.config import Settings
 from investment_agent.dates import format_date_display, format_date_iso
-from investment_agent.llm import LLMClient
 from investment_agent.data.snapshot import FundamentalsSnapshot
-from investment_agent.models import EquityReport, MacroReport, NewsReport
+from investment_agent.llm import LLMClient
+from investment_agent.models import EquityReport, NewsReport
 
 SYSTEM = """You are Agent 3: a senior equity research analyst covering global sectors.
 
-Your job: refine and validate investable THEMES from an equity fundamentals lens.
+Your job: identify 4-6 investable THEMES from an equity fundamentals and market-structure lens.
 
 Write ALL output in English only.
+
+You work INDEPENDENTLY — do not copy theme names from a macro or news agent checklist.
+Theme names should reflect sectors, styles, or company clusters (e.g. "Software margin recovery", "European banks re-rating").
 
 For each theme, classify lifecycle stage (use all five when appropriate):
 - early: valuations reasonable vs growth, earnings inflection not yet in numbers, low sell-side coverage
@@ -19,24 +22,17 @@ For each theme, classify lifecycle stage (use all five when appropriate):
 - mid_late: full consensus long, multiples stretched vs history, revision upside fading
 - late: extreme multiples, estimate cuts risk, crowded long, negative revision skew
 
-You will receive macro economist and news (RAG) reports — you may agree, disagree on stage, or add equity-specific themes.
-News-backed drivers should align with cited headlines when relevant.
+You may receive a short news sentiment summary (backdrop only) — do not import news theme titles verbatim.
 
-You will receive a "## Structured fundamentals" block with live price, valuation, and optional revision-proxy numbers.
-Rules for structured data:
-- Use those numbers in valuation_notes and stage_rationale when relevant.
-- Do NOT invent P/E, returns, or revision scores not present in that block.
-- If a metric is missing, say "data unavailable" rather than guessing.
-- revision_proxy is a Finnhub recommendation-trend proxy, not IBES EPS revision.
+Structured fundamentals block contains REAL numbers — use them in valuation_notes and stage_rationale.
+Do NOT invent P/E, returns, or revision scores not in that block.
 
 Output valid JSON:
 {
   "market_style": "string — growth/value, cap bias, sector leadership",
-  "themes": [ same AgentTheme structure as macro agent ],
-  "valuation_notes": ["note1", "note2"]
-}
-
-Each theme object must include: name, subtitle, thesis, stage, stage_rationale, confidence, key_drivers, risks, tickers_or_sectors."""
+  "themes": [ AgentTheme structure — 4-6 equity-specific themes ],
+  "valuation_notes": ["note1", note2"]
+}"""
 
 
 class EquityResearchAnalyst:
@@ -46,19 +42,20 @@ class EquityResearchAnalyst:
 
     def analyze(
         self,
-        macro: MacroReport,
         news: NewsReport,
         fundamentals: FundamentalsSnapshot | None = None,
         *,
         as_of: date | None = None,
     ) -> EquityReport:
         as_of = as_of or date.today()
-        macro_summary = macro.model_dump_json(indent=2)
-        news_summary = news.model_dump_json(indent=2)
         fund_block = (
             fundamentals.to_prompt_block()
             if fundamentals
             else "## Structured fundamentals\nNot available — use qualitative judgment only."
+        )
+        news_context = (
+            f"News backdrop (sentiment only, not theme list): {news.news_backdrop}\n"
+            f"Narrative sentiment: {news.narrative_sentiment}"
         )
         user = f"""Analysis as-of date: {format_date_display(as_of)} ({format_date_iso(as_of)}).
 Use this as "today" — do not use any other date.
@@ -66,15 +63,10 @@ Respond in English only.
 
 Region: {self._region}
 
-Macro economist output (use as starting point, challenge stage if equity data disagrees):
-{macro_summary}
-
-News / RAG output (recent headlines with citations — factor into sector sentiment):
-{news_summary}
+{news_context}
 
 {fund_block}
 
-Produce 4-6 equity-investable themes with stage (early/early_mid/mid/mid_late/late) from EQUITY RESEARCH perspective.
-Include specific sectors, style factors, and example tickers/ETFs where relevant.
+Produce 4-6 equity-investable themes with distinct names from typical macro headlines.
 Reference structured metrics in valuation_notes when they support your stage calls."""
         return self._llm.structured(system=SYSTEM, user=user, schema=EquityReport)

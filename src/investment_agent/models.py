@@ -124,7 +124,18 @@ class FinalTheme(BaseModel):
     investability_score: float = Field(
         ge=0, le=1, description="Combined attractiveness now"
     )
-    agent_stages: dict[str, ThemeStage]
+    agent_stages: dict[str, ThemeStage] = Field(
+        default_factory=dict,
+        description="Stages per agent that proposed this theme; omit agents that did not",
+    )
+    contributing_agents: list[str] = Field(
+        default_factory=list,
+        description="Agents that listed this theme, e.g. macro, news, equity, quant",
+    )
+    primary_agent: str = Field(
+        default="",
+        description="Agent that most strongly originated this theme for the final brief",
+    )
     synthesis: str
     key_drivers: list[str]
     risks: list[str]
@@ -151,6 +162,10 @@ class InvestmentBrief(BaseModel):
         description="Structured price/valuation/revision highlights (yfinance, optional Finnhub)",
     )
     themes: list[FinalTheme]
+    macro_themes: list[AgentTheme] = Field(default_factory=list)
+    news_themes: list[AgentTheme] = Field(default_factory=list)
+    equity_themes: list[AgentTheme] = Field(default_factory=list)
+    quant_themes: list[AgentTheme] = Field(default_factory=list)
     disclaimer: str = (
         "For research purposes only. Not investment advice. "
         "Make your own decisions based on your risk tolerance."

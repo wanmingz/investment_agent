@@ -123,16 +123,18 @@ Multi-agent **investment theme research** prototype: four specialist agents plus
 
 Entry points call `ThemeOrchestrator.run()` in `src/investment_agent/orchestrator.py`. A full run uses **~5 LLM requests** (macro → news → equity → quant → CIO).
 
+**Independent theme lists** (branch `feature/independent-agent-themes`): each agent proposes its own `themes[]`; the CIO merges by concept (`contributing_agents`, sparse `agent_stages`). News no longer receives the macro theme list; equity receives only news backdrop (not news themes); quant uses vol data only.
+
 ```
 fetch_vol_snapshot()                         [yfinance — no LLM]
-MacroEconomist.analyze()                     [LLM → MacroReport]
-fetch_news_articles() + lexical RAG        [Finnhub optional + TickerTick]
-NewsAnalyst.analyze(macro)                   [LLM → NewsReport + citations]
-fetch_fundamentals_snapshot(macro.themes)    [yfinance + optional Finnhub]
-EquityResearchAnalyst.analyze(...)           [LLM → EquityReport]
-QuantAnalyst.analyze(..., vol)               [LLM → QuantReport]
-CIO synthesis                                [LLM → InvestmentBrief]
-_enrich_brief()                              [dates, labels, data_sources, citations]
+MacroEconomist.analyze()                     [LLM → MacroReport + themes]
+fetch_news_articles() + lexical RAG          [region query — no macro theme names]
+NewsAnalyst.analyze()                        [LLM → NewsReport + own themes]
+fetch_fundamentals_snapshot([])              [sector ETFs + SPY only]
+EquityResearchAnalyst.analyze(news, ...)     [LLM → EquityReport + own themes]
+QuantAnalyst.analyze(vol, regime hint)       [LLM → QuantReport + own themes]
+CIO synthesis                                [LLM → InvestmentBrief + merge]
+_enrich_brief()                              [snapshots: macro/news/equity/quant themes]
 ```
 
 With `RESUME_CHECKPOINT=1` (default), each completed step is saved under `reports/cache/` (`macro.json`, `news.json`, `fundamentals.json`, `equity.json`, `quant.json`). After a quota error, rerun with **Resume from checkpoint** to skip finished agents.
@@ -180,10 +182,10 @@ flowchart TB
 | Agent | Reads | External data |
 |-------|--------|-----------------|
 | **1 Macro** | `MARKET_REGION`, analysis date | None (LLM only) |
-| **2 News** | `MacroReport` | Finnhub (optional), TickerTick; **lexical RAG** (`news/rag.py`) |
-| **3 Equity** | Macro + News + `FundamentalsSnapshot` | **yfinance** price/valuation; **Finnhub** recommendation proxy (optional, theme tickers) |
-| **4 Quant** | Macro + Equity + `VolSnapshot` | **yfinance** VIX, sector ETF realized vol |
-| **CIO** | All four reports (JSON) | None |
+| **2 News** | Region only (independent) | Finnhub (optional), TickerTick; **lexical RAG** (`build_news_retrieval_query`) |
+| **3 Equity** | News backdrop + `FundamentalsSnapshot` | **yfinance** sector ETF block; no macro theme list |
+| **4 Quant** | `VolSnapshot` + optional regime hint | **yfinance** VIX, sector vol; no equity/macro themes |
+| **CIO** | All four reports (JSON) | Merges diverse theme lists → `contributing_agents` |
 
 ### Repository layout (`src/investment_agent/`)
 

@@ -3,15 +3,15 @@ from datetime import date
 from investment_agent.config import Settings
 from investment_agent.dates import format_date_display, format_date_iso
 from investment_agent.llm import LLMClient
-from investment_agent.models import MacroReport, NewsReport
+from investment_agent.models import NewsReport
 from investment_agent.news.ingest import fetch_news_articles
 from investment_agent.news.rag import (
-    build_retrieval_query,
+    build_news_retrieval_query,
     format_context_block,
     retrieve_articles,
 )
 
-SYSTEM = """You are Agent 4: a financial news analyst using retrieved articles only (RAG).
+SYSTEM = """You are Agent 2: a financial news analyst using retrieved articles only (RAG).
 
 Write ALL output in English only.
 
@@ -20,8 +20,10 @@ Rules:
 - Base news_backdrop, signals, drivers, and risks ONLY on provided articles.
 - key_drivers_sourced and risks_sourced MUST cite citation_ids that exist in the context.
 - Do NOT invent URLs or headlines not in the context.
-- If evidence is thin, say so and use fewer sourced items.
-- Stage themes from a NEWS flow / narrative heat lens (five stages: early, early_mid, mid, mid_late, late).
+- Produce 3-6 themes in "themes" derived FROM HEADLINES ONLY — do not reuse a generic macro theme checklist.
+- Each theme in "themes" must reflect narrative heat in the news (mergers, policy shocks, sector moves, etc.).
+- For each theme, include stage from a NEWS flow lens (early, early_mid, mid, mid_late, late).
+- If evidence is thin, use fewer themes and say so in ingest_notes via your reasoning in news_backdrop.
 
 Output valid JSON:
 {
@@ -36,7 +38,7 @@ Output valid JSON:
   "news_signals": ["signal with [id] reference where possible"],
   "key_drivers_sourced": [{"text": "...", "citation_ids": ["id1"]}],
   "risks_sourced": [{"text": "...", "citation_ids": ["id1"]}],
-  "themes": [ AgentTheme structure — optional 3-5 news-driven themes ]
+  "themes": [ AgentTheme — required 3-6 news-driven themes with name, thesis, stage, etc. ]
 }"""
 
 
@@ -45,14 +47,9 @@ class NewsAnalyst:
         self._llm = llm
         self._settings = settings
 
-    def analyze(self, macro: MacroReport, *, as_of: date | None = None) -> NewsReport:
+    def analyze(self, *, as_of: date | None = None) -> NewsReport:
         as_of = as_of or date.today()
-        theme_names = [t.name for t in macro.themes]
-        query = build_retrieval_query(
-            region=self._settings.market_region,
-            theme_names=theme_names,
-            macro_backdrop=macro.macro_backdrop,
-        )
+        query = build_news_retrieval_query(region=self._settings.market_region)
 
         articles, ingest_notes = fetch_news_articles(
             region=self._settings.market_region,
@@ -66,22 +63,21 @@ class NewsAnalyst:
 Respond in English only.
 Region: {self._settings.market_region}
 
+You are independent from other agents — do NOT assume any pre-defined macro theme list.
+
 Retrieval query: {query}
 Articles in corpus: {len(articles)} | Retrieved for context: {len(retrieved)}
 Ingest notes: {ingest_notes}
-
-Macro context (for thematic alignment only — news claims must cite articles below):
-{macro.model_dump_json(indent=2)}
 
 {context}
 
 Set articles_retrieved to {len(retrieved)}.
 Include citations for every article in the retrieved context block.
-Produce key_drivers_sourced and risks_sourced with valid citation_ids."""
+Produce key_drivers_sourced and risks_sourced with valid citation_ids.
+Return 3-6 themes in "themes" grounded in the articles above."""
 
         report = self._llm.structured(system=SYSTEM, user=user, schema=NewsReport)
 
-        # Ensure citations cover retrieved articles when LLM omits them
         if retrieved and len(report.citations) < len(retrieved):
             existing = {c.id for c in report.citations}
             from investment_agent.models import NewsCitation
