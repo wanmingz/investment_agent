@@ -34,51 +34,58 @@ from investment_agent.models import (
 
 SYNTHESIS_SYSTEM = """You are the Chief Investment Officer synthesizing four specialist agents.
 
+Each agent produced its OWN theme list (names may differ). Your job is to MERGE and RANK, not force identical names.
+
 Agents:
-1. Macro Economist — macro regime and policy-driven themes
-2. News Analyst (RAG) — retrieved headlines with citation IDs; use for news-backed drivers/risks
-3. Equity Research Analyst — fundamentals, valuations, earnings
-4. Quant Analyst — volatility regime and risk-adjusted timing
+1. Macro Economist — macro regime themes
+2. News Analyst (RAG) — headline-driven themes (may differ from macro)
+3. Equity Research Analyst — fundamentals-driven themes
+4. Quant Analyst — volatility/risk themes
 
 Write ALL narrative fields in English only.
 
 Produce a unified investment brief in JSON:
 {
-  "report_date": "YYYY-MM-DD (must match the analysis date provided in the prompt)",
-  "as_of_context": "brief market context note (date will be prefixed automatically)",
-  "executive_summary": "3-5 sentences, actionable overview in English",
-  "macro_view": "1 paragraph English summary of macro agent",
-  "news_view": "1 paragraph English summary of news/RAG agent — mention headline tone",
-  "equity_view": "1 paragraph English summary of equity agent",
-  "quant_view": "1 paragraph English summary of quant agent",
-  "data_sources": ["short strings describing data sources used"],
+  "report_date": "YYYY-MM-DD",
+  "as_of_context": "brief market context",
+  "executive_summary": "3-5 sentences",
+  "macro_view": "1 paragraph",
+  "news_view": "1 paragraph",
+  "equity_view": "1 paragraph",
+  "quant_view": "1 paragraph",
+  "data_sources": ["strings"],
   "themes": [
     {
-      "name": "English theme name",
-      "subtitle": "optional short label",
-      "thesis": "combined thesis in English",
+      "name": "final theme name (may synthesize similar concepts)",
+      "subtitle": "optional",
+      "thesis": "combined thesis",
       "stage": "early"|"early_mid"|"mid"|"mid_late"|"late",
-      "stage_label": "Early|Early-Mid|Mid|Mid-Late|Late",
+      "stage_label": "Early|...",
       "consensus_score": 0-1,
       "investability_score": 0-1,
-      "agent_stages": {"macro": "early_mid", "equity": "mid", "quant": "early", "news": "mid"},
-      "synthesis": "why final stage, 2-3 sentences English",
+      "contributing_agents": ["macro", "news"],
+      "primary_agent": "news",
+      "agent_stages": {"macro": "early_mid", "news": "mid"},
+      "synthesis": "2-3 sentences",
       "key_drivers": [],
       "risks": [],
-      "key_drivers_sourced": [{"text": "...", "citation_ids": ["news-id"]}],
-      "risks_sourced": [{"text": "...", "citation_ids": ["news-id"]}],
+      "key_drivers_sourced": [{"text": "...", "citation_ids": ["id"]}],
+      "risks_sourced": [],
       "tickers_or_sectors": []
     }
   ]
 }
 
-Rules:
-- Include 4-6 themes ranked by investability_score descending
-- Prefer news agent citation_ids for key_drivers_sourced / risks_sourced when supported by news report
-- Also include macro/equity/quant drivers in key_drivers (plain strings) when not news-backed
-- Final stage = weighted judgment across four agents; lower consensus_score if agents disagree
-- Use all five stages; prefer early_mid and mid_late when theme is between two pure stages
-- Be direct about what to invest NOW vs watch"""
+Merge rules:
+- Include 4-8 final themes ranked by investability_score descending
+- Cluster similar concepts (e.g. "AI capex" and "Hyperscaler spend") into one final theme when appropriate
+- contributing_agents: list every agent that had a related theme in their own list
+- primary_agent: agent that best originated the final thesis
+- agent_stages: ONLY include agents that actually proposed this cluster; omit agents with no related theme
+- consensus_score: high if 2+ agents covered similar idea; low if only one agent
+- Prefer news citation_ids for key_drivers_sourced when supported by news report
+- Final stage = weighted judgment using only agent_stages that exist; note disagreement in synthesis
+- Do not copy macro theme names onto unrelated news-only themes"""
 
 
 class ThemeOrchestrator:
@@ -109,14 +116,14 @@ class ThemeOrchestrator:
 
         news = checkpoint.load_news() if use_resume else None
         if news is None:
-            news = self._news.analyze(macro, as_of=as_of)
+            news = self._news.analyze(as_of=as_of)
             if use_resume:
                 checkpoint.save_news(news)
 
         fundamentals = checkpoint.load_fundamentals() if use_resume else None
         if fundamentals is None:
             fundamentals = fetch_fundamentals_snapshot(
-                macro.themes,
+                [],
                 as_of=as_of,
                 finnhub_key=self._settings.finnhub_api_key,
             )
@@ -126,14 +133,18 @@ class ThemeOrchestrator:
         equity = checkpoint.load_equity() if use_resume else None
         if equity is None:
             equity = self._equity.analyze(
-                macro, news, fundamentals=fundamentals, as_of=as_of
+                news, fundamentals=fundamentals, as_of=as_of
             )
             if use_resume:
                 checkpoint.save_equity(equity)
 
         quant = checkpoint.load_quant() if use_resume else None
         if quant is None:
-            quant = self._quant.analyze(macro, equity, vol, as_of=as_of)
+            quant = self._quant.analyze(
+                vol,
+                dominant_regime=macro.dominant_regime,
+                as_of=as_of,
+            )
             if use_resume:
                 checkpoint.save_quant(quant)
 
@@ -141,7 +152,13 @@ class ThemeOrchestrator:
             macro, news, equity, quant, fundamentals=fundamentals, as_of=as_of
         )
         brief = self._enrich_brief(
-            brief, news=news, fundamentals=fundamentals, as_of=as_of
+            brief,
+            news=news,
+            macro=macro,
+            equity=equity,
+            quant=quant,
+            fundamentals=fundamentals,
+            as_of=as_of,
         )
         if use_resume:
             checkpoint.clear_checkpoint()
@@ -171,13 +188,14 @@ Analysis date (today): {format_date_display(as_of)} ({format_date_iso(as_of)})
 Set report_date to "{format_date_iso(as_of)}" exactly.
 Respond in English only.
 
-News report includes citations with ids — use them in key_drivers_sourced / risks_sourced on themes.
-Equity agent had live yfinance price/valuation (and optional Finnhub revision proxy) — prefer equity_view when citing P/E or returns.
+Each agent_report has its own "themes" array — names WILL differ. Merge by concept; preserve diversity in final list.
+News report includes citations — use citation_ids in key_drivers_sourced when supported.
+Equity had yfinance fundamentals — prefer equity_view when citing P/E or returns.
 
-Reports:
+Agent reports:
 {json.dumps(payload, indent=2, ensure_ascii=False)}
 
-Return ranked themes with final stage and per-agent stage breakdown (macro, news, equity, quant)."""
+Return ranked final themes with contributing_agents, primary_agent, and sparse agent_stages (only agents that proposed related themes)."""
         return self._llm.structured(
             system=SYNTHESIS_SYSTEM, user=user, schema=InvestmentBrief, temperature=0.2
         )
@@ -187,6 +205,9 @@ Return ranked themes with final stage and per-agent stage breakdown (macro, news
         brief: InvestmentBrief,
         *,
         news: NewsReport,
+        macro: MacroReport,
+        equity: EquityReport,
+        quant: QuantReport,
         fundamentals: FundamentalsSnapshot | None = None,
         as_of: date,
     ) -> InvestmentBrief:
@@ -208,8 +229,9 @@ Return ranked themes with final stage and per-agent stage breakdown (macro, news
         sources = list(brief.data_sources) if brief.data_sources else []
         if not sources:
             sources = [
-                f"LLM ({self._settings.provider}/{self._settings.model}) — macro, equity, quant, CIO",
-                "News RAG — lexical retrieval over ingested headlines",
+                f"LLM ({self._settings.provider}/{self._settings.model}) — macro, news, equity, quant, CIO",
+                "News RAG — independent headline themes (lexical retrieval)",
+                "Independent theme lists per agent — merged at CIO",
             ]
             if self._settings.finnhub_api_key:
                 sources.append("Finnhub market news API")
@@ -242,28 +264,31 @@ Return ranked themes with final stage and per-agent stage breakdown (macro, news
                 "news_citations": news.citations,
                 "data_sources": sources,
                 "fundamentals_notes": fund_notes,
+                "macro_themes": macro.themes,
+                "news_themes": news.themes,
+                "equity_themes": equity.themes,
+                "quant_themes": quant.themes,
             }
         )
 
 
-def _normalize_name(name: str) -> str:
-    return name.lower().strip().replace(" ", "")
-
-
 def compute_stage_consensus(
     macro_themes: list[AgentTheme],
+    news_themes: list[AgentTheme],
     equity_themes: list[AgentTheme],
     quant_themes: list[AgentTheme],
 ) -> dict[str, dict[str, ThemeStage]]:
-    """Helper for debugging: map theme name -> agent stages."""
+    """Helper for debugging: map theme_key -> agent stages."""
+    from investment_agent.themes import theme_key
+
     by_agent = {
         "macro": macro_themes,
+        "news": news_themes,
         "equity": equity_themes,
         "quant": quant_themes,
     }
     merged: dict[str, dict[str, ThemeStage]] = defaultdict(dict)
     for agent, themes in by_agent.items():
         for th in themes:
-            key = _normalize_name(th.name)
-            merged[key][agent] = th.stage
+            merged[theme_key(th.name)][agent] = th.stage
     return dict(merged)

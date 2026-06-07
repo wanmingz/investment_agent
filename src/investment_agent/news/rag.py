@@ -13,6 +13,22 @@ def _tokens(text: str) -> set[str]:
     return set(_TOKEN.findall(text.lower()))
 
 
+def build_news_retrieval_query(
+    *,
+    region: str,
+    extra_terms: list[str] | None = None,
+) -> str:
+    """Region + market-wide terms only (no upstream agent theme names)."""
+    parts = [
+        region,
+        "rates inflation fed ecb policy earnings ai semiconductor energy oil "
+        "tariffs geopolitics banking credit equities bonds",
+    ]
+    if extra_terms:
+        parts.append(" ".join(extra_terms))
+    return " ".join(parts)
+
+
 def build_retrieval_query(
     *,
     region: str,
@@ -20,6 +36,7 @@ def build_retrieval_query(
     macro_backdrop: str = "",
     extra_terms: list[str] | None = None,
 ) -> str:
+    """Legacy helper — prefer build_news_retrieval_query for independent news agent."""
     parts = [
         region,
         "rates inflation fed ecb policy earnings ai semiconductor energy oil",

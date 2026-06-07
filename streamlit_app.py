@@ -14,6 +14,7 @@ if _SRC.is_dir() and str(_SRC) not in sys.path:
 import streamlit as st
 
 from investment_agent.brief_compat import (
+    brief_agent_themes,
     brief_data_sources,
     brief_fundamentals_notes,
     brief_news_citations,
@@ -21,6 +22,7 @@ from investment_agent.brief_compat import (
     theme_drivers_sourced,
     theme_risks_sourced,
 )
+from investment_agent.models import AgentTheme
 from investment_agent.config import Settings
 from investment_agent.dates import analysis_date, format_date_iso
 from investment_agent.models import (
@@ -127,10 +129,21 @@ def _stage_badge(stage_key: str, label: str) -> str:
 
 def _agent_pills(theme: FinalTheme) -> str:
     parts = []
-    for key, stg in theme.agent_stages.items():
+    stages = theme.agent_stages or {}
+    contrib = set(theme.contributing_agents or [])
+    for key in ("macro", "news", "equity", "quant"):
         agent = AGENT_LABELS.get(key, key)
-        lbl = stage_label(stg)
-        parts.append(f'<span class="agent-pill">{agent}: {lbl}</span>')
+        if key in stages:
+            lbl = stage_label(stages[key])
+            parts.append(f'<span class="agent-pill">{agent}: {lbl}</span>')
+        elif key in contrib:
+            parts.append(
+                f'<span class="agent-pill" style="opacity:0.65">{agent}: merged</span>'
+            )
+        else:
+            parts.append(
+                f'<span class="agent-pill" style="opacity:0.4">{agent}: —</span>'
+            )
     return "".join(parts)
 
 
@@ -163,6 +176,12 @@ def _render_theme_card(rank: int, theme: FinalTheme) -> None:
         """,
         unsafe_allow_html=True,
     )
+    contrib = theme.contributing_agents or []
+    if contrib or theme.primary_agent:
+        cap = f"Contributors: {', '.join(contrib)}" if contrib else ""
+        if theme.primary_agent:
+            cap = f"{cap} · Primary: {theme.primary_agent}".strip(" · ")
+        st.caption(cap)
 
     c1, c2 = st.columns(2)
     with c1:
@@ -195,6 +214,16 @@ def _render_theme_card(rank: int, theme: FinalTheme) -> None:
         if theme.tickers_or_sectors:
             st.markdown("**Tickers / sectors**")
             st.markdown(", ".join(f"`{t}`" for t in theme.tickers_or_sectors))
+
+
+def _render_agent_theme_column(agent: str, themes: list[AgentTheme]) -> None:
+    st.markdown(f"**{AGENT_LABELS.get(agent, agent)}** ({len(themes)} themes)")
+    if not themes:
+        st.caption("_No themes in this report — re-run analysis._")
+        return
+    for th in themes:
+        stg = stage_label(th.stage)
+        st.markdown(f"- **{th.name}** — _{stg}_: {th.thesis[:200]}{'…' if len(th.thesis) > 200 else ''}")
 
 
 def _brief_date_label(brief: InvestmentBrief) -> str:
@@ -241,6 +270,18 @@ def _render_brief(brief: InvestmentBrief) -> None:
                     st.markdown(f"- {line}")
     with tab4:
         st.markdown(brief.quant_view)
+
+    with st.expander("Independent agent themes (before CIO merge)", expanded=False):
+        st.caption("Each agent proposes its own theme list; CIO clusters them into final themes above.")
+        c1, c2, c3, c4 = st.columns(4)
+        with c1:
+            _render_agent_theme_column("macro", brief_agent_themes(brief, "macro"))
+        with c2:
+            _render_agent_theme_column("news", brief_agent_themes(brief, "news"))
+        with c3:
+            _render_agent_theme_column("equity", brief_agent_themes(brief, "equity"))
+        with c4:
+            _render_agent_theme_column("quant", brief_agent_themes(brief, "quant"))
 
     citations = brief_news_citations(brief)
     if citations:
@@ -298,7 +339,7 @@ def main() -> None:
         )
         st.divider()
         run_btn = st.button("🚀 Run analysis", type="primary", use_container_width=True)
-        st.caption("Takes 2–4 min (~5 LLM calls: macro, news, equity, quant, CIO)")
+        st.caption("Takes 2–4 min (~5 LLM calls). Each agent uses its own theme list.")
         resume_ckpt = st.checkbox(
             "Resume from checkpoint (skip completed agents)",
             value=checkpoint.is_resume_enabled(),

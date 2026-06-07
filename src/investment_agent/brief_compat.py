@@ -20,6 +20,12 @@ def brief_data_sources(brief: InvestmentBrief) -> list[str]:
     return list(val) if val else []
 
 
+def brief_agent_themes(brief: InvestmentBrief, agent: str) -> list:
+    key = f"{agent}_themes"
+    val = _get(brief, key, None)
+    return list(val) if val else []
+
+
 def brief_fundamentals_notes(brief: InvestmentBrief) -> list[str]:
     val = _get(brief, "fundamentals_notes", None)
     return list(val) if val else []
@@ -46,8 +52,15 @@ def migrate_brief_dict(data: dict) -> dict:
     data.setdefault("news_citations", [])
     data.setdefault("data_sources", [])
     data.setdefault("fundamentals_notes", [])
+    data.setdefault("macro_themes", [])
+    data.setdefault("news_themes", [])
+    data.setdefault("equity_themes", [])
+    data.setdefault("quant_themes", [])
     for theme in data.get("themes", []):
         if isinstance(theme, dict):
             theme.setdefault("key_drivers_sourced", [])
             theme.setdefault("risks_sourced", [])
+            theme.setdefault("contributing_agents", [])
+            theme.setdefault("primary_agent", "")
+            theme.setdefault("agent_stages", {})
     return data
