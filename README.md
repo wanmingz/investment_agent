@@ -99,6 +99,36 @@ Multi-agent **investment theme research** prototype: four agents each output an 
 
 Agents do **not** share a fixed theme checklist upstream. News RAG uses `build_news_retrieval_query()` (region + market terms only). Equity sees news **backdrop** text, not news theme titles. Quant sees **vol snapshot** + optional one-line macro regime hint only.
 
+### How agents work together
+
+Four agents each produce an independent `themes[]`. Only **light cross-links** connect them before the CIO merges all four JSON reports:
+
+```mermaid
+flowchart LR
+    M[Macro themes]
+    N[News themes + citations]
+    F[yfinance sector ETFs]
+    E[Equity themes]
+    V[Vol snapshot]
+    Q[Quant themes]
+    CIO[CIO merge and rank]
+
+    M -->|dominant_regime hint only| Q
+    N -->|news backdrop only| E
+    F --> E
+    V --> Q
+    M & N & E & Q --> CIO
+```
+
+| Cross-link | What passes | What does **not** pass |
+|------------|-------------|-------------------------|
+| Macro → Quant | One-line `dominant_regime` | Macro `themes[]` |
+| News → Equity | `news_backdrop`, `narrative_sentiment` | News `themes[]` |
+| Data → Equity | `FundamentalsSnapshot` (sector ETF block) | Macro theme tickers |
+| All → CIO | Full `MacroReport`, `NewsReport`, `EquityReport`, `QuantReport` | — |
+
+The CIO clusters similar concepts, fills `contributing_agents` and sparse `agent_stages`, and ranks final themes by `investability_score`. Streamlit shows **pre-merge** lists under **Independent agent themes (before CIO merge)**.
+
 ### System layers
 
 ```
