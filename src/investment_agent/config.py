@@ -79,8 +79,8 @@ class Settings:
     def _with_news(cls, **kwargs) -> "Settings":
         return cls(
             finnhub_api_key=os.getenv("FINNHUB_API_KEY", "").strip(),
-            news_max_articles=_int_env("NEWS_MAX_ARTICLES", 40),
-            rag_top_k=_int_env("RAG_TOP_K", 12),
+            news_max_articles=_int_env("NEWS_MAX_ARTICLES", 80),
+            rag_top_k=_int_env("RAG_TOP_K", 24),
             pipeline_version=_int_env("PIPELINE_VERSION", 2),
             **kwargs,
         )
