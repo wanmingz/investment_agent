@@ -2,14 +2,14 @@
 
 Three domain agents analyze **disjoint inputs** from a shared **Data Plane**; a programmatic **Brief Assembler** merges themes with lifecycle stage: **Early / Early-Mid / Mid / Mid-Late / Late**.
 
-| Agent | Role | Input (`data_plane.py`) | External data |
-|-------|------|-------------------------|---------------|
-| **Regime** | Macro regime themes | `RegimeInput` — date, region, `macro_context_block` | yfinance-derived cross-asset summary + LLM |
-| **Narrative** | Headline narrative heat | `NarrativeInput` — pre-fetched RAG articles | Finnhub (optional) + TickerTick |
-| **Markets** | Equity + vol themes | `MarketsInput` — fundamentals + vol snapshots | yfinance |
+| Agent | Role | Input builder | External data |
+|-------|------|---------------|---------------|
+| **Regime** | Macro regime themes | `agents/regime/input.py` → `RegimeInput` | yfinance-derived cross-asset summary + LLM |
+| **Narrative** | Headline narrative heat | `agents/narrative/input.py` → `NarrativeInput` | Finnhub (optional) + TickerTick RAG |
+| **Markets** | Fundamentals + vol themes | `agents/markets/input.py` → `MarketsInput` | yfinance fundamentals + vol snapshots |
 | **Assembler** | Cluster & rank | Three agent reports | Programmatic (`theme_key()` in `brief_assembler.py`) |
 
-**3 LLM calls** per run (no CIO LLM). **All outputs in English.**
+`data_plane.py` orchestrates the three input builders (no LLM). **3 LLM calls** per run (no CIO LLM). **All outputs in English.**
 
 ## Stage definitions
 
@@ -65,10 +65,10 @@ invest-dashboard
 
 1. Select market region, click **Run analysis**
 2. Or **Load last result** for `reports/latest.json`
-3. **Agent views** — three tabs: Regime · Narrative · Markets (equity + quant)
+3. **Agent views** — three tabs: Regime · Narrative · Markets (fundamentals + vol)
 4. Expand **Independent agent themes (before merge)** — three columns: Regime · Narrative · Markets
 
-Merged theme cards show contributor pills with agent names (`regime`, `narrative`, `markets`).
+Merged theme cards show contributor pills (`regime`, `narrative`, `markets`).
 
 ## Environment variables
 
@@ -81,92 +81,125 @@ Merged theme cards show contributor pills with agent names (`regime`, `narrative
 | `OPENAI_BASE_URL` | Optional; Gemini uses Google OpenAI-compatible endpoint by default |
 | `OPENAI_MODEL` | OpenAI model id when using `LLM_PROVIDER=openai` |
 | `MARKET_REGION` | `global`, `US`, `China`, etc. |
-| `FINNHUB_API_KEY` | Optional; more news via [Finnhub](https://finnhub.io/) |
-| `NEWS_MAX_ARTICLES` | Max headlines ingested in Data Plane (default `40`) |
-| `RAG_TOP_K` | Articles passed to Narrative agent after retrieval (default `12`) |
-| `FUNDAMENTALS_MAX_TICKERS` | Max extra theme tickers for fundamentals (default `8`) |
+| `FINNHUB_API_KEY` | Optional; more Narrative headlines via [Finnhub](https://finnhub.io/) |
+| `NEWS_MAX_ARTICLES` | Max headlines for Narrative ingest (default `40`) |
+| `RAG_TOP_K` | Articles passed to Narrative LLM after retrieval (default `12`) |
+| `FUNDAMENTALS_MAX_TICKERS` | Max extra tickers for Markets fundamentals fetch (default `8`) |
 | `RESUME_CHECKPOINT` | Save steps under `reports/cache/` for resume (default `1`) |
 | `LLM_MAX_RETRIES_ON_429` | Short rate-limit retries in `llm.py` (default `2`) |
 
 ## Architecture
 
 ```mermaid
-flowchart LR
+flowchart TB
     DP[data_plane.py]
-    R[Regime LLM]
-    N[Narrative LLM]
-    M[Markets LLM]
-    A[brief_assembler.py]
 
-    DP -->|RegimeInput| R
-    DP -->|NarrativeInput| N
-    DP -->|MarketsInput| M
-    R & N & M --> A
+    subgraph markets_pkg [agents/markets]
+        MF[fetch_market_snapshots]
+        MI[MarketsInput]
+    end
+
+    subgraph regime_pkg [agents/regime]
+        RI[RegimeInput]
+    end
+
+    subgraph narrative_pkg [agents/narrative]
+        NI[NarrativeInput]
+    end
+
+  MF --> RI
+    MF --> MI
+    DP --> MF
+    DP --> NI
+
+    RI --> RA[RegimeAgent LLM]
+    NI --> NA[NarrativeAgent LLM]
+    MI --> MA[MarketsAgent LLM]
+
+    RA & NA & MA --> A[brief_assembler.py]
     A --> B[InvestmentBrief]
-    B --> S[storage.py / reports/latest.json]
+    B --> S[storage.py]
 ```
 
 ### Runtime pipeline (`orchestrator.py`)
 
 ```
-build_data_plane()           Finnhub, TickerTick, yfinance — no LLM
-  ├─ RegimeInput    (macro_context_block from vol + ETF snapshot)
-  ├─ NarrativeInput (news RAG context)
-  └─ MarketsInput   (full fundamentals + vol blocks)
+build_data_plane()                    no LLM
+  ├─ agents/markets/input.py          fetch_market_snapshots() → MarketSnapshots
+  ├─ agents/regime/input.py           build_regime_input(snapshots) → RegimeInput
+  ├─ agents/narrative/input.py        build_narrative_input() → NarrativeInput
+  └─ agents/markets/input.py          build_markets_input(snapshots) → MarketsInput
 
-RegimeAgent.analyze()        LLM → RegimeReport          ∥ parallel
-NarrativeAgent.analyze()     LLM → NarrativeReport      ∥ parallel
-MarketsAgent.analyze()       LLM → MarketsReport        ∥ parallel
+RegimeAgent.analyze()                 LLM → RegimeReport          ∥ parallel
+NarrativeAgent.analyze()              LLM → NarrativeReport      ∥ parallel
+MarketsAgent.analyze()                LLM → MarketsReport        ∥ parallel
 
-brief_assembler.assemble()   programmatic → InvestmentBrief
-_enrich_brief()              dates, data_sources, theme snapshots
+brief_assembler.assemble()            programmatic → InvestmentBrief
+_enrich_brief()                       dates, data_sources, per-agent theme snapshots
 ```
 
-**Checkpoint steps:** `data_plane`, `regime`, `narrative`, `markets` under `reports/cache/`. Cache metadata uses **pipeline version 3** (`checkpoint.py`); mismatched or older caches are cleared on resume.
+**Checkpoint steps:** `data_plane`, `regime`, `narrative`, `markets` under `reports/cache/`. Cache metadata uses **pipeline version 5** (`checkpoint.py`); older caches are cleared on resume.
 
-Agents do **not** receive other agents' reports. Inputs are **pairwise disjoint** (Regime gets a derived summary, not raw news or full Markets prompt blocks).
+Agents do **not** receive other agents' reports. Inputs are **pairwise disjoint** (Regime gets a derived summary, not news text or full Markets prompt blocks).
 
-### Brief fields (v2)
+### Agent ↔ data mapping
 
-| Brief field | Source |
-|-------------|--------|
+| Package | Data modules | `*Input` fields | Fed to LLM as |
+|---------|--------------|---------------|---------------|
+| `agents/regime/` | `input.py` (slice from `MarketSnapshots`) | `regime_context_block` | Cross-asset regime markdown |
+| `agents/narrative/` | `ingest.py`, `rag.py`, `input.py` | `context_block`, `retrieved` | Headline RAG block |
+| `agents/markets/` | `snapshot.py`, `price.py`, `valuation.py`, `revisions.py`, `universe.py`, `input.py` | `fundamentals`, `vol` | Full fundamentals + vol prompt blocks |
+
+Markets performs the **only yfinance fetch** per run (`fetch_market_snapshots`). Regime reuses that payload as a compact summary (no second network round-trip).
+
+### Brief fields
+
+| Brief field | Agent report |
+|-------------|--------------|
 | `regime_view`, `regime_themes` | `RegimeReport` |
 | `narrative_view`, `narrative_themes`, `narrative_citations` | `NarrativeReport` |
-| `markets_fundamentals_view`, `markets_vol_view`, `markets_themes` | `MarketsReport` |
+| `markets_fundamentals_view`, `markets_vol_view`, `markets_themes` | `MarketsReport` (`fundamentals_themes` + `vol_themes`) |
 
 Merged `FinalTheme.contributing_agents` / `primary_agent` use `regime`, `narrative`, `markets`.
+
+Loading older `reports/latest.json` files migrates legacy field names (`macro_view`, `news_themes`, etc.) via `storage.migrate_brief_dict()`.
 
 ### Repository layout
 
 ```
 investment_agent/
-├── main.py                      # CLI shim → cli.main
-├── streamlit_app.py             # Streamlit UI
+├── main.py
+├── streamlit_app.py
 ├── tests/test_pipeline.py
+├── research/data-agent-relationship.md
 ├── reports/
-│   ├── latest.json              # last saved brief (runtime)
-│   └── cache/                   # checkpoint steps (runtime)
+│   ├── latest.json
+│   └── cache/
 └── src/investment_agent/
-    ├── orchestrator.py          # ThemeOrchestrator.run()
-    ├── data_plane.py            # *Input types, build_data_plane(), Regime context
-    ├── brief_assembler.py       # assemble() + theme_key()
+    ├── orchestrator.py
+    ├── data_plane.py              # orchestrates build_data_plane(); re-exports *Input
+    ├── brief_assembler.py
     ├── agents/
-    │   ├── regime_agent.py
-    │   ├── narrative_agent.py
-    │   └── markets_agent.py
-    ├── news/
-    │   ├── ingest.py            # Finnhub + TickerTick
-    │   └── rag.py               # lexical retrieval
-    ├── data/
-    │   ├── snapshot.py          # FundamentalsSnapshot, VolSnapshot, fetch_*
-    │   ├── price.py, valuation.py, revisions.py, universe.py
+    │   ├── regime/
+    │   │   ├── agent.py           # RegimeAgent (LLM)
+    │   │   └── input.py           # RegimeInput, build_regime_input()
+    │   ├── narrative/
+    │   │   ├── agent.py           # NarrativeAgent (LLM)
+    │   │   ├── input.py           # NarrativeInput, build_narrative_input()
+    │   │   ├── ingest.py          # Finnhub + TickerTick
+    │   │   └── rag.py             # lexical retrieval
+    │   └── markets/
+    │       ├── agent.py           # MarketsAgent (LLM)
+    │       ├── input.py           # MarketsInput, fetch_market_snapshots()
+    │       ├── snapshot.py        # FundamentalsSnapshot, VolSnapshot
+    │       └── universe.py, price.py, valuation.py, revisions.py
     ├── checkpoint.py
-    ├── llm.py                   # LLMClient + QuotaExhaustedError
-    ├── models.py                # Pydantic schemas
-    ├── storage.py               # save/load brief, migrate_brief_dict, UI accessors
+    ├── llm.py
+    ├── models.py
+    ├── storage.py
     ├── config.py
     ├── dates.py
-    └── cli.py                   # invest-themes + invest-dashboard entry
+    └── cli.py
 ```
 
 Console scripts (`pyproject.toml`): `invest-themes` → `cli.main`, `invest-dashboard` → `cli.dashboard_main`.
@@ -176,17 +209,17 @@ Console scripts (`pyproject.toml`): `invest-themes` → `cli.main`, `invest-dash
 | Output | Source | Notes |
 |--------|--------|-------|
 | `report_date`, `as_of_context` | Local clock | `dates.py` + `_enrich_brief()` |
-| Regime themes, `macro_backdrop`, `dominant_regime` | LLM + **cross-asset context** | `_build_regime_context_block()` in `data_plane.py` |
-| Narrative themes, citations, sourced drivers/risks | Data Plane + LLM | `news/ingest.py`, `news/rag.py` |
-| Markets themes, equity/quant views | LLM + yfinance | `FundamentalsSnapshot`, `VolSnapshot` prompt blocks |
+| Regime themes, `regime_backdrop`, `dominant_regime` | LLM + cross-asset context | `agents/regime/input.py` |
+| Narrative themes, citations, sourced drivers/risks | LLM + RAG | `agents/narrative/` |
+| Markets themes, fundamentals/vol views | LLM + yfinance | `agents/markets/snapshot.py` prompt blocks |
 | `fundamentals_notes` | Program | `FundamentalsSnapshot.summary_lines()` |
-| Final `themes[]`, scores, `contributing_agents` | `brief_assembler.py` | `theme_key()` clustering; mean confidence → `investability_score` |
-| `key_drivers_sourced` / `risks_sourced` on final themes | Program | Attached when cluster includes narrative themes (token overlap) |
-| `data_sources` | Program | Auto-filled in `_enrich_brief()` |
+| Final `themes[]`, scores, `contributing_agents` | `brief_assembler.py` | `theme_key()` clustering |
+| `key_drivers_sourced` / `risks_sourced` | Program | When merged cluster includes narrative themes |
+| `data_sources` | Program | `_enrich_brief()` |
 
 ### Regime cross-asset context
 
-Built once in Data Plane from the same yfinance fetch as Markets, but only a **compact derived block** is passed to Regime:
+Built in `agents/regime/input.py` from the same `MarketSnapshots` as Markets:
 
 - VIX level and 20d change
 - Sector 20d annualized vol (XLK, XLE, XLV, XLF, IGV)
@@ -195,18 +228,18 @@ Built once in Data Plane from the same yfinance fetch as Markets, but only a **c
 
 No news text; no full per-symbol Markets prompt.
 
-### News ingest (free tier)
+### Narrative ingest (free tier)
 
-| Provider | Auth | Endpoint |
-|----------|------|----------|
-| [Finnhub](https://finnhub.io/) | `FINNHUB_API_KEY` (optional) | `GET /api/v1/news?category=general` |
-| [TickerTick](https://github.com/hczhu/TickerTick-API) | None | `GET api.tickertick.com/feed?q=T:curated` |
+| Provider | Auth | Used in |
+|----------|------|---------|
+| [Finnhub](https://finnhub.io/) | `FINNHUB_API_KEY` (optional) | `agents/narrative/ingest.py` |
+| [TickerTick](https://github.com/hczhu/TickerTick-API) | None | `agents/narrative/ingest.py` |
 
-Without Finnhub, TickerTick alone still powers the news corpus.
+Corpus capped by `NEWS_MAX_ARTICLES`; `RAG_TOP_K` articles enter the Narrative LLM prompt.
 
 ### Live market data (yfinance)
 
-Fetched in `data/snapshot.py` (`fetch_fundamentals_snapshot`, `fetch_vol_snapshot`):
+Fetched in `agents/markets/snapshot.py`:
 
 | Label | Symbol | Use |
 |-------|--------|-----|
@@ -214,7 +247,7 @@ Fetched in `data/snapshot.py` (`fetch_fundamentals_snapshot`, `fetch_vol_snapsho
 | Tech / Energy / Healthcare / Financials / AI-Cloud | `XLK` `XLE` `XLV` `XLF` `IGV` | Sector vol + fundamentals universe |
 | Benchmark | `SPY` | Relative performance |
 
-Sector ETF universe is fixed (empty theme list passed to fundamentals fetch); optional extra tickers capped by `FUNDAMENTALS_MAX_TICKERS`.
+Universe is fixed sector ETFs + SPY (`agents/markets/universe.py`). `FUNDAMENTALS_MAX_TICKERS` caps optional extra symbols if enabled later.
 
 ### Gemini free-tier quota (429)
 
@@ -235,7 +268,7 @@ pip install pytest   # optional
 PYTHONPATH=src python -m pytest tests/test_pipeline.py -v
 ```
 
-Covers Regime context in Data Plane, `RegimeInput` field isolation, and `brief_assembler.assemble()` clustering.
+Covers per-agent input builders, `build_data_plane()` wiring, `brief_assembler.assemble()` clustering, and legacy brief JSON migration.
 
 ## Disclaimer
 

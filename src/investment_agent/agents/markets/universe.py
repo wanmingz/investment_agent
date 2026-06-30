@@ -1,10 +1,13 @@
-"""Default symbol universes for structured data (free yfinance)."""
+"""Sector ETF + benchmark universe for Markets agent yfinance fetches.
+
+Regime agent reads a derived summary built from the same snapshots (see ``agents/regime/input.py``).
+"""
 
 from __future__ import annotations
 
 import re
 
-# Sector proxies aligned with quant agent labels in market_data.py
+# Sector proxies for yfinance fetches (Markets + Regime summary)
 SECTOR_ETFS: dict[str, str] = {
     "Tech": "XLK",
     "Energy": "XLE",

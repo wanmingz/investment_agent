@@ -1,10 +1,10 @@
-"""Lightweight lexical RAG (no embedding API) for news chunks."""
+"""Lexical RAG for Narrative agent context blocks."""
 
 from __future__ import annotations
 
 import os
 import re
-from investment_agent.news.ingest import NewsArticle
+from investment_agent.agents.narrative.ingest import NewsArticle
 
 _TOKEN = re.compile(r"[a-z0-9]{3,}")
 

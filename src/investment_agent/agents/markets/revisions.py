@@ -1,4 +1,8 @@
-"""Earnings revision proxy via Finnhub recommendation trends (free tier, optional)."""
+"""Finnhub recommendation revision proxy (optional).
+
+Only attached to non-ETF symbols in ``fetch_fundamentals_snapshot`` → **Markets** only.
+Current ETF-only universe often skips this unless extra tickers are configured.
+"""
 
 from __future__ import annotations
 

@@ -1,5 +1,5 @@
 from investment_agent.dates import format_date_display, format_date_iso
-from investment_agent.data_plane import RegimeInput
+from investment_agent.agents.regime.input import RegimeInput
 from investment_agent.llm import LLMClient
 from investment_agent.models import RegimeReport
 
@@ -48,8 +48,8 @@ class RegimeAgent:
 
     def analyze(self, inp: RegimeInput) -> RegimeReport:
         context = (
-            inp.macro_context_block
-            if inp.macro_context_block.strip()
+            inp.regime_context_block
+            if inp.regime_context_block.strip()
             else "(No live cross-asset block — use qualitative macro judgment only.)"
         )
         user = f"""Analysis as-of date: {format_date_display(inp.as_of)} ({format_date_iso(inp.as_of)}).

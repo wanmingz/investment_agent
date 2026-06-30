@@ -1,4 +1,8 @@
-"""Price and momentum metrics via yfinance (free)."""
+"""Price and momentum metrics via yfinance.
+
+Used by ``snapshot.fetch_fundamentals_snapshot`` → **Markets** full prompt;
+selected figures also appear in **Regime** cross-asset summary.
+"""
 
 from __future__ import annotations
 

@@ -3,11 +3,12 @@
 from datetime import date
 
 from investment_agent.brief_assembler import assemble
-from investment_agent.data.price import PriceMetrics
-from investment_agent.data.snapshot import FundamentalsSnapshot, SymbolFundamentals
-from investment_agent.data.valuation import ValuationMetrics
-from investment_agent.data_plane import RegimeInput, build_data_plane
-from investment_agent.data.snapshot import VolSnapshot
+from investment_agent.agents.markets.price import PriceMetrics
+from investment_agent.agents.markets.snapshot import FundamentalsSnapshot, SymbolFundamentals, VolSnapshot
+from investment_agent.agents.markets.valuation import ValuationMetrics
+from investment_agent.agents.regime.input import RegimeInput, build_regime_input
+from investment_agent.agents.markets.input import MarketSnapshots
+from investment_agent.data_plane import build_data_plane
 from investment_agent.models import (
     AGENT_MARKETS,
     AGENT_NARRATIVE,
@@ -50,34 +51,63 @@ def _row(label: str, symbol: str, ret_20d: float, vs_spy: float | None = None) -
     )
 
 
-def test_regime_input_has_macro_context_fields():
+def test_regime_input_has_context_fields():
     ri = RegimeInput(
         as_of=date(2026, 6, 16),
         region="US",
-        macro_context_block="## Cross-asset",
+        regime_context_block="## Cross-asset",
         context_notes=("regime:ok",),
     )
     assert not hasattr(ri, "context_block")
-    assert ri.macro_context_block.startswith("##")
+    assert ri.regime_context_block.startswith("##")
 
 
-def test_build_data_plane_regime_context_from_snapshots():
-    """Regime slice gets macro_context_block when plane is built (integration smoke)."""
-    from unittest.mock import patch
-
+def test_build_regime_input_from_market_snapshots():
     fundamentals = FundamentalsSnapshot(
         as_of="2026-06-16",
         rows=[_row("Benchmark", "SPY", 2.0), _row("Tech", "XLK", 5.0, vs_spy=3.0)],
         signals=["Tech: strong 20d momentum (+5.0%)"],
     )
     vol = VolSnapshot(vix_level=18.5, vix_20d_change_pct=4.2, sector_vol={"Tech": 0.22}, notes=[])
+    snap = MarketSnapshots(fundamentals=fundamentals, vol=vol)
+    regime_input, notes = build_regime_input(snap, as_of=date(2026, 6, 16), region="global")
+    assert "VIX proxy" in regime_input.regime_context_block
+    assert "XLK" in regime_input.regime_context_block
+
+
+def test_build_data_plane_wires_three_agent_inputs():
+    from unittest.mock import patch
+
+    fundamentals = FundamentalsSnapshot(
+        as_of="2026-06-16",
+        rows=[_row("Benchmark", "SPY", 2.0)],
+        signals=[],
+    )
+    vol = VolSnapshot(vix_level=20.0, vix_20d_change_pct=1.0, sector_vol={}, notes=[])
 
     with (
-        patch("investment_agent.data_plane.fetch_news_articles", return_value=([], [])),
-        patch("investment_agent.data_plane.retrieve_articles", return_value=[]),
-        patch("investment_agent.data_plane.format_context_block", return_value=""),
-        patch("investment_agent.data_plane.fetch_fundamentals_snapshot", return_value=fundamentals),
-        patch("investment_agent.data_plane.fetch_vol_snapshot", return_value=vol),
+        patch(
+            "investment_agent.data_plane.fetch_market_snapshots",
+            return_value=(MarketSnapshots(fundamentals, vol), ["market:ok"]),
+        ),
+        patch(
+            "investment_agent.data_plane.build_narrative_input",
+            return_value=(
+                __import__(
+                    "investment_agent.agents.narrative.input",
+                    fromlist=["NarrativeInput"],
+                ).NarrativeInput(
+                    as_of=date(2026, 6, 16),
+                    region="global",
+                    retrieval_query="q",
+                    articles_in_corpus=0,
+                    articles_retrieved=0,
+                    ingest_notes=[],
+                    context_block="",
+                ),
+                [],
+            ),
+        ),
     ):
         from investment_agent.config import Settings
 
@@ -88,11 +118,12 @@ def test_build_data_plane_regime_context_from_snapshots():
                 model="m",
                 market_region="global",
                 provider="openai",
-            )
+            ),
+            as_of=date(2026, 6, 16),
         )
-    block = plane.regime_input.macro_context_block
-    assert "VIX proxy" in block
-    assert "XLK" in block
+    assert plane.regime_input.regime_context_block
+    assert plane.markets_input.fundamentals is fundamentals
+    assert plane.narrative_input.retrieval_query == "q"
 
 
 def test_assemble_clusters_and_maps_views():

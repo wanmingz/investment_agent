@@ -1,5 +1,5 @@
 from investment_agent.dates import format_date_display, format_date_iso
-from investment_agent.data_plane import NarrativeInput
+from investment_agent.agents.narrative.input import NarrativeInput
 from investment_agent.llm import LLMClient
 from investment_agent.models import NarrativeReport, NewsCitation
 

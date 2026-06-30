@@ -1,4 +1,4 @@
-"""Aggregate structured fundamentals for the equity agent."""
+"""Markets agent — yfinance fundamentals + volatility snapshots."""
 
 from __future__ import annotations
 
@@ -7,16 +7,10 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from datetime import date
 
-from investment_agent.data.price import PriceMetrics, fetch_price_metrics
-from investment_agent.data.revisions import RevisionMetrics, fetch_revision_metrics
-from investment_agent.data.universe import (
-    BENCHMARK_SYMBOL,
-    SECTOR_ETFS,
-    extract_tickers_from_themes,
-    symbols_for_fundamentals,
-)
-from investment_agent.data.valuation import ValuationMetrics, fetch_valuation_metrics
-from investment_agent.models import AgentTheme
+from investment_agent.agents.markets.price import PriceMetrics, fetch_price_metrics
+from investment_agent.agents.markets.revisions import RevisionMetrics, fetch_revision_metrics
+from investment_agent.agents.markets.universe import BENCHMARK_SYMBOL, SECTOR_ETFS, symbols_for_fundamentals
+from investment_agent.agents.markets.valuation import ValuationMetrics, fetch_valuation_metrics
 
 _ETF_SYMBOLS = set(SECTOR_ETFS.values()) | {BENCHMARK_SYMBOL}
 
@@ -79,7 +73,6 @@ class FundamentalsSnapshot:
         return "\n".join(lines)
 
     def summary_lines(self) -> list[str]:
-        """Short bullets for InvestmentBrief.fundamentals_notes."""
         out: list[str] = []
         for row in self.rows[:6]:
             p = row.price
@@ -153,20 +146,17 @@ def _fetch_one(
 
 
 def fetch_fundamentals_snapshot(
-    themes: list[AgentTheme],
     *,
     as_of: date | None = None,
     finnhub_key: str = "",
     max_extra_tickers: int | None = None,
+    extra_tickers: list[str] | None = None,
 ) -> FundamentalsSnapshot:
     as_of = as_of or date.today()
     max_extra = max_extra_tickers or int(os.getenv("FUNDAMENTALS_MAX_TICKERS", "8"))
+    tickers = list(extra_tickers or [])
 
-    theme_tickers: list[str] = []
-    for th in themes:
-        theme_tickers.extend(extract_tickers_from_themes(th.tickers_or_sectors))
-
-    labeled, notes = symbols_for_fundamentals(theme_tickers, max_extra=max_extra)
+    labeled, notes = symbols_for_fundamentals(tickers, max_extra=max_extra)
 
     spy_row = fetch_price_metrics(BENCHMARK_SYMBOL, label="Benchmark")
     spy_return_20d = spy_row.return_20d_pct
@@ -205,13 +195,12 @@ def fetch_fundamentals_snapshot(
         )
     notes.append("Valuation/price via yfinance — delayed, not for trading")
 
-    snapshot = FundamentalsSnapshot(
+    return FundamentalsSnapshot(
         as_of=as_of.isoformat(),
         rows=rows,
         signals=_build_signals(rows),
         notes=notes,
     )
-    return snapshot
 
 
 @dataclass
@@ -270,7 +259,7 @@ def fetch_vol_snapshot() -> VolSnapshot:
                     )
             else:
                 sector_vol[label] = ann_vol
-        except Exception as exc:  # noqa: BLE001 — best-effort market data
+        except Exception as exc:  # noqa: BLE001
             notes.append(f"{label}: {exc}")
 
     return VolSnapshot(vix_level, vix_change, sector_vol, notes)

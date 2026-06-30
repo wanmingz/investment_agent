@@ -10,25 +10,24 @@ from typing import TypeVar
 
 from pydantic import BaseModel
 
-from investment_agent.data.snapshot import FundamentalsSnapshot, SymbolFundamentals
-from investment_agent.data.price import PriceMetrics
-from investment_agent.data.revisions import RevisionMetrics
-from investment_agent.data.valuation import ValuationMetrics
+from investment_agent.agents.markets.snapshot import FundamentalsSnapshot, SymbolFundamentals, VolSnapshot
+from investment_agent.agents.markets.price import PriceMetrics
+from investment_agent.agents.markets.revisions import RevisionMetrics
+from investment_agent.agents.markets.valuation import ValuationMetrics
 from investment_agent.data_plane import (
     DataPlaneSnapshot,
     MarketsInput,
     NarrativeInput,
     RegimeInput,
 )
-from investment_agent.data.snapshot import VolSnapshot
 from investment_agent.models import MarketsReport, NarrativeReport, RegimeReport
-from investment_agent.news.ingest import NewsArticle
+from investment_agent.agents.narrative.ingest import NewsArticle
 
 T = TypeVar("T", bound=BaseModel)
 
 CACHE_DIR = Path(__file__).resolve().parents[2] / "reports" / "cache"
 META_FILE = "run_meta.json"
-PIPELINE_VERSION = 4
+PIPELINE_VERSION = 5
 
 
 def is_resume_enabled() -> bool:
@@ -158,7 +157,8 @@ def save_data_plane(plane: DataPlaneSnapshot) -> None:
         "regime_input": {
             "as_of": plane.regime_input.as_of.isoformat(),
             "region": plane.regime_input.region,
-            "macro_context_block": plane.regime_input.macro_context_block,
+            "regime_context_block": plane.regime_input.regime_context_block,
+            "macro_context_block": plane.regime_input.regime_context_block,
             "context_notes": list(plane.regime_input.context_notes),
         },
         "narrative_input": {
@@ -198,7 +198,8 @@ def load_data_plane() -> DataPlaneSnapshot | None:
         regime_input = RegimeInput(
             as_of=date.fromisoformat(ri["as_of"]),
             region=ri["region"],
-            macro_context_block=ri.get("macro_context_block", ""),
+            regime_context_block=ri.get("regime_context_block")
+            or ri.get("macro_context_block", ""),
             context_notes=tuple(ri.get("context_notes", [])),
         )
         narrative_input = NarrativeInput(

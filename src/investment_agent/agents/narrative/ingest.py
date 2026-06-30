@@ -1,4 +1,4 @@
-"""Fetch financial news from free-tier APIs (Finnhub + TickerTick fallback)."""
+"""Fetch financial headlines for the Narrative agent (Finnhub + TickerTick)."""
 
 from __future__ import annotations
 

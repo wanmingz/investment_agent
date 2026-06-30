@@ -1,4 +1,8 @@
-"""Valuation metrics via yfinance .info (free, delayed)."""
+"""Valuation metrics via yfinance .info.
+
+Used by ``snapshot.fetch_fundamentals_snapshot`` → **Markets**; P/E etc. may inform
+**Regime** rule-based ``signals`` only.
+"""
 
 from __future__ import annotations
 
