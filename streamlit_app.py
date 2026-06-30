@@ -68,6 +68,18 @@ AGENT_LABELS = {
     "quant": "Markets (quant)",
 }
 
+_AGENT_DISPLAY_ORDER = ("macro", "news", "equity", "quant")
+
+
+def _agent_label(key: str) -> str:
+    return AGENT_LABELS.get(key, key)
+
+
+def _format_agent_list(keys: list[str]) -> str:
+    order = {k: i for i, k in enumerate(_AGENT_DISPLAY_ORDER)}
+    ordered = sorted(keys, key=lambda k: order.get(k, 99))
+    return ", ".join(_agent_label(k) for k in ordered)
+
 
 def _inject_css() -> None:
     st.markdown(
@@ -132,7 +144,7 @@ def _agent_pills(theme: FinalTheme) -> str:
     stages = theme.agent_stages or {}
     contrib = set(theme.contributing_agents or [])
     for key in ("macro", "news", "equity", "quant"):
-        agent = AGENT_LABELS.get(key, key)
+        agent = _agent_label(key)
         if key in stages:
             lbl = stage_label(stages[key])
             parts.append(f'<span class="agent-pill">{agent}: {lbl}</span>')
@@ -178,9 +190,9 @@ def _render_theme_card(rank: int, theme: FinalTheme) -> None:
     )
     contrib = theme.contributing_agents or []
     if contrib or theme.primary_agent:
-        cap = f"Contributors: {', '.join(contrib)}" if contrib else ""
+        cap = f"Contributors: {_format_agent_list(contrib)}" if contrib else ""
         if theme.primary_agent:
-            cap = f"{cap} · Primary: {theme.primary_agent}".strip(" · ")
+            cap = f"{cap} · Primary: {_agent_label(theme.primary_agent)}".strip(" · ")
         st.caption(cap)
 
     c1, c2 = st.columns(2)
@@ -217,7 +229,7 @@ def _render_theme_card(rank: int, theme: FinalTheme) -> None:
 
 
 def _render_agent_theme_column(agent: str, themes: list[AgentTheme]) -> None:
-    st.markdown(f"**{AGENT_LABELS.get(agent, agent)}** ({len(themes)} themes)")
+    st.markdown(f"**{_agent_label(agent)}** ({len(themes)} themes)")
     if not themes:
         st.caption("_No themes in this report — re-run analysis._")
         return
