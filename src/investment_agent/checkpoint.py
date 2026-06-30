@@ -14,8 +14,13 @@ from investment_agent.data.snapshot import FundamentalsSnapshot, SymbolFundament
 from investment_agent.data.price import PriceMetrics
 from investment_agent.data.revisions import RevisionMetrics
 from investment_agent.data.valuation import ValuationMetrics
-from investment_agent.inputs import DataPlaneSnapshot, NarrativeInput, RegimeInput, MarketsInput
-from investment_agent.market_data import VolSnapshot
+from investment_agent.data_plane import (
+    DataPlaneSnapshot,
+    MarketsInput,
+    NarrativeInput,
+    RegimeInput,
+)
+from investment_agent.data.snapshot import VolSnapshot
 from investment_agent.models import MarketsReport, NarrativeReport, RegimeReport
 from investment_agent.news.ingest import NewsArticle
 
@@ -23,7 +28,7 @@ T = TypeVar("T", bound=BaseModel)
 
 CACHE_DIR = Path(__file__).resolve().parents[2] / "reports" / "cache"
 META_FILE = "run_meta.json"
-PIPELINE_VERSION = 2
+PIPELINE_VERSION = 3
 
 
 def is_resume_enabled() -> bool:
@@ -150,7 +155,12 @@ def save_data_plane(plane: DataPlaneSnapshot) -> None:
         "as_of": plane.as_of.isoformat(),
         "region": plane.region,
         "data_plane_notes": plane.data_plane_notes,
-        "regime_input": {"as_of": plane.regime_input.as_of.isoformat(), "region": plane.regime_input.region},
+        "regime_input": {
+            "as_of": plane.regime_input.as_of.isoformat(),
+            "region": plane.regime_input.region,
+            "macro_context_block": plane.regime_input.macro_context_block,
+            "context_notes": list(plane.regime_input.context_notes),
+        },
         "narrative_input": {
             "as_of": ni.as_of.isoformat(),
             "region": ni.region,
@@ -184,9 +194,12 @@ def load_data_plane() -> DataPlaneSnapshot | None:
         mi = raw["markets_input"]
         retrieved = tuple(_article_from_dict(a) for a in ni.get("retrieved", []))
         as_of = date.fromisoformat(raw["as_of"])
+        ri = raw["regime_input"]
         regime_input = RegimeInput(
-            as_of=date.fromisoformat(raw["regime_input"]["as_of"]),
-            region=raw["regime_input"]["region"],
+            as_of=date.fromisoformat(ri["as_of"]),
+            region=ri["region"],
+            macro_context_block=ri.get("macro_context_block", ""),
+            context_notes=tuple(ri.get("context_notes", [])),
         )
         narrative_input = NarrativeInput(
             as_of=date.fromisoformat(ni["as_of"]),

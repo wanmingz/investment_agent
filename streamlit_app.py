@@ -13,7 +13,7 @@ if _SRC.is_dir() and str(_SRC) not in sys.path:
 
 import streamlit as st
 
-from investment_agent.brief_compat import (
+from investment_agent.storage import (
     brief_agent_themes,
     brief_data_sources,
     brief_fundamentals_notes,
@@ -34,7 +34,7 @@ from investment_agent.models import (
     stage_label,
 )
 from investment_agent import checkpoint
-from investment_agent.errors import QuotaExhaustedError
+from investment_agent.llm import QuotaExhaustedError
 from investment_agent.orchestrator import ThemeOrchestrator
 from investment_agent.storage import DEFAULT_REPORT_PATH, load_brief, save_brief
 

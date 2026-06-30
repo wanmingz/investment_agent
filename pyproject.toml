@@ -1,7 +1,7 @@
 [project]
 name = "investment-agent"
 version = "0.1.0"
-description = "Multi-agent investment theme analyzer (macro, news RAG, equity fundamentals, quant)"
+description = "Multi-agent investment theme analyzer (Regime + Narrative + Markets, v2)"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
@@ -16,7 +16,7 @@ dependencies = [
 
 [project.scripts]
 invest-themes = "investment_agent.cli:main"
-invest-dashboard = "investment_agent.dashboard:main"
+invest-dashboard = "investment_agent.cli:dashboard_main"
 
 [build-system]
 requires = ["hatchling"]

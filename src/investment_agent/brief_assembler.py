@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from collections import defaultdict
 from dataclasses import dataclass
 from datetime import date
@@ -18,7 +19,14 @@ from investment_agent.models import (
     ThemeStage,
     stage_label,
 )
-from investment_agent.themes import theme_key
+_THEME_KEY_RE = re.compile(r"[^a-z0-9]+")
+
+
+def theme_key(name: str) -> str:
+    """Stable id for clustering similar theme titles across agents."""
+    raw = name.lower().strip()
+    key = _THEME_KEY_RE.sub("-", raw).strip("-")
+    return key or "theme"
 
 
 @dataclass

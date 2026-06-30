@@ -1,11 +1,74 @@
+"""Persist InvestmentBrief + safe accessors for schema versions."""
+
+from __future__ import annotations
+
 import json
 from pathlib import Path
+from typing import Any
 
-from investment_agent.brief_compat import migrate_brief_dict
 from investment_agent.dates import analysis_date, build_as_of_context, format_date_iso
-from investment_agent.models import InvestmentBrief
+from investment_agent.models import FinalTheme, InvestmentBrief, NewsCitation, SourcedItem
 
 DEFAULT_REPORT_PATH = Path(__file__).resolve().parents[2] / "reports" / "latest.json"
+
+
+def _get(obj: Any, name: str, default: Any = None) -> Any:
+    return getattr(obj, name, default)
+
+
+def brief_news_view(brief: InvestmentBrief) -> str:
+    return _get(brief, "news_view", "") or ""
+
+
+def brief_data_sources(brief: InvestmentBrief) -> list[str]:
+    val = _get(brief, "data_sources", None)
+    return list(val) if val else []
+
+
+def brief_agent_themes(brief: InvestmentBrief, agent: str) -> list:
+    key = f"{agent}_themes"
+    val = _get(brief, key, None)
+    return list(val) if val else []
+
+
+def brief_fundamentals_notes(brief: InvestmentBrief) -> list[str]:
+    val = _get(brief, "fundamentals_notes", None)
+    return list(val) if val else []
+
+
+def brief_news_citations(brief: InvestmentBrief) -> list[NewsCitation]:
+    val = _get(brief, "news_citations", None)
+    return list(val) if val else []
+
+
+def theme_drivers_sourced(theme: FinalTheme) -> list[SourcedItem]:
+    val = _get(theme, "key_drivers_sourced", None)
+    return list(val) if val else []
+
+
+def theme_risks_sourced(theme: FinalTheme) -> list[SourcedItem]:
+    val = _get(theme, "risks_sourced", None)
+    return list(val) if val else []
+
+
+def migrate_brief_dict(data: dict) -> dict:
+    """Fill missing keys when loading older reports/latest.json."""
+    data.setdefault("news_view", "")
+    data.setdefault("news_citations", [])
+    data.setdefault("data_sources", [])
+    data.setdefault("fundamentals_notes", [])
+    data.setdefault("macro_themes", [])
+    data.setdefault("news_themes", [])
+    data.setdefault("equity_themes", [])
+    data.setdefault("quant_themes", [])
+    for theme in data.get("themes", []):
+        if isinstance(theme, dict):
+            theme.setdefault("key_drivers_sourced", [])
+            theme.setdefault("risks_sourced", [])
+            theme.setdefault("contributing_agents", [])
+            theme.setdefault("primary_agent", "")
+            theme.setdefault("agent_stages", {})
+    return data
 
 
 def save_brief(brief: InvestmentBrief, path: Path | None = None) -> Path:

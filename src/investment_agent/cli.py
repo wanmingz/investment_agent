@@ -6,19 +6,19 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 
-from investment_agent.brief_compat import (
+from investment_agent.storage import (
     brief_data_sources,
     brief_news_citations,
     brief_news_view,
+    save_brief,
     theme_drivers_sourced,
     theme_risks_sourced,
 )
 from investment_agent.config import Settings
 from investment_agent.models import stage_label
 from investment_agent import checkpoint
-from investment_agent.errors import QuotaExhaustedError
+from investment_agent.llm import QuotaExhaustedError
 from investment_agent.orchestrator import ThemeOrchestrator
-from investment_agent.storage import save_brief
 
 console = Console()
 
@@ -194,6 +194,16 @@ def main() -> None:
                 f"[yellow]Partial checkpoint:[/yellow] {', '.join(steps)} — rerun with RESUME_CHECKPOINT=1"
             )
         sys.exit(1)
+
+
+def dashboard_main() -> None:
+    """Launch Streamlit UI (`invest-dashboard`)."""
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    app = Path(__file__).resolve().parents[2] / "streamlit_app.py"
+    subprocess.run([sys.executable, "-m", "streamlit", "run", str(app), *sys.argv[1:]], check=True)
 
 
 if __name__ == "__main__":

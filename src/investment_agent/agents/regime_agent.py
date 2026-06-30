@@ -1,5 +1,5 @@
 from investment_agent.dates import format_date_display, format_date_iso
-from investment_agent.inputs import RegimeInput
+from investment_agent.data_plane import RegimeInput
 from investment_agent.llm import LLMClient
 from investment_agent.models import RegimeReport
 
@@ -36,6 +36,9 @@ Output valid JSON matching this schema:
   "cross_asset_signals": ["signal1", "signal2"]
 }
 
+When a cross-asset context block is provided, ground macro_backdrop, dominant_regime,
+cross_asset_signals, and stage calls in those figures — do not invent metrics not in the block.
+
 Be specific, data-informed, and forward-looking. Prefer themes actionable within 6-18 months."""
 
 
@@ -44,14 +47,21 @@ class RegimeAgent:
         self._llm = llm
 
     def analyze(self, inp: RegimeInput) -> RegimeReport:
+        context = (
+            inp.macro_context_block
+            if inp.macro_context_block.strip()
+            else "(No live cross-asset block — use qualitative macro judgment only.)"
+        )
         user = f"""Analysis as-of date: {format_date_display(inp.as_of)} ({format_date_iso(inp.as_of)}).
 Use this as "today" — do not use any other date.
 Respond in English only.
 
 Analyze investable themes for market region: {inp.region}.
 
-Consider: rates path, inflation, fiscal policy, USD, China/emerging markets,
-geopolitics, credit cycle, and sector rotation implications.
+{context}
+
+Also consider qualitatively: rates path, inflation, fiscal policy, USD, China/emerging markets,
+geopolitics, credit cycle, and sector rotation — but cite provided figures when available.
 
 Return 4-6 themes with stage (early/early_mid/mid/mid_late/late) from a MACRO perspective only."""
         return self._llm.structured(system=SYSTEM, user=user, schema=RegimeReport)

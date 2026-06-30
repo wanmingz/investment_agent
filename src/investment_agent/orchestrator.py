@@ -6,8 +6,7 @@ from datetime import date
 from investment_agent.agents import MarketsAgent, NarrativeAgent, RegimeAgent
 from investment_agent.brief_assembler import assemble
 from investment_agent.config import Settings
-from investment_agent.data_plane import build_data_plane
-from investment_agent.inputs import DataPlaneSnapshot
+from investment_agent.data_plane import DataPlaneSnapshot, build_data_plane
 from investment_agent.dates import analysis_date, build_as_of_context, format_date_iso
 from investment_agent import checkpoint
 from investment_agent.llm import LLMClient
@@ -123,6 +122,7 @@ class ThemeOrchestrator:
             f"LLM ({self._settings.provider}/{self._settings.model}) — regime, narrative, markets (v2)",
             "Programmatic BriefAssembler — theme clustering (no CIO LLM)",
             "Data Plane — Finnhub/TickerTick news, yfinance fundamentals & vol",
+            "Regime context — derived cross-asset block (yfinance vol + sector ETF snapshot)",
         ]
         if self._settings.finnhub_api_key:
             sources.append("Finnhub market news API")
@@ -163,7 +163,7 @@ def compute_stage_consensus(
     """Map theme_key -> agent stages (macro/news/equity/quant labels for brief compat)."""
     from collections import defaultdict
 
-    from investment_agent.themes import theme_key
+    from investment_agent.brief_assembler import theme_key
 
     by_agent = {
         "macro": macro_themes,
