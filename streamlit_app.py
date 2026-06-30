@@ -17,8 +17,8 @@ from investment_agent.storage import (
     brief_agent_themes,
     brief_data_sources,
     brief_fundamentals_notes,
-    brief_news_citations,
-    brief_news_view,
+    brief_narrative_citations,
+    brief_narrative_view,
     theme_drivers_sourced,
     theme_risks_sourced,
 )
@@ -26,6 +26,10 @@ from investment_agent.models import AgentTheme
 from investment_agent.config import Settings
 from investment_agent.dates import analysis_date, format_date_iso
 from investment_agent.models import (
+    AGENT_LABELS,
+    AGENT_MARKETS,
+    AGENT_NARRATIVE,
+    AGENT_REGIME,
     STAGE_LABELS,
     STAGE_ORDER,
     FinalTheme,
@@ -61,14 +65,7 @@ STAGE_COLORS: dict[str, tuple[str, str]] = {
     "late": ("#ef4444", "#7f1d1d"),
 }
 
-AGENT_LABELS = {
-    "macro": "Regime",
-    "news": "Narrative",
-    "equity": "Markets (equity)",
-    "quant": "Markets (quant)",
-}
-
-_AGENT_DISPLAY_ORDER = ("macro", "news", "equity", "quant")
+_AGENT_DISPLAY_ORDER = (AGENT_REGIME, AGENT_NARRATIVE, AGENT_MARKETS)
 
 
 def _agent_label(key: str) -> str:
@@ -143,7 +140,7 @@ def _agent_pills(theme: FinalTheme) -> str:
     parts = []
     stages = theme.agent_stages or {}
     contrib = set(theme.contributing_agents or [])
-    for key in ("macro", "news", "equity", "quant"):
+    for key in _AGENT_DISPLAY_ORDER:
         agent = _agent_label(key)
         if key in stages:
             lbl = stage_label(stages[key])
@@ -211,7 +208,7 @@ def _render_theme_card(rank: int, theme: FinalTheme) -> None:
                 st.markdown(f"- {d}")
         drivers_sourced = theme_drivers_sourced(theme)
         if drivers_sourced:
-            st.markdown("**Key drivers (news-sourced)**")
+            st.markdown("**Key drivers (narrative-sourced)**")
             for item in drivers_sourced:
                 st.markdown(f"- {item.text} — `{', '.join(item.citation_ids)}`")
         if theme.risks:
@@ -220,7 +217,7 @@ def _render_theme_card(rank: int, theme: FinalTheme) -> None:
                 st.markdown(f"- {r}")
         risks_sourced = theme_risks_sourced(theme)
         if risks_sourced:
-            st.markdown("**Risks (news-sourced)**")
+            st.markdown("**Risks (narrative-sourced)**")
             for item in risks_sourced:
                 st.markdown(f"- {item.text} — `{', '.join(item.citation_ids)}`")
         if theme.tickers_or_sectors:
@@ -270,14 +267,14 @@ def _render_brief(brief: InvestmentBrief) -> None:
         ["🌍 Regime", "📰 Narrative", "📈 Markets"]
     )
     with tab1:
-        st.markdown(brief.macro_view)
+        st.markdown(brief.regime_view)
     with tab2:
-        st.markdown(brief_news_view(brief) or "_No narrative view — run a new analysis_")
+        st.markdown(brief_narrative_view(brief) or "_No narrative view — run a new analysis_")
     with tab3:
-        st.markdown("**Equity / fundamentals**")
-        st.markdown(brief.equity_view)
-        st.markdown("**Vol / quant**")
-        st.markdown(brief.quant_view)
+        st.markdown("**Fundamentals**")
+        st.markdown(brief.markets_fundamentals_view)
+        st.markdown("**Volatility**")
+        st.markdown(brief.markets_vol_view)
         fund_notes = brief_fundamentals_notes(brief)
         if fund_notes:
             with st.expander("Structured fundamentals (yfinance / Finnhub)"):
@@ -285,20 +282,18 @@ def _render_brief(brief: InvestmentBrief) -> None:
                     st.markdown(f"- {line}")
 
     with st.expander("Independent agent themes (before merge)", expanded=False):
-        st.caption("Three domain agents; equity and quant themes both come from Markets.")
-        c1, c2, c3, c4 = st.columns(4)
+        st.caption("Three domain agents — Regime, Narrative, Markets.")
+        c1, c2, c3 = st.columns(3)
         with c1:
-            _render_agent_theme_column("macro", brief_agent_themes(brief, "macro"))
+            _render_agent_theme_column(AGENT_REGIME, brief_agent_themes(brief, AGENT_REGIME))
         with c2:
-            _render_agent_theme_column("news", brief_agent_themes(brief, "news"))
+            _render_agent_theme_column(AGENT_NARRATIVE, brief_agent_themes(brief, AGENT_NARRATIVE))
         with c3:
-            _render_agent_theme_column("equity", brief_agent_themes(brief, "equity"))
-        with c4:
-            _render_agent_theme_column("quant", brief_agent_themes(brief, "quant"))
+            _render_agent_theme_column(AGENT_MARKETS, brief_agent_themes(brief, AGENT_MARKETS))
 
-    citations = brief_news_citations(brief)
+    citations = brief_narrative_citations(brief)
     if citations:
-        with st.expander(f"News citations ({len(citations)})"):
+        with st.expander(f"Narrative citations ({len(citations)})"):
             for c in citations:
                 st.markdown(f"**[{c.id}]** {c.title} — _{c.source}_")
                 if c.url:

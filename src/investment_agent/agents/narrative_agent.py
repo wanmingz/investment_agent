@@ -9,17 +9,17 @@ Write ALL output in English only.
 
 You receive a block of news articles with IDs like [fh-...] or [tt-...].
 Rules:
-- Base news_backdrop, signals, drivers, and risks ONLY on provided articles.
+- Base narrative_backdrop, signals, drivers, and risks ONLY on provided articles.
 - key_drivers_sourced and risks_sourced MUST cite citation_ids that exist in the context.
 - Do NOT invent URLs or headlines not in the context.
 - Produce 3-6 themes in "themes" derived FROM HEADLINES ONLY — do not reuse a generic macro theme checklist.
 - Each theme in "themes" must reflect narrative heat in the news (mergers, policy shocks, sector moves, etc.).
 - For each theme, include stage from a NEWS flow lens (early, early_mid, mid, mid_late, late).
-- If evidence is thin, use fewer themes and note limitations in news_backdrop.
+- If evidence is thin, use fewer themes and note limitations in narrative_backdrop.
 
 Output valid JSON:
 {
-  "news_backdrop": "2-3 sentences from recent headlines",
+  "narrative_backdrop": "2-3 sentences from recent headlines",
   "narrative_sentiment": "risk-on" | "neutral" | "risk-off",
   "retrieval_query": "query used",
   "articles_retrieved": number,
@@ -27,7 +27,7 @@ Output valid JSON:
   "citations": [
     {"id": "...", "title": "...", "source": "...", "url": "...", "published_at": "..."}
   ],
-  "news_signals": ["signal with [id] reference where possible"],
+  "narrative_signals": ["signal with [id] reference where possible"],
   "key_drivers_sourced": [{"text": "...", "citation_ids": ["id1"]}],
   "risks_sourced": [{"text": "...", "citation_ids": ["id1"]}],
   "themes": [ AgentTheme — required 3-6 news-driven themes with name, thesis, stage, etc. ]

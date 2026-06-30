@@ -142,34 +142,33 @@ class ThemeOrchestrator:
                     region=self._settings.market_region,
                 ),
                 "themes": themes,
-                "news_view": brief.news_view or narrative.news_backdrop,
-                "news_citations": narrative.citations,
+                "narrative_view": brief.narrative_view or narrative.narrative_backdrop,
+                "narrative_citations": narrative.citations,
                 "data_sources": sources,
                 "fundamentals_notes": fund_notes,
-                "macro_themes": regime.themes,
-                "news_themes": narrative.themes,
-                "equity_themes": markets.equity_themes,
-                "quant_themes": markets.quant_themes,
+                "regime_themes": regime.themes,
+                "narrative_themes": narrative.themes,
+                "markets_themes": list(markets.fundamentals_themes)
+                + list(markets.vol_themes),
             }
         )
 
 
 def compute_stage_consensus(
-    macro_themes: list[AgentTheme],
-    news_themes: list[AgentTheme],
-    equity_themes: list[AgentTheme],
-    quant_themes: list[AgentTheme],
+    regime_themes: list[AgentTheme],
+    narrative_themes: list[AgentTheme],
+    markets_themes: list[AgentTheme],
 ) -> dict[str, dict[str, ThemeStage]]:
-    """Map theme_key -> agent stages (macro/news/equity/quant labels for brief compat)."""
+    """Map theme_key -> agent stages (regime / narrative / markets)."""
     from collections import defaultdict
 
     from investment_agent.brief_assembler import theme_key
+    from investment_agent.models import AGENT_MARKETS, AGENT_NARRATIVE, AGENT_REGIME
 
     by_agent = {
-        "macro": macro_themes,
-        "news": news_themes,
-        "equity": equity_themes,
-        "quant": quant_themes,
+        AGENT_REGIME: regime_themes,
+        AGENT_NARRATIVE: narrative_themes,
+        AGENT_MARKETS: markets_themes,
     }
     merged: dict[str, dict[str, ThemeStage]] = defaultdict(dict)
     for agent, themes in by_agent.items():

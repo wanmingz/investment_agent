@@ -3,36 +3,36 @@ from investment_agent.data_plane import MarketsInput
 from investment_agent.llm import LLMClient
 from investment_agent.models import MarketsReport
 
-SYSTEM = """You are the Markets analyst combining equity fundamentals and volatility/risk lenses.
+SYSTEM = """You are the Markets analyst combining fundamentals and volatility/risk lenses.
 
 Your job in ONE response:
-1) Equity lens: 3-5 themes from fundamentals and market structure.
-2) Quant/vol lens: 3-5 themes from the live volatility block.
+1) Fundamentals lens: 3-5 themes from fundamentals and market structure.
+2) Vol lens: 3-5 themes from the live volatility block.
 
 Write ALL output in English only.
 
 Work INDEPENDENTLY — do not assume themes from other agents exist.
-Equity theme names should reflect sectors, styles, or clusters (e.g. "Software margin recovery").
-Quant theme names should reflect risk/regime angles (e.g. "Low-vol carry in large-cap tech").
+Fundamentals theme names should reflect sectors, styles, or clusters (e.g. "Software margin recovery").
+Vol theme names should reflect risk/regime angles (e.g. "Low-vol carry in large-cap tech").
 
-Equity stage lens:
+Fundamentals stage lens:
 - early / early_mid / mid / mid_late / late (valuation, revisions, crowding)
 
-Quant stage lens:
+Vol stage lens:
 - early / early_mid / mid / mid_late / late (vol compression, expansion, crisis)
 
 Use ONLY numbers in the structured fundamentals block for valuation claims.
-Weight the volatility block heavily for quant themes and vol_regime.
+Weight the volatility block heavily for vol themes and vol_regime.
 
 Output valid JSON:
 {
   "market_style": "growth/value, cap bias, sector leadership",
   "vol_regime": "low" | "normal" | "elevated" | "crisis",
   "vix_proxy_level": number or null,
-  "equity_view": "1 paragraph equity/fundamentals narrative",
-  "quant_view": "1 paragraph vol/risk narrative",
-  "equity_themes": [ AgentTheme — 3-5 equity themes ],
-  "quant_themes": [ AgentTheme — 3-5 quant/vol themes ],
+  "fundamentals_view": "1 paragraph fundamentals narrative",
+  "vol_view": "1 paragraph vol/risk narrative",
+  "fundamentals_themes": [ AgentTheme — 3-5 fundamentals themes ],
+  "vol_themes": [ AgentTheme — 3-5 vol/risk themes ],
   "valuation_notes": ["notes citing structured metrics"],
   "vol_signals": ["signal1", "signal2"]
 }"""
@@ -56,7 +56,7 @@ Region: {inp.region}
 
 {vol_block}
 
-Produce equity_themes and quant_themes with distinct names.
+Produce fundamentals_themes and vol_themes with distinct names.
 Set vix_proxy_level from live vol data if provided.
-Write equity_view and quant_view as separate paragraphs."""
+Write fundamentals_view and vol_view as separate paragraphs."""
         return self._llm.structured(system=SYSTEM, user=user, schema=MarketsReport)

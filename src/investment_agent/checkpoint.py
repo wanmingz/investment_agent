@@ -28,7 +28,7 @@ T = TypeVar("T", bound=BaseModel)
 
 CACHE_DIR = Path(__file__).resolve().parents[2] / "reports" / "cache"
 META_FILE = "run_meta.json"
-PIPELINE_VERSION = 3
+PIPELINE_VERSION = 4
 
 
 def is_resume_enabled() -> bool:

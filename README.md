@@ -66,9 +66,9 @@ invest-dashboard
 1. Select market region, click **Run analysis**
 2. Or **Load last result** for `reports/latest.json`
 3. **Agent views** — three tabs: Regime · Narrative · Markets (equity + quant)
-4. Expand **Independent agent themes (before merge)** — four columns (Regime, Narrative, Markets equity, Markets quant) mapped from brief snapshot fields
+4. Expand **Independent agent themes (before merge)** — three columns: Regime · Narrative · Markets
 
-Merged theme cards show contributor pills and a caption with human-readable agent names (e.g. `Regime`, `Narrative`, not internal keys `macro` / `news`).
+Merged theme cards show contributor pills with agent names (`regime`, `narrative`, `markets`).
 
 ## Environment variables
 
@@ -126,18 +126,15 @@ _enrich_brief()              dates, data_sources, theme snapshots
 
 Agents do **not** receive other agents' reports. Inputs are **pairwise disjoint** (Regime gets a derived summary, not raw news or full Markets prompt blocks).
 
-### Brief / UI compatibility
+### Brief fields (v2)
 
-`InvestmentBrief` JSON still uses legacy snapshot field names for the UI:
+| Brief field | Source |
+|-------------|--------|
+| `regime_view`, `regime_themes` | `RegimeReport` |
+| `narrative_view`, `narrative_themes`, `narrative_citations` | `NarrativeReport` |
+| `markets_fundamentals_view`, `markets_vol_view`, `markets_themes` | `MarketsReport` |
 
-| Brief field | v2 source | UI label |
-|-------------|-----------|----------|
-| `macro_view`, `macro_themes` | `RegimeReport` | Regime |
-| `news_view`, `news_themes` | `NarrativeReport` | Narrative |
-| `equity_view`, `equity_themes` | `MarketsReport.equity_*` | Markets (equity) |
-| `quant_view`, `quant_themes` | `MarketsReport.quant_*` | Markets (quant) |
-
-Merged `FinalTheme.contributing_agents` / `primary_agent` store internal keys (`macro`, `news`, `equity`, `quant`); Streamlit maps them to display names.
+Merged `FinalTheme.contributing_agents` / `primary_agent` use `regime`, `narrative`, `markets`.
 
 ### Repository layout
 

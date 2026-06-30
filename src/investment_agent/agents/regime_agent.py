@@ -18,7 +18,7 @@ For each theme, classify lifecycle stage (use all five when appropriate):
 
 Output valid JSON matching this schema:
 {
-  "macro_backdrop": "string — 2-3 sentence current macro picture",
+  "regime_backdrop": "string — 2-3 sentence current macro picture",
   "dominant_regime": "string — e.g. disinflation soft landing / reflation / stagflation risk",
   "themes": [
     {
@@ -36,7 +36,7 @@ Output valid JSON matching this schema:
   "cross_asset_signals": ["signal1", "signal2"]
 }
 
-When a cross-asset context block is provided, ground macro_backdrop, dominant_regime,
+When a cross-asset context block is provided, ground regime_backdrop, dominant_regime,
 cross_asset_signals, and stage calls in those figures — do not invent metrics not in the block.
 
 Be specific, data-informed, and forward-looking. Prefer themes actionable within 6-18 months."""

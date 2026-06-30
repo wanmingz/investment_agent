@@ -7,17 +7,32 @@ from pathlib import Path
 from typing import Any
 
 from investment_agent.dates import analysis_date, build_as_of_context, format_date_iso
-from investment_agent.models import FinalTheme, InvestmentBrief, NewsCitation, SourcedItem
+from investment_agent.models import (
+    AGENT_MARKETS,
+    AGENT_NARRATIVE,
+    AGENT_REGIME,
+    FinalTheme,
+    InvestmentBrief,
+    NewsCitation,
+    SourcedItem,
+)
 
 DEFAULT_REPORT_PATH = Path(__file__).resolve().parents[2] / "reports" / "latest.json"
+
+_LEGACY_AGENT_KEYS = {
+    "macro": AGENT_REGIME,
+    "news": AGENT_NARRATIVE,
+    "equity": AGENT_MARKETS,
+    "quant": AGENT_MARKETS,
+}
 
 
 def _get(obj: Any, name: str, default: Any = None) -> Any:
     return getattr(obj, name, default)
 
 
-def brief_news_view(brief: InvestmentBrief) -> str:
-    return _get(brief, "news_view", "") or ""
+def brief_narrative_view(brief: InvestmentBrief) -> str:
+    return _get(brief, "narrative_view", "") or ""
 
 
 def brief_data_sources(brief: InvestmentBrief) -> list[str]:
@@ -36,9 +51,12 @@ def brief_fundamentals_notes(brief: InvestmentBrief) -> list[str]:
     return list(val) if val else []
 
 
-def brief_news_citations(brief: InvestmentBrief) -> list[NewsCitation]:
-    val = _get(brief, "news_citations", None)
-    return list(val) if val else []
+def brief_narrative_citations(brief: InvestmentBrief) -> list[NewsCitation]:
+    val = _get(brief, "narrative_citations", None)
+    if val:
+        return list(val)
+    legacy = _get(brief, "news_citations", None)
+    return list(legacy) if legacy else []
 
 
 def theme_drivers_sourced(theme: FinalTheme) -> list[SourcedItem]:
@@ -51,23 +69,88 @@ def theme_risks_sourced(theme: FinalTheme) -> list[SourcedItem]:
     return list(val) if val else []
 
 
+def _migrate_agent_key(key: str) -> str:
+    return _LEGACY_AGENT_KEYS.get(key, key)
+
+
+def _migrate_agent_list(keys: list[str]) -> list[str]:
+    return sorted({_migrate_agent_key(k) for k in keys})
+
+
+def _migrate_agent_stages(stages: dict) -> dict:
+    out: dict = {}
+    for agent, stage in stages.items():
+        mapped = _migrate_agent_key(str(agent))
+        out[mapped] = stage
+    return out
+
+
 def migrate_brief_dict(data: dict) -> dict:
-    """Fill missing keys when loading older reports/latest.json."""
-    data.setdefault("news_view", "")
-    data.setdefault("news_citations", [])
+    """Fill missing keys and map v1 field names when loading older reports."""
+    if "regime_view" not in data and "macro_view" in data:
+        data["regime_view"] = data.pop("macro_view")
+    data.setdefault("regime_view", "")
+
+    if "narrative_view" not in data and "news_view" in data:
+        data["narrative_view"] = data.pop("news_view")
+    data.setdefault("narrative_view", "")
+
+    if "markets_fundamentals_view" not in data and "equity_view" in data:
+        data["markets_fundamentals_view"] = data.pop("equity_view")
+    data.setdefault("markets_fundamentals_view", "")
+
+    if "markets_vol_view" not in data and "quant_view" in data:
+        data["markets_vol_view"] = data.pop("quant_view")
+    data.setdefault("markets_vol_view", "")
+
+    if "narrative_citations" not in data and "news_citations" in data:
+        data["narrative_citations"] = data.pop("news_citations")
+    data.setdefault("narrative_citations", [])
+
     data.setdefault("data_sources", [])
     data.setdefault("fundamentals_notes", [])
-    data.setdefault("macro_themes", [])
-    data.setdefault("news_themes", [])
-    data.setdefault("equity_themes", [])
-    data.setdefault("quant_themes", [])
+
+    if "regime_themes" not in data:
+        data["regime_themes"] = data.pop("macro_themes", [])
+    data.setdefault("regime_themes", [])
+
+    if "narrative_themes" not in data:
+        data["narrative_themes"] = data.pop("news_themes", [])
+    data.setdefault("narrative_themes", [])
+
+    if "markets_themes" not in data:
+        equity = data.pop("equity_themes", [])
+        quant = data.pop("quant_themes", [])
+        data["markets_themes"] = list(equity) + list(quant)
+    data.setdefault("markets_themes", [])
+
+    for key in ("macro_themes", "news_themes", "equity_themes", "quant_themes"):
+        data.pop(key, None)
+
     for theme in data.get("themes", []):
-        if isinstance(theme, dict):
-            theme.setdefault("key_drivers_sourced", [])
-            theme.setdefault("risks_sourced", [])
+        if not isinstance(theme, dict):
+            continue
+        theme.setdefault("key_drivers_sourced", [])
+        theme.setdefault("risks_sourced", [])
+        if theme.get("contributing_agents"):
+            theme["contributing_agents"] = _migrate_agent_list(theme["contributing_agents"])
+        else:
             theme.setdefault("contributing_agents", [])
+        if theme.get("primary_agent"):
+            theme["primary_agent"] = _migrate_agent_key(theme["primary_agent"])
+        else:
             theme.setdefault("primary_agent", "")
+        if theme.get("agent_stages"):
+            theme["agent_stages"] = _migrate_agent_stages(theme["agent_stages"])
+        else:
             theme.setdefault("agent_stages", {})
+
+    data.pop("macro_view", None)
+    data.pop("news_view", None)
+    data.pop("equity_view", None)
+    data.pop("quant_view", None)
+    data.pop("news_citations", None)
+
     return data
 
 

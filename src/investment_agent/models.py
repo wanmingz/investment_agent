@@ -3,6 +3,16 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
+AGENT_REGIME = "regime"
+AGENT_NARRATIVE = "narrative"
+AGENT_MARKETS = "markets"
+
+AGENT_LABELS: dict[str, str] = {
+    AGENT_REGIME: "Regime",
+    AGENT_NARRATIVE: "Narrative",
+    AGENT_MARKETS: "Markets",
+}
+
 
 class ThemeStage(str, Enum):
     EARLY = "early"
@@ -77,75 +87,42 @@ class SourcedItem(BaseModel):
     citation_ids: list[str] = Field(default_factory=list)
 
 
-class MacroReport(BaseModel):
-    macro_backdrop: str
-    dominant_regime: str
-    themes: list[AgentTheme]
-    cross_asset_signals: list[str] = Field(default_factory=list)
-
-
 class RegimeReport(BaseModel):
-    """v2 macro/regime agent output (maps to macro_view / macro_themes)."""
+    """Regime agent output."""
 
-    macro_backdrop: str
+    regime_backdrop: str
     dominant_regime: str
     themes: list[AgentTheme]
     cross_asset_signals: list[str] = Field(default_factory=list)
 
 
 class NarrativeReport(BaseModel):
-    """v2 news/RAG agent output (maps to news_view / news_themes)."""
+    """Narrative agent output (headline RAG)."""
 
-    news_backdrop: str
+    narrative_backdrop: str
     narrative_sentiment: Literal["risk-on", "neutral", "risk-off"] = "neutral"
     retrieval_query: str = ""
     articles_retrieved: int = 0
     ingest_notes: list[str] = Field(default_factory=list)
     citations: list[NewsCitation] = Field(default_factory=list)
-    news_signals: list[str] = Field(default_factory=list)
+    narrative_signals: list[str] = Field(default_factory=list)
     key_drivers_sourced: list[SourcedItem] = Field(default_factory=list)
     risks_sourced: list[SourcedItem] = Field(default_factory=list)
     themes: list[AgentTheme] = Field(default_factory=list)
 
 
 class MarketsReport(BaseModel):
-    """v2 equity + quant combined agent output."""
+    """Markets agent output (fundamentals + vol lenses)."""
 
     market_style: str
     vol_regime: Literal["low", "normal", "elevated", "crisis"]
     vix_proxy_level: float | None = None
-    equity_view: str = ""
-    quant_view: str = ""
-    equity_themes: list[AgentTheme] = Field(default_factory=list)
-    quant_themes: list[AgentTheme] = Field(default_factory=list)
+    fundamentals_view: str = ""
+    vol_view: str = ""
+    fundamentals_themes: list[AgentTheme] = Field(default_factory=list)
+    vol_themes: list[AgentTheme] = Field(default_factory=list)
     valuation_notes: list[str] = Field(default_factory=list)
     vol_signals: list[str] = Field(default_factory=list)
-
-
-class EquityReport(BaseModel):
-    market_style: str
-    themes: list[AgentTheme]
-    valuation_notes: list[str] = Field(default_factory=list)
-
-
-class QuantReport(BaseModel):
-    vol_regime: Literal["low", "normal", "elevated", "crisis"]
-    vix_proxy_level: float | None = None
-    themes: list[AgentTheme]
-    vol_signals: list[str] = Field(default_factory=list)
-
-
-class NewsReport(BaseModel):
-    news_backdrop: str
-    narrative_sentiment: Literal["risk-on", "neutral", "risk-off"] = "neutral"
-    retrieval_query: str = ""
-    articles_retrieved: int = 0
-    ingest_notes: list[str] = Field(default_factory=list)
-    citations: list[NewsCitation] = Field(default_factory=list)
-    news_signals: list[str] = Field(default_factory=list)
-    key_drivers_sourced: list[SourcedItem] = Field(default_factory=list)
-    risks_sourced: list[SourcedItem] = Field(default_factory=list)
-    themes: list[AgentTheme] = Field(default_factory=list)
 
 
 class FinalTheme(BaseModel):
@@ -164,15 +141,15 @@ class FinalTheme(BaseModel):
     )
     agent_stages: dict[str, ThemeStage] = Field(
         default_factory=dict,
-        description="Stages per agent that proposed this theme; omit agents that did not",
+        description="Stages per agent (regime, narrative, markets)",
     )
     contributing_agents: list[str] = Field(
         default_factory=list,
-        description="Agents that listed this theme, e.g. macro, news, equity, quant",
+        description="Agents that listed this theme: regime, narrative, markets",
     )
     primary_agent: str = Field(
         default="",
-        description="Agent that most strongly originated this theme for the final brief",
+        description="Agent that most strongly originated this theme",
     )
     synthesis: str
     key_drivers: list[str]
@@ -189,21 +166,20 @@ class InvestmentBrief(BaseModel):
     )
     as_of_context: str
     executive_summary: str
-    macro_view: str
-    equity_view: str
-    quant_view: str
-    news_view: str = ""
-    news_citations: list[NewsCitation] = Field(default_factory=list)
+    regime_view: str
+    narrative_view: str = ""
+    markets_fundamentals_view: str = ""
+    markets_vol_view: str = ""
+    narrative_citations: list[NewsCitation] = Field(default_factory=list)
     data_sources: list[str] = Field(default_factory=list)
     fundamentals_notes: list[str] = Field(
         default_factory=list,
         description="Structured price/valuation/revision highlights (yfinance, optional Finnhub)",
     )
     themes: list[FinalTheme]
-    macro_themes: list[AgentTheme] = Field(default_factory=list)
-    news_themes: list[AgentTheme] = Field(default_factory=list)
-    equity_themes: list[AgentTheme] = Field(default_factory=list)
-    quant_themes: list[AgentTheme] = Field(default_factory=list)
+    regime_themes: list[AgentTheme] = Field(default_factory=list)
+    narrative_themes: list[AgentTheme] = Field(default_factory=list)
+    markets_themes: list[AgentTheme] = Field(default_factory=list)
     disclaimer: str = (
         "For research purposes only. Not investment advice. "
         "Make your own decisions based on your risk tolerance."

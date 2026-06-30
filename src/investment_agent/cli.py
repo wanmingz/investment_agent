@@ -8,14 +8,14 @@ from rich.table import Table
 
 from investment_agent.storage import (
     brief_data_sources,
-    brief_news_citations,
-    brief_news_view,
+    brief_narrative_citations,
+    brief_narrative_view,
     save_brief,
     theme_drivers_sourced,
     theme_risks_sourced,
 )
 from investment_agent.config import Settings
-from investment_agent.models import stage_label
+from investment_agent.models import AGENT_LABELS, stage_label
 from investment_agent import checkpoint
 from investment_agent.llm import QuotaExhaustedError
 from investment_agent.orchestrator import ThemeOrchestrator
@@ -51,10 +51,10 @@ def print_brief(brief) -> None:
         console.print(f"[dim]{brief.as_of_context}[/dim]\n")
 
     views = [
-        ("Regime", brief.macro_view),
-        ("Narrative", brief_news_view(brief) or "—"),
-        ("Markets (equity)", brief.equity_view),
-        ("Markets (quant)", brief.quant_view),
+        ("Regime", brief.regime_view),
+        ("Narrative", brief_narrative_view(brief) or "—"),
+        ("Markets (fundamentals)", brief.markets_fundamentals_view),
+        ("Markets (vol)", brief.markets_vol_view),
     ]
     for view_title, text in views:
         console.print(Panel(text, title=view_title, border_style="dim"))
@@ -70,7 +70,7 @@ def print_brief(brief) -> None:
 
     for i, t in enumerate(brief.themes, 1):
         stages = " | ".join(
-            f"{k[:3]}:{v.value}" for k, v in t.agent_stages.items()
+            f"{AGENT_LABELS.get(k, k[:3])}:{v.value}" for k, v in t.agent_stages.items()
         )
         stage_val = t.stage.value if hasattr(t.stage, "value") else str(t.stage)
         label = t.stage_label or stage_label(t.stage)
@@ -89,7 +89,7 @@ def print_brief(brief) -> None:
     if sources:
         console.print("[dim]Data sources:[/dim] " + "; ".join(sources))
 
-    cite_by_id = {c.id: c for c in brief_news_citations(brief)}
+    cite_by_id = {c.id: c for c in brief_narrative_citations(brief)}
 
     for i, t in enumerate(brief.themes, 1):
         drivers = "\n".join(f"  • {d}" for d in t.key_drivers[:4])
@@ -100,24 +100,24 @@ def print_brief(brief) -> None:
                 cite_by_id[cid].title[:40] if cid in cite_by_id else cid
                 for cid in item.citation_ids
             )
-            src_drv.append(f"  • {item.text} [news: {refs}]")
+            src_drv.append(f"  • {item.text} [narrative: {refs}]")
         src_risk = []
         for item in theme_risks_sourced(t):
             refs = ", ".join(
                 cite_by_id[cid].title[:40] if cid in cite_by_id else cid
                 for cid in item.citation_ids
             )
-            src_risk.append(f"  • {item.text} [news: {refs}]")
+            src_risk.append(f"  • {item.text} [narrative: {refs}]")
         tickers = ", ".join(t.tickers_or_sectors[:6])
         label = t.stage_label or stage_label(t.stage)
         console.print(
             Panel(
                 f"{t.thesis}\n\n"
                 f"[bold]Key drivers[/bold]\n{drivers or '  —'}\n\n"
-                f"[bold]Key drivers (news-sourced)[/bold]\n"
+                f"[bold]Key drivers (narrative-sourced)[/bold]\n"
                 f"{chr(10).join(src_drv) if src_drv else '  —'}\n\n"
                 f"[bold]Risks[/bold]\n{risks or '  —'}\n\n"
-                f"[bold]Risks (news-sourced)[/bold]\n"
+                f"[bold]Risks (narrative-sourced)[/bold]\n"
                 f"{chr(10).join(src_risk) if src_risk else '  —'}\n\n"
                 f"[bold]Tickers / sectors[/bold] {tickers or '—'}",
                 title=f"#{i} {_theme_display_name(t)} · {label}",

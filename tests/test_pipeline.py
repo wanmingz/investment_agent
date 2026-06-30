@@ -9,6 +9,9 @@ from investment_agent.data.valuation import ValuationMetrics
 from investment_agent.data_plane import RegimeInput, build_data_plane
 from investment_agent.data.snapshot import VolSnapshot
 from investment_agent.models import (
+    AGENT_MARKETS,
+    AGENT_NARRATIVE,
+    AGENT_REGIME,
     AgentTheme,
     MarketsReport,
     NarrativeReport,
@@ -16,6 +19,7 @@ from investment_agent.models import (
     SourcedItem,
     ThemeStage,
 )
+from investment_agent.storage import migrate_brief_dict
 
 
 def _theme(name: str, agent_conf: float = 0.8) -> AgentTheme:
@@ -93,13 +97,13 @@ def test_build_data_plane_regime_context_from_snapshots():
 
 def test_assemble_clusters_and_maps_views():
     regime = RegimeReport(
-        macro_backdrop="Macro backdrop.",
+        regime_backdrop="Regime backdrop.",
         dominant_regime="soft landing",
         themes=[_theme("AI Infrastructure")],
         cross_asset_signals=["rates stable"],
     )
     narrative = NarrativeReport(
-        news_backdrop="News backdrop.",
+        narrative_backdrop="Narrative backdrop.",
         narrative_sentiment="neutral",
         themes=[_theme("AI Infrastructure", 0.7)],
         key_drivers_sourced=[
@@ -113,19 +117,64 @@ def test_assemble_clusters_and_maps_views():
     markets = MarketsReport(
         market_style="growth",
         vol_regime="normal",
-        equity_view="Equity paragraph.",
-        quant_view="Quant paragraph.",
-        equity_themes=[_theme("Software margin recovery")],
-        quant_themes=[_theme("Low vol tech carry")],
+        fundamentals_view="Fundamentals paragraph.",
+        vol_view="Vol paragraph.",
+        fundamentals_themes=[_theme("Software margin recovery")],
+        vol_themes=[_theme("Low vol tech carry")],
     )
     brief = assemble(regime, narrative, markets, as_of=date(2026, 6, 16))
-    assert brief.macro_view
-    assert brief.news_view == "News backdrop."
-    assert brief.equity_view == "Equity paragraph."
+    assert brief.regime_view
+    assert brief.narrative_view == "Narrative backdrop."
+    assert brief.markets_fundamentals_view == "Fundamentals paragraph."
     assert len(brief.themes) >= 2
     multi = [t for t in brief.themes if len(t.contributing_agents) >= 2]
     assert multi
-    equity_only = next(t for t in brief.themes if t.name == "Software margin recovery")
-    assert equity_only.key_drivers_sourced == []
+    markets_only = next(t for t in brief.themes if t.name == "Software margin recovery")
+    assert markets_only.key_drivers_sourced == []
+    assert markets_only.contributing_agents == [AGENT_MARKETS]
     ai_cluster = next(t for t in brief.themes if "Infrastructure" in t.name)
     assert len(ai_cluster.key_drivers_sourced) >= 1
+    assert AGENT_REGIME in ai_cluster.contributing_agents
+    assert AGENT_NARRATIVE in ai_cluster.contributing_agents
+
+
+def test_migrate_brief_dict_maps_legacy_agent_keys():
+    data = migrate_brief_dict(
+        {
+            "macro_view": "m",
+            "news_view": "n",
+            "equity_view": "e",
+            "quant_view": "q",
+            "macro_themes": [],
+            "news_themes": [],
+            "equity_themes": [{"name": "x"}],
+            "quant_themes": [{"name": "y"}],
+            "themes": [
+                {
+                    "name": "T",
+                    "thesis": "t",
+                    "stage": "mid",
+                    "consensus_score": 0.5,
+                    "investability_score": 0.5,
+                    "synthesis": "s",
+                    "key_drivers": [],
+                    "risks": [],
+                    "tickers_or_sectors": [],
+                    "contributing_agents": ["macro", "news", "equity"],
+                    "primary_agent": "news",
+                    "agent_stages": {"macro": "early", "equity": "mid"},
+                }
+            ],
+            "as_of_context": "As of 2026-01-01",
+            "executive_summary": "x",
+        }
+    )
+    assert data["regime_view"] == "m"
+    assert data["narrative_view"] == "n"
+    assert data["markets_fundamentals_view"] == "e"
+    assert data["markets_vol_view"] == "q"
+    assert len(data["markets_themes"]) == 2
+    theme = data["themes"][0]
+    assert theme["contributing_agents"] == [AGENT_MARKETS, AGENT_NARRATIVE, AGENT_REGIME]
+    assert theme["primary_agent"] == AGENT_NARRATIVE
+    assert theme["agent_stages"] == {AGENT_REGIME: "early", AGENT_MARKETS: "mid"}

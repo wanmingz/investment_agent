@@ -80,7 +80,7 @@ def _build_regime_context_block(
         "## Cross-asset regime context (yfinance — macro lens only)",
         f"As-of: {as_of.isoformat()}",
         f"Region focus: {region}",
-        "Use ONLY these figures for quantitative claims in macro_backdrop and themes.",
+        "Use ONLY these figures for quantitative claims in regime_backdrop and themes.",
     ]
 
     lines.append("\n### Volatility / risk")
