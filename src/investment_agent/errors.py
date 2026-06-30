@@ -27,8 +27,8 @@ class QuotaExhaustedError(RuntimeError):
         lines = [str(self)]
         if self.daily_limit:
             lines.append(
-                "Free-tier daily request cap hit. Each full run uses ~5 LLM calls "
-                "(macro, news, equity, quant, CIO). Wait until quota resets (UTC), "
+                "Free-tier daily request cap hit. Each full run uses ~3 LLM calls "
+                "(regime, narrative, markets). Wait until quota resets (UTC), "
                 "use another API key, switch LLM_PROVIDER/model, or enable "
                 "RESUME_CHECKPOINT=1 to continue from the last saved step."
             )

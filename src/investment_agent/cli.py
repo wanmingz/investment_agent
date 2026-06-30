@@ -51,10 +51,10 @@ def print_brief(brief) -> None:
         console.print(f"[dim]{brief.as_of_context}[/dim]\n")
 
     views = [
-        ("Macro (Agent 1)", brief.macro_view),
-        ("News / RAG (Agent 2)", brief_news_view(brief) or "—"),
-        ("Equity (Agent 3)", brief.equity_view),
-        ("Quant / Vol (Agent 4)", brief.quant_view),
+        ("Regime", brief.macro_view),
+        ("Narrative", brief_news_view(brief) or "—"),
+        ("Markets (equity)", brief.equity_view),
+        ("Markets (quant)", brief.quant_view),
     ]
     for view_title, text in views:
         console.print(Panel(text, title=view_title, border_style="dim"))
@@ -132,7 +132,7 @@ def print_brief(brief) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Multi-agent investment theme analyzer (Macro + News RAG + Equity + Quant)"
+        description="Multi-agent investment theme analyzer (Regime + Narrative + Markets)"
     )
     parser.add_argument(
         "--json",
@@ -160,12 +160,11 @@ def main() -> None:
 
             settings = replace(settings, market_region=args.region)
 
-        console.print("[bold]Running 4-agent analysis…[/bold]")
+        console.print("[bold]Running 3-agent analysis (v2)…[/bold]")
         console.print(f"  Model: {settings.provider} / {settings.model}")
-        console.print("  Agent 1: Macro Economist")
-        console.print("  Agent 2: News / RAG")
-        console.print("  Agent 3: Equity Research Analyst")
-        console.print("  Agent 4: Quant / Volatility Analyst\n")
+        console.print("  Regime agent")
+        console.print("  Narrative agent (news RAG)")
+        console.print("  Markets agent (fundamentals + vol)\n")
 
         orchestrator = ThemeOrchestrator(settings)
         brief = orchestrator.run()

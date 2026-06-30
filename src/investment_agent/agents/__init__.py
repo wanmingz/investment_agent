@@ -1,11 +1,9 @@
-from investment_agent.agents.equity_analyst import EquityResearchAnalyst
-from investment_agent.agents.macro_economist import MacroEconomist
-from investment_agent.agents.news_analyst import NewsAnalyst
-from investment_agent.agents.quant_analyst import QuantAnalyst
+from investment_agent.agents.markets_agent import MarketsAgent
+from investment_agent.agents.narrative_agent import NarrativeAgent
+from investment_agent.agents.regime_agent import RegimeAgent
 
 __all__ = [
-    "MacroEconomist",
-    "NewsAnalyst",
-    "EquityResearchAnalyst",
-    "QuantAnalyst",
+    "RegimeAgent",
+    "NarrativeAgent",
+    "MarketsAgent",
 ]

@@ -62,10 +62,10 @@ STAGE_COLORS: dict[str, tuple[str, str]] = {
 }
 
 AGENT_LABELS = {
-    "macro": "Macro",
-    "news": "News",
-    "equity": "Equity",
-    "quant": "Quant",
+    "macro": "Regime",
+    "news": "Narrative",
+    "equity": "Markets (equity)",
+    "quant": "Markets (quant)",
 }
 
 
@@ -254,25 +254,26 @@ def _render_brief(brief: InvestmentBrief) -> None:
     st.markdown(f'<div class="summary-box">{brief.executive_summary}</div>', unsafe_allow_html=True)
 
     st.markdown("### Agent views")
-    tab1, tab2, tab3, tab4 = st.tabs(
-        ["🌍 Macro", "📰 News RAG", "📈 Equity", "📉 Quant"]
+    tab1, tab2, tab3 = st.tabs(
+        ["🌍 Regime", "📰 Narrative", "📈 Markets"]
     )
     with tab1:
         st.markdown(brief.macro_view)
     with tab2:
-        st.markdown(brief_news_view(brief) or "_No news view — run a new analysis with News RAG_")
+        st.markdown(brief_news_view(brief) or "_No narrative view — run a new analysis_")
     with tab3:
+        st.markdown("**Equity / fundamentals**")
         st.markdown(brief.equity_view)
+        st.markdown("**Vol / quant**")
+        st.markdown(brief.quant_view)
         fund_notes = brief_fundamentals_notes(brief)
         if fund_notes:
             with st.expander("Structured fundamentals (yfinance / Finnhub)"):
                 for line in fund_notes:
                     st.markdown(f"- {line}")
-    with tab4:
-        st.markdown(brief.quant_view)
 
-    with st.expander("Independent agent themes (before CIO merge)", expanded=False):
-        st.caption("Each agent proposes its own theme list; CIO clusters them into final themes above.")
+    with st.expander("Independent agent themes (before merge)", expanded=False):
+        st.caption("Three domain agents; equity and quant themes both come from Markets.")
         c1, c2, c3, c4 = st.columns(4)
         with c1:
             _render_agent_theme_column("macro", brief_agent_themes(brief, "macro"))
@@ -339,7 +340,7 @@ def main() -> None:
         )
         st.divider()
         run_btn = st.button("🚀 Run analysis", type="primary", use_container_width=True)
-        st.caption("Takes 2–4 min (~5 LLM calls). Each agent uses its own theme list.")
+        st.caption("Takes 2–4 min (~3 LLM calls). Regime · Narrative · Markets.")
         resume_ckpt = st.checkbox(
             "Resume from checkpoint (skip completed agents)",
             value=checkpoint.is_resume_enabled(),
@@ -375,12 +376,11 @@ def main() -> None:
             st.error(str(e))
             st.stop()
 
-        with st.status("Running 4-agent analysis…", expanded=True) as status:
-            st.write("Agent 1: Macro Economist")
-            st.write("Agent 2: News / RAG (Finnhub + TickerTick)")
-            st.write("Agent 3: Equity Research Analyst")
-            st.write("Agent 4: Quant / Volatility Analyst")
-            st.write("CIO: Synthesizing investment brief")
+        with st.status("Running 3-agent analysis…", expanded=True) as status:
+            st.write("Regime agent")
+            st.write("Narrative agent (news RAG)")
+            st.write("Markets agent (fundamentals + vol)")
+            st.write("Brief assembler (programmatic merge)")
             try:
                 brief = ThemeOrchestrator(settings).run(resume=resume_ckpt)
                 path = save_brief(brief)

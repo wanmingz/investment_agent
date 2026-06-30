@@ -64,11 +64,62 @@ class AgentTheme(BaseModel):
     tickers_or_sectors: list[str] = Field(default_factory=list)
 
 
+class NewsCitation(BaseModel):
+    id: str
+    title: str
+    source: str
+    url: str
+    published_at: str = ""
+
+
+class SourcedItem(BaseModel):
+    text: str
+    citation_ids: list[str] = Field(default_factory=list)
+
+
 class MacroReport(BaseModel):
     macro_backdrop: str
     dominant_regime: str
     themes: list[AgentTheme]
     cross_asset_signals: list[str] = Field(default_factory=list)
+
+
+class RegimeReport(BaseModel):
+    """v2 macro/regime agent output (maps to macro_view / macro_themes)."""
+
+    macro_backdrop: str
+    dominant_regime: str
+    themes: list[AgentTheme]
+    cross_asset_signals: list[str] = Field(default_factory=list)
+
+
+class NarrativeReport(BaseModel):
+    """v2 news/RAG agent output (maps to news_view / news_themes)."""
+
+    news_backdrop: str
+    narrative_sentiment: Literal["risk-on", "neutral", "risk-off"] = "neutral"
+    retrieval_query: str = ""
+    articles_retrieved: int = 0
+    ingest_notes: list[str] = Field(default_factory=list)
+    citations: list[NewsCitation] = Field(default_factory=list)
+    news_signals: list[str] = Field(default_factory=list)
+    key_drivers_sourced: list[SourcedItem] = Field(default_factory=list)
+    risks_sourced: list[SourcedItem] = Field(default_factory=list)
+    themes: list[AgentTheme] = Field(default_factory=list)
+
+
+class MarketsReport(BaseModel):
+    """v2 equity + quant combined agent output."""
+
+    market_style: str
+    vol_regime: Literal["low", "normal", "elevated", "crisis"]
+    vix_proxy_level: float | None = None
+    equity_view: str = ""
+    quant_view: str = ""
+    equity_themes: list[AgentTheme] = Field(default_factory=list)
+    quant_themes: list[AgentTheme] = Field(default_factory=list)
+    valuation_notes: list[str] = Field(default_factory=list)
+    vol_signals: list[str] = Field(default_factory=list)
 
 
 class EquityReport(BaseModel):
@@ -82,19 +133,6 @@ class QuantReport(BaseModel):
     vix_proxy_level: float | None = None
     themes: list[AgentTheme]
     vol_signals: list[str] = Field(default_factory=list)
-
-
-class NewsCitation(BaseModel):
-    id: str
-    title: str
-    source: str
-    url: str
-    published_at: str = ""
-
-
-class SourcedItem(BaseModel):
-    text: str
-    citation_ids: list[str] = Field(default_factory=list)
 
 
 class NewsReport(BaseModel):

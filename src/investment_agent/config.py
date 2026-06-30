@@ -29,6 +29,7 @@ class Settings:
     finnhub_api_key: str = ""
     news_max_articles: int = 40
     rag_top_k: int = 12
+    pipeline_version: int = 2
 
     @classmethod
     def from_env(cls) -> "Settings":
@@ -80,5 +81,6 @@ class Settings:
             finnhub_api_key=os.getenv("FINNHUB_API_KEY", "").strip(),
             news_max_articles=_int_env("NEWS_MAX_ARTICLES", 40),
             rag_top_k=_int_env("RAG_TOP_K", 12),
+            pipeline_version=_int_env("PIPELINE_VERSION", 2),
             **kwargs,
         )
