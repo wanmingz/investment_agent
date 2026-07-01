@@ -323,7 +323,8 @@ def _render_brief(brief: InvestmentBrief) -> None:
 
     st.markdown("### Recommended themes")
     st.caption(
-        "Sorted by investability · Early → Early-Mid → Mid → Mid-Late → Late (5-stage lifecycle)"
+        "Sorted by investability · One card per sector (Financials, Tech, Energy, …) · "
+        "Pills show each agent's stage (— = no matching theme from that agent)"
     )
 
     sorted_themes = sorted(brief.themes, key=lambda t: t.investability_score, reverse=True)

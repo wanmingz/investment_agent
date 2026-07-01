@@ -122,6 +122,55 @@ def _parse_429(exc: Exception) -> tuple[bool, float | None]:
     return daily, retry_after
 
 
+def _is_context_too_large(exc: Exception) -> bool:
+    if getattr(exc, "status_code", None) == 413:
+        return True
+    text = str(exc).lower()
+    return (
+        "413" in text
+        or "request too large" in text
+        or ("tokens per minute" in text and "requested" in text)
+        or ("tpm" in text and "limit" in text)
+    )
+
+
+def _compact_schema(schema: type[BaseModel]) -> str:
+    """Smaller JSON schema for token-limited providers (drops descriptions/titles)."""
+
+    def _strip(node: object) -> None:
+        if isinstance(node, dict):
+            node.pop("description", None)
+            node.pop("title", None)
+            node.pop("default", None)
+            for value in node.values():
+                _strip(value)
+        elif isinstance(node, list):
+            for item in node:
+                _strip(item)
+
+    data = schema.model_json_schema()
+    _strip(data)
+    return json.dumps(data, ensure_ascii=False, separators=(",", ":"))
+
+
+def _schema_hint(schema: type[BaseModel], *, compact: bool) -> str:
+    if compact:
+        return _compact_schema(schema)
+    return json.dumps(schema.model_json_schema(), ensure_ascii=False)
+
+
+def _context_too_large_hint(schema_name: str) -> str:
+    return (
+        f"LLM prompt too large while calling {schema_name}.\n\n"
+        "Groq on-demand caps ~12k tokens per request. Try in `.env`:\n"
+        "  RAG_TOP_K=4\n"
+        "  RAG_SUMMARY_MAX_CHARS=150\n"
+        "  RAG_CONTEXT_MAX_CHARS=2500\n"
+        "  NEWS_MAX_ARTICLES=20\n\n"
+        "Clear checkpoint (sidebar) or set RESUME_CHECKPOINT=0, restart, run again."
+    )
+
+
 def _is_rate_limit_error(exc: Exception) -> bool:
     if getattr(exc, "status_code", None) == 429:
         return True
@@ -163,14 +212,16 @@ class LLMClient:
         schema: type[T],
         temperature: float = 0.3,
     ) -> T:
-        schema_hint = json.dumps(schema.model_json_schema(), ensure_ascii=False)
+        compact = self._settings.is_groq or os.getenv("LLM_COMPACT_SCHEMA", "").strip().lower() in (
+            "1",
+            "true",
+            "yes",
+        )
+        schema_hint = _schema_hint(schema, compact=compact)
         system_full = (
             f"{system}\n\n"
-            "You MUST respond with a single valid JSON object only "
-            "(no markdown fences, no commentary).\n"
-            "CRITICAL: Every string field in the JSON must be English (US). "
-            "Do not output Chinese or other non-English languages. "
-            "If source material is not in English, translate it into English.\n"
+            "Respond with a single valid JSON object only (no markdown).\n"
+            "All string fields must be English (US).\n"
             f"JSON schema:\n{schema_hint}"
         )
 
@@ -201,6 +252,8 @@ class LLMClient:
                     continue
                 except Exception as exc:
                     last_error = exc
+                    if _is_context_too_large(exc):
+                        raise RuntimeError(_context_too_large_hint(schema.__name__)) from exc
                     if _is_rate_limit_error(exc):
                         rate_limited = True
                         daily, retry_after = _parse_429(exc)
@@ -223,6 +276,8 @@ class LLMClient:
             if not rate_limited:
                 break
 
+        if last_error and _is_context_too_large(last_error):
+            raise RuntimeError(_context_too_large_hint(schema.__name__)) from last_error
         if last_error and _is_rate_limit_error(last_error):
             daily, retry_after = _parse_429(last_error)
             raise QuotaExhaustedError(

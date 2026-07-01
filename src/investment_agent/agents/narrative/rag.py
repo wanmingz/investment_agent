@@ -81,15 +81,41 @@ def retrieve_articles(
     return articles[:k]
 
 
-def format_context_block(articles: list[NewsArticle]) -> str:
+def _truncate_text(text: str, max_chars: int) -> str:
+    cleaned = " ".join((text or "").split())
+    if max_chars <= 0 or len(cleaned) <= max_chars:
+        return cleaned
+    return cleaned[: max_chars - 3].rstrip() + "..."
+
+
+def format_context_block(
+    articles: list[NewsArticle],
+    *,
+    max_summary_chars: int = 400,
+    max_total_chars: int = 8000,
+) -> str:
     lines = ["## Retrieved news context (use ONLY these articles for news-sourced claims)"]
+    used = len(lines[0])
+    included = 0
     for art in articles:
-        lines.append(
-            f"\n[{art.id}] {art.title}\n"
+        summary = _truncate_text(art.summary or "(no summary)", max_summary_chars)
+        title = _truncate_text(art.title, 200)
+        entry = (
+            f"\n[{art.id}] {title}\n"
             f"Source: {art.source} | Published: {art.published_at or 'unknown'}\n"
-            f"URL: {art.url}\n"
-            f"Summary: {art.summary or '(no summary)'}"
+            f"Summary: {summary}"
         )
+        if used + len(entry) > max_total_chars:
+            omitted = len(articles) - included
+            if omitted > 0:
+                lines.append(
+                    f"\n(... {omitted} more articles omitted — "
+                    "raise RAG_CONTEXT_MAX_CHARS or lower RAG_TOP_K)"
+                )
+            break
+        lines.append(entry)
+        used += len(entry)
+        included += 1
     return "\n".join(lines)
 
 

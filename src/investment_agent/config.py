@@ -28,6 +28,10 @@ def _bool_env(name: str) -> bool | None:
     return None
 
 
+def _is_groq(base_url: str) -> bool:
+    return "groq.com" in base_url.lower()
+
+
 def _is_openrouter_free(base_url: str, model: str) -> bool:
     return "openrouter.ai" in base_url.lower() and ":free" in model.lower()
 
@@ -36,6 +40,8 @@ def _llm_parallel_agents(base_url: str, model: str) -> bool:
     override = _bool_env("LLM_PARALLEL_AGENTS")
     if override is not None:
         return override
+    if _is_groq(base_url):
+        return False
     # OpenRouter free models: ~20 RPM; parallel 3-agent burst often 429s.
     if _is_openrouter_free(base_url, model):
         return False
@@ -64,6 +70,8 @@ class Settings:
     finnhub_api_key: str = ""
     news_max_articles: int = 40
     rag_top_k: int = 12
+    rag_summary_max_chars: int = 500
+    rag_context_max_chars: int = 10_000
     pipeline_version: int = 2
     llm_parallel_agents: bool = True
     llm_agent_delay_seconds: float = 0.0
@@ -116,15 +124,22 @@ class Settings:
     def _with_news(cls, **kwargs) -> "Settings":
         base_url = str(kwargs.get("base_url", ""))
         model = str(kwargs.get("model", ""))
+        groq = _is_groq(base_url)
         return cls(
             finnhub_api_key=os.getenv("FINNHUB_API_KEY", "").strip(),
-            news_max_articles=_int_env("NEWS_MAX_ARTICLES", 80),
-            rag_top_k=_int_env("RAG_TOP_K", 24),
+            news_max_articles=_int_env("NEWS_MAX_ARTICLES", 25 if groq else 80),
+            rag_top_k=_int_env("RAG_TOP_K", 5 if groq else 24),
+            rag_summary_max_chars=_int_env("RAG_SUMMARY_MAX_CHARS", 180 if groq else 500),
+            rag_context_max_chars=_int_env("RAG_CONTEXT_MAX_CHARS", 3_000 if groq else 10_000),
             pipeline_version=_int_env("PIPELINE_VERSION", 2),
             llm_parallel_agents=_llm_parallel_agents(base_url, model),
             llm_agent_delay_seconds=_llm_agent_delay_seconds(base_url, model),
             **kwargs,
         )
+
+    @property
+    def is_groq(self) -> bool:
+        return _is_groq(self.base_url)
 
     @property
     def is_openrouter_free(self) -> bool:

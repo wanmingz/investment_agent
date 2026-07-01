@@ -23,7 +23,12 @@ from investment_agent.models import (
 from investment_agent.storage import migrate_brief_dict
 
 
-def _theme(name: str, agent_conf: float = 0.8) -> AgentTheme:
+def _theme(
+    name: str,
+    agent_conf: float = 0.8,
+    *,
+    tickers: list[str] | None = None,
+) -> AgentTheme:
     return AgentTheme(
         name=name,
         thesis=f"Thesis for {name}",
@@ -32,7 +37,7 @@ def _theme(name: str, agent_conf: float = 0.8) -> AgentTheme:
         confidence=agent_conf,
         key_drivers=["driver"],
         risks=["risk"],
-        tickers_or_sectors=["XLK"],
+        tickers_or_sectors=tickers if tickers is not None else ["XLK"],
     )
 
 
@@ -126,6 +131,55 @@ def test_build_data_plane_wires_three_agent_inputs():
     assert plane.narrative_input.retrieval_query == "q"
 
 
+def test_assemble_fuzzy_clusters_sector_themes():
+    regime = RegimeReport(
+        regime_backdrop="Regime.",
+        dominant_regime="soft landing",
+        themes=[_theme("Financials sector outperformance", 0.85, tickers=["XLF"])],
+        cross_asset_signals=[],
+    )
+    narrative = NarrativeReport(
+        narrative_backdrop="News.",
+        narrative_sentiment="neutral",
+        themes=[_theme("Bank earnings momentum", 0.75, tickers=["XLF"])],
+        citations=[],
+    )
+    markets = MarketsReport(
+        market_style="value",
+        vol_regime="normal",
+        fundamentals_themes=[
+            _theme("Financials momentum vs SPY", 0.8, tickers=["XLF"]),
+        ],
+        vol_themes=[],
+    )
+    brief = assemble(regime, narrative, markets, as_of=date(2026, 6, 16))
+    assert len(brief.themes) == 1
+    merged = brief.themes[0]
+    assert merged.name == "Financials"
+    assert len(merged.contributing_agents) >= 2
+    assert AGENT_REGIME in merged.agent_stages
+    assert AGENT_NARRATIVE in merged.agent_stages
+    assert AGENT_MARKETS in merged.agent_stages
+
+
+def test_assemble_merges_markets_fundamentals_and_vol_same_sector():
+    markets = MarketsReport(
+        market_style="value",
+        vol_regime="normal",
+        fundamentals_themes=[_theme("Financials earnings strength", 0.9, tickers=["XLF"])],
+        vol_themes=[_theme("Low vol in banks", 0.7, tickers=["XLF"])],
+    )
+    brief = assemble(
+        RegimeReport(regime_backdrop="r", dominant_regime="soft", themes=[]),
+        NarrativeReport(narrative_backdrop="n", narrative_sentiment="neutral", themes=[], citations=[]),
+        markets,
+        as_of=date(2026, 6, 16),
+    )
+    assert len(brief.themes) == 1
+    assert brief.themes[0].name == "Financials"
+    assert brief.themes[0].contributing_agents == [AGENT_MARKETS]
+
+
 def test_assemble_clusters_and_maps_views():
     regime = RegimeReport(
         regime_backdrop="Regime backdrop.",
@@ -157,16 +211,33 @@ def test_assemble_clusters_and_maps_views():
     assert brief.regime_view
     assert brief.narrative_view == "Narrative backdrop."
     assert brief.markets_fundamentals_view == "Fundamentals paragraph."
-    assert len(brief.themes) >= 2
-    multi = [t for t in brief.themes if len(t.contributing_agents) >= 2]
-    assert multi
-    markets_only = next(t for t in brief.themes if t.name == "Software margin recovery")
-    assert markets_only.key_drivers_sourced == []
-    assert markets_only.contributing_agents == [AGENT_MARKETS]
-    ai_cluster = next(t for t in brief.themes if "Infrastructure" in t.name)
-    assert len(ai_cluster.key_drivers_sourced) >= 1
-    assert AGENT_REGIME in ai_cluster.contributing_agents
-    assert AGENT_NARRATIVE in ai_cluster.contributing_agents
+    assert len(brief.themes) == 1
+    tech = brief.themes[0]
+    assert tech.name == "Tech"
+    assert len(tech.contributing_agents) == 3
+    assert AGENT_REGIME in tech.contributing_agents
+    assert AGENT_NARRATIVE in tech.contributing_agents
+    assert AGENT_MARKETS in tech.contributing_agents
+    assert len(tech.key_drivers_sourced) >= 1
+
+
+def test_format_context_block_truncates_for_token_budget():
+    from investment_agent.agents.narrative.ingest import NewsArticle
+    from investment_agent.agents.narrative.rag import format_context_block
+
+    articles = [
+        NewsArticle(
+            id=f"n-{i}",
+            title=f"Headline {i}",
+            summary="word " * 400,
+            url="https://example.com",
+            source="test",
+        )
+        for i in range(12)
+    ]
+    block = format_context_block(articles, max_summary_chars=100, max_total_chars=1500)
+    assert len(block) < 2500
+    assert "omitted" in block or block.count("[n-") < 12
 
 
 def test_migrate_brief_dict_maps_legacy_agent_keys():

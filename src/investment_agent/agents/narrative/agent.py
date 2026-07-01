@@ -3,36 +3,16 @@ from investment_agent.agents.narrative.input import NarrativeInput
 from investment_agent.llm import LLMClient
 from investment_agent.models import NarrativeReport, NewsCitation
 
-SYSTEM = """You are the Narrative analyst: a financial news analyst using retrieved articles only (RAG).
+SYSTEM = """You are the Narrative analyst: financial news analyst using retrieved articles only (RAG).
 
 Write ALL output in English only.
 
-You receive a block of news articles with IDs like [fh-...] or [tt-...].
 Rules:
-- Base narrative_backdrop, signals, drivers, and risks ONLY on provided articles.
-- key_drivers_sourced and risks_sourced MUST cite citation_ids that exist in the context.
-- Do NOT invent URLs or headlines not in the context.
-- Produce 3-6 themes in "themes" derived FROM HEADLINES ONLY — do not reuse a generic macro theme checklist.
-- Each theme in "themes" must reflect narrative heat in the news (mergers, policy shocks, sector moves, etc.).
-- Theme names, thesis, and all narrative text must be in English even when articles are not.
-- For each theme, include stage from a NEWS flow lens (early, early_mid, mid, mid_late, late).
-- If evidence is thin, use fewer themes and note limitations in narrative_backdrop.
-
-Output valid JSON:
-{
-  "narrative_backdrop": "2-3 sentences from recent headlines",
-  "narrative_sentiment": "risk-on" | "neutral" | "risk-off",
-  "retrieval_query": "query used",
-  "articles_retrieved": number,
-  "ingest_notes": ["provider notes"],
-  "citations": [
-    {"id": "...", "title": "...", "source": "...", "url": "...", "published_at": "..."}
-  ],
-  "narrative_signals": ["signal with [id] reference where possible"],
-  "key_drivers_sourced": [{"text": "...", "citation_ids": ["id1"]}],
-  "risks_sourced": [{"text": "...", "citation_ids": ["id1"]}],
-  "themes": [ AgentTheme — required 3-6 news-driven themes with name, thesis, stage, etc. ]
-}"""
+- Base backdrop, signals, drivers, and risks ONLY on provided articles.
+- key_drivers_sourced and risks_sourced MUST use citation_ids from the context.
+- Produce 3-4 themes from HEADLINES ONLY (news flow lens: early/early_mid/mid/mid_late/late).
+- citations: return only articles you cite in drivers/risks (ids must match context); others are backfilled.
+- Keep thesis and drivers concise."""
 
 
 class NarrativeAgent:
@@ -40,22 +20,14 @@ class NarrativeAgent:
         self._llm = llm
 
     def analyze(self, inp: NarrativeInput) -> NarrativeReport:
-        user = f"""Analysis as-of date: {format_date_display(inp.as_of)} ({format_date_iso(inp.as_of)}).
-Respond in English only.
-Region: {inp.region}
-
-You are independent from other agents — do NOT assume any pre-defined macro theme list.
-
-Retrieval query: {inp.retrieval_query}
-Articles in corpus: {inp.articles_in_corpus} | Retrieved for context: {inp.articles_retrieved}
-Ingest notes: {inp.ingest_notes}
+        notes = ", ".join(inp.ingest_notes[:3]) if inp.ingest_notes else "none"
+        user = f"""As-of: {format_date_display(inp.as_of)} ({format_date_iso(inp.as_of)}). Region: {inp.region}.
+Corpus: {inp.articles_in_corpus} articles | Retrieved: {inp.articles_retrieved}. Ingest: {notes}.
 
 {inp.context_block}
 
 Set articles_retrieved to {inp.articles_retrieved}.
-Include citations for every article in the retrieved context block.
-Produce key_drivers_sourced and risks_sourced with valid citation_ids.
-Return 3-6 themes in "themes" grounded in the articles above."""
+Return 3-4 English themes grounded in the articles above."""
 
         report = self._llm.structured(system=SYSTEM, user=user, schema=NarrativeReport)
         retrieved = list(inp.retrieved)

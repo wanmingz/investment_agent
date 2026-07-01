@@ -22,12 +22,14 @@ from investment_agent.data_plane import (
 )
 from investment_agent.models import MarketsReport, NarrativeReport, RegimeReport
 from investment_agent.agents.narrative.ingest import NewsArticle
+from investment_agent.agents.narrative.rag import format_context_block
+from investment_agent.config import Settings
 
 T = TypeVar("T", bound=BaseModel)
 
 CACHE_DIR = Path(__file__).resolve().parents[2] / "reports" / "cache"
 META_FILE = "run_meta.json"
-PIPELINE_VERSION = 5
+PIPELINE_VERSION = 6
 
 
 def is_resume_enabled() -> bool:
@@ -147,6 +149,30 @@ def _article_from_dict(d: dict) -> NewsArticle:
     )
 
 
+def _refresh_narrative_input(ni: NarrativeInput) -> NarrativeInput:
+    """Re-truncate news context on resume (avoids stale oversized checkpoint blocks)."""
+    try:
+        settings = Settings.from_env()
+    except ValueError:
+        return ni
+    retrieved = list(ni.retrieved)[: settings.rag_top_k]
+    context = format_context_block(
+        retrieved,
+        max_summary_chars=settings.rag_summary_max_chars,
+        max_total_chars=settings.rag_context_max_chars,
+    )
+    return NarrativeInput(
+        as_of=ni.as_of,
+        region=ni.region,
+        retrieval_query=ni.retrieval_query,
+        articles_in_corpus=ni.articles_in_corpus,
+        articles_retrieved=len(retrieved),
+        ingest_notes=ni.ingest_notes,
+        context_block=context,
+        retrieved=tuple(retrieved),
+    )
+
+
 def save_data_plane(plane: DataPlaneSnapshot) -> None:
     ni = plane.narrative_input
     mi = plane.markets_input
@@ -202,15 +228,17 @@ def load_data_plane() -> DataPlaneSnapshot | None:
             or ri.get("macro_context_block", ""),
             context_notes=tuple(ri.get("context_notes", [])),
         )
-        narrative_input = NarrativeInput(
-            as_of=date.fromisoformat(ni["as_of"]),
-            region=ni["region"],
-            retrieval_query=ni["retrieval_query"],
-            articles_in_corpus=ni["articles_in_corpus"],
-            articles_retrieved=ni["articles_retrieved"],
-            ingest_notes=list(ni.get("ingest_notes", [])),
-            context_block=ni["context_block"],
-            retrieved=retrieved,
+        narrative_input = _refresh_narrative_input(
+            NarrativeInput(
+                as_of=date.fromisoformat(ni["as_of"]),
+                region=ni["region"],
+                retrieval_query=ni["retrieval_query"],
+                articles_in_corpus=ni["articles_in_corpus"],
+                articles_retrieved=ni["articles_retrieved"],
+                ingest_notes=list(ni.get("ingest_notes", [])),
+                context_block=ni["context_block"],
+                retrieved=retrieved,
+            )
         )
         vol_raw = mi["vol"]
         markets_input = MarketsInput(

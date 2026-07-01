@@ -39,7 +39,11 @@ def build_narrative_input(
         max_articles=settings.news_max_articles,
     )
     retrieved = retrieve_articles(articles, query, top_k=settings.rag_top_k)
-    context = format_context_block(retrieved)
+    context = format_context_block(
+        retrieved,
+        max_summary_chars=settings.rag_summary_max_chars,
+        max_total_chars=settings.rag_context_max_chars,
+    )
 
     return (
         NarrativeInput(
