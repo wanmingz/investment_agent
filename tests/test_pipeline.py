@@ -240,6 +240,39 @@ def test_format_context_block_truncates_for_token_budget():
     assert "omitted" in block or block.count("[n-") < 12
 
 
+def test_combined_theme_score_sort_order():
+    from investment_agent.models import FinalTheme, ThemeStage
+
+    def rank(t: FinalTheme) -> float:
+        return t.investability_score + t.consensus_score
+
+    low = FinalTheme(
+        name="A",
+        thesis="t",
+        stage=ThemeStage.MID,
+        consensus_score=0.33,
+        investability_score=0.9,
+        synthesis="s",
+        key_drivers=[],
+        risks=[],
+        tickers_or_sectors=[],
+    )
+    high = FinalTheme(
+        name="B",
+        thesis="t",
+        stage=ThemeStage.MID,
+        consensus_score=1.0,
+        investability_score=0.7,
+        synthesis="s",
+        key_drivers=[],
+        risks=[],
+        tickers_or_sectors=[],
+    )
+    assert rank(high) > rank(low)
+    ranked = sorted([low, high], key=rank, reverse=True)
+    assert ranked[0].name == "B"
+
+
 def test_migrate_brief_dict_maps_legacy_agent_keys():
     data = migrate_brief_dict(
         {

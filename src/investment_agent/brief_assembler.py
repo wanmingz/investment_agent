@@ -384,7 +384,10 @@ def assemble(
             )
         )
 
-    final_themes.sort(key=lambda t: t.investability_score, reverse=True)
+    final_themes.sort(
+        key=lambda t: t.investability_score + t.consensus_score,
+        reverse=True,
+    )
     final_themes = final_themes[:8]
 
     top_names = ", ".join(t.name for t in final_themes[:2]) if final_themes else "none"

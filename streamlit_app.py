@@ -23,9 +23,6 @@ from investment_agent.storage import (
     theme_drivers_sourced,
     theme_risks_sourced,
 )
-from investment_agent.models import AgentTheme
-from investment_agent.config import Settings
-from investment_agent.dates import analysis_date, format_date_iso
 from investment_agent.models import (
     AGENT_LABELS,
     AGENT_MARKETS,
@@ -33,12 +30,15 @@ from investment_agent.models import (
     AGENT_REGIME,
     STAGE_LABELS,
     STAGE_ORDER,
+    AgentTheme,
     FinalTheme,
     InvestmentBrief,
     coerce_theme_stage,
     stage_label,
 )
 from investment_agent import checkpoint
+from investment_agent.config import Settings
+from investment_agent.dates import analysis_date, format_date_iso
 from investment_agent.llm import QuotaExhaustedError
 from investment_agent.orchestrator import ThemeOrchestrator
 from investment_agent.storage import DEFAULT_REPORT_PATH, load_brief, save_brief
@@ -77,6 +77,10 @@ def _format_agent_list(keys: list[str]) -> str:
     order = {k: i for i, k in enumerate(_AGENT_DISPLAY_ORDER)}
     ordered = sorted(keys, key=lambda k: order.get(k, 99))
     return ", ".join(_agent_label(k) for k in ordered)
+
+
+def _theme_rank_score(theme: FinalTheme) -> float:
+    return theme.investability_score + theme.consensus_score
 
 
 def _inject_css() -> None:
@@ -323,11 +327,11 @@ def _render_brief(brief: InvestmentBrief) -> None:
 
     st.markdown("### Recommended themes")
     st.caption(
-        "Sorted by investability · One card per sector (Financials, Tech, Energy, …) · "
+        "Sorted by investability + consensus (desc) · One card per sector · "
         "Pills show each agent's stage (— = no matching theme from that agent)"
     )
 
-    sorted_themes = sorted(brief.themes, key=lambda t: t.investability_score, reverse=True)
+    sorted_themes = sorted(brief.themes, key=_theme_rank_score, reverse=True)
     stage_counts = {s.value: 0 for s in STAGE_ORDER}
     for t in sorted_themes:
         try:

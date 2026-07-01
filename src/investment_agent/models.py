@@ -167,6 +167,11 @@ class FinalTheme(BaseModel):
     risks_sourced: list[SourcedItem] = Field(default_factory=list)
 
 
+def theme_rank_score(theme: FinalTheme) -> float:
+    """Investability + consensus for sorting recommended themes (max 2.0)."""
+    return theme.investability_score + theme.consensus_score
+
+
 class InvestmentBrief(BaseModel):
     report_date: str = Field(
         default="",

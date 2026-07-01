@@ -37,6 +37,10 @@ def _theme_display_name(t) -> str:
     return t.name
 
 
+def _theme_rank_score(theme) -> float:
+    return theme.investability_score + theme.consensus_score
+
+
 def print_brief(brief) -> None:
     date_line = ""
     if brief.as_of_context.lower().startswith("as of"):
@@ -65,10 +69,11 @@ def print_brief(brief) -> None:
     table.add_column("Stage", justify="center", width=10)
     table.add_column("Investability", justify="right", width=12)
     table.add_column("Consensus", justify="right", width=8)
+    table.add_column("Score", justify="right", width=8)
     table.add_column("Agent Stages", min_width=22)
     table.add_column("Summary", min_width=36)
 
-    for i, t in enumerate(brief.themes, 1):
+    for i, t in enumerate(sorted(brief.themes, key=_theme_rank_score, reverse=True), 1):
         stages = " | ".join(
             f"{AGENT_LABELS.get(k, k[:3])}:{v.value}" for k, v in t.agent_stages.items()
         )
@@ -80,6 +85,7 @@ def print_brief(brief) -> None:
             f"[{_stage_style(stage_val)}]{label}[/{_stage_style(stage_val)}]",
             f"{t.investability_score:.0%}",
             f"{t.consensus_score:.0%}",
+            f"{_theme_rank_score(t):.2f}",
             stages,
             t.synthesis[:120] + ("…" if len(t.synthesis) > 120 else ""),
         )
@@ -91,7 +97,8 @@ def print_brief(brief) -> None:
 
     cite_by_id = {c.id: c for c in brief_narrative_citations(brief)}
 
-    for i, t in enumerate(brief.themes, 1):
+    ranked = sorted(brief.themes, key=_theme_rank_score, reverse=True)
+    for i, t in enumerate(ranked, 1):
         drivers = "\n".join(f"  • {d}" for d in t.key_drivers[:4])
         risks = "\n".join(f"  • {r}" for r in t.risks[:3])
         src_drv = []
