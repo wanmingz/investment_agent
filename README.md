@@ -253,7 +253,11 @@ Universe is fixed sector ETFs + SPY (`agents/markets/universe.py`). `FUNDAMENTAL
 
 A full run uses **3 LLM requests**. `gemini-2.5-flash-lite` free tier is often **~20 requests/day** (~6 full runs).
 
-On `429 RESOURCE_EXHAUSTED`:
+### OpenRouter free models (429)
+
+With `OPENAI_BASE_URL=https://openrouter.ai/api/v1` and a `:free` model, agents run **sequentially** with a short delay between calls (override with `LLM_PARALLEL_AGENTS=1`). Free tier is roughly **50 requests/day** and **20/min**.
+
+On `429 RESOURCE_EXHAUSTED` or rate limit:
 
 1. Wait for quota reset (UTC) or switch API key / `LLM_PROVIDER`
 2. **Load last result** from `reports/latest.json`

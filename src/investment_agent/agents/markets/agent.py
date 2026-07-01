@@ -14,6 +14,7 @@ Write ALL output in English only.
 Work INDEPENDENTLY — do not assume themes from other agents exist.
 Fundamentals theme names should reflect sectors, styles, or clusters (e.g. "Software margin recovery").
 Vol theme names should reflect risk/regime angles (e.g. "Low-vol carry in large-cap tech").
+All theme names, thesis text, and views must be in English only — never Chinese or other languages.
 
 Fundamentals stage lens:
 - early / early_mid / mid / mid_late / late (valuation, revisions, crowding)

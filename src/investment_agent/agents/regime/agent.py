@@ -23,7 +23,7 @@ Output valid JSON matching this schema:
   "themes": [
     {
       "name": "English theme name",
-      "subtitle": "optional short label",
+      "subtitle": "optional short English tag, or empty string",
       "thesis": "why now from macro lens",
       "stage": "early" | "early_mid" | "mid" | "mid_late" | "late",
       "stage_rationale": "macro-specific stage reasoning",

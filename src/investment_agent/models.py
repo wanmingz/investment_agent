@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import AliasChoices, BaseModel, ConfigDict, Field
 
 AGENT_REGIME = "regime"
 AGENT_NARRATIVE = "narrative"
@@ -59,11 +59,11 @@ stage_label_zh = stage_label
 class AgentTheme(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
-    name: str = Field(description="Investment theme name in English")
+    name: str = Field(description="Investment theme name in English only")
     subtitle: str = Field(
         default="",
-        alias="name_zh",
-        description="Optional short subtitle",
+        description="Optional short English tag; leave empty if unused",
+        validation_alias=AliasChoices("subtitle", "name_zh"),
     )
     thesis: str = Field(description="Why this theme matters now")
     stage: ThemeStage
@@ -128,11 +128,19 @@ class MarketsReport(BaseModel):
 class FinalTheme(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
-    name: str
-    subtitle: str = Field(default="", alias="name_zh")
-    thesis: str
+    name: str = Field(description="Investment theme name in English only")
+    subtitle: str = Field(
+        default="",
+        description="Optional short English tag; leave empty if unused",
+        validation_alias=AliasChoices("subtitle", "name_zh"),
+    )
+    thesis: str = Field(description="Why this theme matters now (English only)")
     stage: ThemeStage
-    stage_label: str = Field(default="", alias="stage_label_zh")
+    stage_label: str = Field(
+        default="",
+        description="Human-readable stage label in English",
+        validation_alias=AliasChoices("stage_label", "stage_label_zh"),
+    )
     consensus_score: float = Field(
         description="0-1 agreement across agents on stage classification"
     )

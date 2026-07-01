@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date
 
@@ -48,38 +49,14 @@ class ThemeOrchestrator:
         narrative = checkpoint.load_narrative() if use_resume else None
         markets = checkpoint.load_markets() if use_resume else None
 
-        pending: dict[str, object] = {}
-        if regime is None:
-            pending["regime"] = self._regime
-        if narrative is None:
-            pending["narrative"] = self._narrative
-        if markets is None:
-            pending["markets"] = self._markets
-
-        if pending:
-            with ThreadPoolExecutor(max_workers=3) as pool:
-                futures = {}
-                if regime is None:
-                    futures[pool.submit(self._regime.analyze, plane.regime_input)] = "regime"
-                if narrative is None:
-                    futures[pool.submit(self._narrative.analyze, plane.narrative_input)] = "narrative"
-                if markets is None:
-                    futures[pool.submit(self._markets.analyze, plane.markets_input)] = "markets"
-                for fut in as_completed(futures):
-                    key = futures[fut]
-                    result = fut.result()
-                    if key == "regime":
-                        regime = result
-                        if use_resume:
-                            checkpoint.save_regime(regime)
-                    elif key == "narrative":
-                        narrative = result
-                        if use_resume:
-                            checkpoint.save_narrative(narrative)
-                    else:
-                        markets = result
-                        if use_resume:
-                            checkpoint.save_markets(markets)
+        if regime is None or narrative is None or markets is None:
+            regime, narrative, markets = self._run_pending_agents(
+                plane=plane,
+                regime=regime,
+                narrative=narrative,
+                markets=markets,
+                use_resume=use_resume,
+            )
 
         assert regime is not None and narrative is not None and markets is not None
         brief = assemble(regime, narrative, markets, as_of=as_of)
@@ -94,6 +71,63 @@ class ThemeOrchestrator:
         if use_resume:
             checkpoint.clear_checkpoint()
         return brief
+
+    def _run_pending_agents(
+        self,
+        *,
+        plane: DataPlaneSnapshot,
+        regime: RegimeReport | None,
+        narrative: NarrativeReport | None,
+        markets: MarketsReport | None,
+        use_resume: bool,
+    ) -> tuple[RegimeReport | None, NarrativeReport | None, MarketsReport | None]:
+        tasks: list[tuple[str, object]] = []
+        if regime is None:
+            tasks.append(("regime", plane.regime_input))
+        if narrative is None:
+            tasks.append(("narrative", plane.narrative_input))
+        if markets is None:
+            tasks.append(("markets", plane.markets_input))
+
+        delay = self._settings.llm_agent_delay_seconds
+
+        def _save(key: str, result: object) -> None:
+            nonlocal regime, narrative, markets
+            if key == "regime":
+                regime = result  # type: ignore[assignment]
+                if use_resume:
+                    checkpoint.save_regime(regime)  # type: ignore[arg-type]
+            elif key == "narrative":
+                narrative = result  # type: ignore[assignment]
+                if use_resume:
+                    checkpoint.save_narrative(narrative)  # type: ignore[arg-type]
+            else:
+                markets = result  # type: ignore[assignment]
+                if use_resume:
+                    checkpoint.save_markets(markets)  # type: ignore[arg-type]
+
+        def _analyze(key: str, agent_input: object) -> object:
+            if key == "regime":
+                return self._regime.analyze(agent_input)  # type: ignore[arg-type]
+            if key == "narrative":
+                return self._narrative.analyze(agent_input)  # type: ignore[arg-type]
+            return self._markets.analyze(agent_input)  # type: ignore[arg-type]
+
+        if self._settings.llm_parallel_agents and len(tasks) > 1:
+            with ThreadPoolExecutor(max_workers=3) as pool:
+                futures = {
+                    pool.submit(_analyze, key, agent_input): key for key, agent_input in tasks
+                }
+                for fut in as_completed(futures):
+                    key = futures[fut]
+                    _save(key, fut.result())
+            return regime, narrative, markets
+
+        for i, (key, agent_input) in enumerate(tasks):
+            if i > 0 and delay > 0:
+                time.sleep(delay)
+            _save(key, _analyze(key, agent_input))
+        return regime, narrative, markets
 
     def _enrich_brief(
         self,

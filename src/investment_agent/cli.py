@@ -34,7 +34,7 @@ def _stage_style(stage: str) -> str:
 
 
 def _theme_display_name(t) -> str:
-    return t.subtitle or t.name
+    return t.name
 
 
 def print_brief(brief) -> None:
@@ -162,6 +162,11 @@ def main() -> None:
 
         console.print("[bold]Running 3-agent analysis (v2)…[/bold]")
         console.print(f"  Model: {settings.provider} / {settings.model}")
+        if not settings.llm_parallel_agents:
+            console.print(
+                f"  Agents: sequential"
+                + (f" ({settings.llm_agent_delay_seconds:.0f}s between calls)" if settings.llm_agent_delay_seconds else "")
+            )
         console.print("  Regime agent")
         console.print("  Narrative agent (news RAG)")
         console.print("  Markets agent (fundamentals + vol)\n")

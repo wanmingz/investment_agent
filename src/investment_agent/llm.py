@@ -45,13 +45,24 @@ class QuotaExhaustedError(RuntimeError):
             lines.append(
                 f"Short-term rate limit — retry after ~{int(self.retry_after_seconds)}s."
             )
+        else:
+            lines.append(
+                "Short-term rate limit — wait a minute and retry, or enable "
+                "RESUME_CHECKPOINT=1 to skip completed agents."
+            )
+        if "openrouter" in (self.provider or "").lower() or ":free" in (self.model or ""):
+            lines.append(
+                "OpenRouter free models are ~50 requests/day and ~20/min. "
+                "Agents run sequentially by default; set LLM_PARALLEL_AGENTS=1 to override."
+            )
         lines.append("In the sidebar: use **Load last result** or **Resume from checkpoint**.")
         return "\n\n".join(lines)
 
 _JSON_FENCE = re.compile(r"^```(?:json)?\s*\n?(.*?)\n?```\s*$", re.DOTALL | re.IGNORECASE)
 _RETRY_SECONDS_RE = re.compile(r"retry in (\d+(?:\.\d+)?)\s*s", re.IGNORECASE)
 _DAILY_QUOTA_RE = re.compile(
-    r"PerDay|per day|free_tier_requests|GenerateRequestsPerDay",
+    r"PerDay|per day|free_tier_requests|GenerateRequestsPerDay|"
+    r"free-models-per-day|per-day|daily.?limit|requests per day",
     re.IGNORECASE,
 )
 
@@ -78,7 +89,29 @@ def _parse_429(exc: Exception) -> tuple[bool, float | None]:
     if hasattr(exc, "response") and exc.response is not None:
         try:
             body = exc.response.json()
-            details = body.get("error", {}).get("details", [])
+            err = body.get("error", body)
+            if isinstance(err, dict):
+                msg = str(err.get("message", ""))
+                code = str(err.get("code", ""))
+                metadata = err.get("metadata", {}) or {}
+                if isinstance(metadata, dict):
+                    msg = f"{msg} {metadata}"
+                blob = f"{msg} {code} {text}"
+                if _DAILY_QUOTA_RE.search(blob):
+                    daily = True
+                if retry_after is None:
+                    ra = err.get("retry_after")
+                    if isinstance(ra, (int, float)) and ra > 0:
+                        retry_after = float(ra)
+                    elif isinstance(metadata, dict):
+                        ra_meta = metadata.get("retry_after")
+                        if isinstance(ra_meta, (int, float)) and ra_meta > 0:
+                            retry_after = float(ra_meta)
+            details = (
+                body.get("error", {}).get("details", [])
+                if isinstance(body.get("error"), dict)
+                else []
+            )
             for d in details:
                 if d.get("@type", "").endswith("RetryInfo"):
                     delay = d.get("retryDelay", "")
@@ -93,15 +126,25 @@ def _is_rate_limit_error(exc: Exception) -> bool:
     if getattr(exc, "status_code", None) == 429:
         return True
     text = str(exc).lower()
-    return "429" in text or "resource_exhausted" in text or "quota" in text
+    return (
+        "429" in text
+        or "resource_exhausted" in text
+        or "quota" in text
+        or "rate limit" in text
+        or "too many requests" in text
+    )
 
 
-def _max_429_retries() -> int:
-    raw = os.getenv("LLM_MAX_RETRIES_ON_429", "2").strip()
-    try:
-        return max(0, int(raw))
-    except ValueError:
-        return 2
+def _max_429_retries(settings: Settings) -> int:
+    raw = os.getenv("LLM_MAX_RETRIES_ON_429", "").strip()
+    if raw:
+        try:
+            return max(0, int(raw))
+        except ValueError:
+            pass
+    if settings.is_openrouter_free:
+        return 4
+    return 2
 
 
 class LLMClient:
@@ -125,10 +168,13 @@ class LLMClient:
             f"{system}\n\n"
             "You MUST respond with a single valid JSON object only "
             "(no markdown fences, no commentary).\n"
+            "CRITICAL: Every string field in the JSON must be English (US). "
+            "Do not output Chinese or other non-English languages. "
+            "If source material is not in English, translate it into English.\n"
             f"JSON schema:\n{schema_hint}"
         )
 
-        max_retries = _max_429_retries()
+        max_retries = _max_429_retries(self._settings)
         last_error: Exception | None = None
 
         for attempt in range(max_retries + 1):
@@ -168,7 +214,9 @@ class LLMClient:
                                 retry_after_seconds=retry_after,
                                 daily_limit=daily,
                             ) from exc
-                        wait = retry_after if retry_after and retry_after > 0 else 50.0
+                        wait = retry_after if retry_after and retry_after > 0 else (
+                            15.0 if self._settings.is_openrouter_free else 50.0
+                        )
                         time.sleep(min(wait, 120.0))
                         break
                     continue

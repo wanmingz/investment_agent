@@ -85,6 +85,29 @@ def _migrate_agent_stages(stages: dict) -> dict:
     return out
 
 
+def _has_cjk(text: str) -> bool:
+    return any("\u4e00" <= ch <= "\u9fff" for ch in text)
+
+
+def _normalize_theme_dict(theme: dict) -> None:
+    """Prefer English theme name for display; drop legacy name_zh subtitles."""
+    if not isinstance(theme, dict):
+        return
+    sub = str(theme.get("subtitle") or theme.pop("name_zh", "") or "").strip()
+    name = str(theme.get("name") or "").strip()
+    if sub and _has_cjk(sub) and name and not _has_cjk(name):
+        theme["subtitle"] = ""
+    elif name and _has_cjk(name) and sub and not _has_cjk(sub):
+        theme["name"], theme["subtitle"] = sub, ""
+    elif sub:
+        theme["subtitle"] = sub
+    theme.pop("name_zh", None)
+    if theme.get("stage_label_zh") and not theme.get("stage_label"):
+        theme["stage_label"] = theme.pop("stage_label_zh")
+    else:
+        theme.pop("stage_label_zh", None)
+
+
 def migrate_brief_dict(data: dict) -> dict:
     """Fill missing keys and map v1 field names when loading older reports."""
     if "regime_view" not in data and "macro_view" in data:
@@ -127,9 +150,15 @@ def migrate_brief_dict(data: dict) -> dict:
     for key in ("macro_themes", "news_themes", "equity_themes", "quant_themes"):
         data.pop(key, None)
 
+    for key in ("regime_themes", "narrative_themes", "markets_themes"):
+        for theme in data.get(key, []):
+            if isinstance(theme, dict):
+                _normalize_theme_dict(theme)
+
     for theme in data.get("themes", []):
         if not isinstance(theme, dict):
             continue
+        _normalize_theme_dict(theme)
         theme.setdefault("key_drivers_sourced", [])
         theme.setdefault("risks_sourced", [])
         if theme.get("contributing_agents"):
@@ -158,7 +187,7 @@ def save_brief(brief: InvestmentBrief, path: Path | None = None) -> Path:
     target = path or DEFAULT_REPORT_PATH
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(
-        brief.model_dump_json(indent=2, ensure_ascii=False, by_alias=True),
+        brief.model_dump_json(indent=2, ensure_ascii=False, by_alias=False),
         encoding="utf-8",
     )
     return target

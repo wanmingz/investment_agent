@@ -19,6 +19,41 @@ def _int_env(name: str, default: int) -> int:
         return default
 
 
+def _bool_env(name: str) -> bool | None:
+    raw = os.getenv(name, "").strip().lower()
+    if raw in ("1", "true", "yes", "on"):
+        return True
+    if raw in ("0", "false", "no", "off"):
+        return False
+    return None
+
+
+def _is_openrouter_free(base_url: str, model: str) -> bool:
+    return "openrouter.ai" in base_url.lower() and ":free" in model.lower()
+
+
+def _llm_parallel_agents(base_url: str, model: str) -> bool:
+    override = _bool_env("LLM_PARALLEL_AGENTS")
+    if override is not None:
+        return override
+    # OpenRouter free models: ~20 RPM; parallel 3-agent burst often 429s.
+    if _is_openrouter_free(base_url, model):
+        return False
+    return True
+
+
+def _llm_agent_delay_seconds(base_url: str, model: str) -> float:
+    raw = os.getenv("LLM_AGENT_DELAY_SECONDS", "").strip()
+    if raw:
+        try:
+            return max(0.0, float(raw))
+        except ValueError:
+            pass
+    if _is_openrouter_free(base_url, model):
+        return 5.0
+    return 0.0
+
+
 @dataclass(frozen=True)
 class Settings:
     api_key: str
@@ -30,6 +65,8 @@ class Settings:
     news_max_articles: int = 40
     rag_top_k: int = 12
     pipeline_version: int = 2
+    llm_parallel_agents: bool = True
+    llm_agent_delay_seconds: float = 0.0
 
     @classmethod
     def from_env(cls) -> "Settings":
@@ -77,10 +114,18 @@ class Settings:
 
     @classmethod
     def _with_news(cls, **kwargs) -> "Settings":
+        base_url = str(kwargs.get("base_url", ""))
+        model = str(kwargs.get("model", ""))
         return cls(
             finnhub_api_key=os.getenv("FINNHUB_API_KEY", "").strip(),
             news_max_articles=_int_env("NEWS_MAX_ARTICLES", 80),
             rag_top_k=_int_env("RAG_TOP_K", 24),
             pipeline_version=_int_env("PIPELINE_VERSION", 2),
+            llm_parallel_agents=_llm_parallel_agents(base_url, model),
+            llm_agent_delay_seconds=_llm_agent_delay_seconds(base_url, model),
             **kwargs,
         )
+
+    @property
+    def is_openrouter_free(self) -> bool:
+        return _is_openrouter_free(self.base_url, self.model)

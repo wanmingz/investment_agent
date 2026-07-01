@@ -14,6 +14,7 @@ Rules:
 - Do NOT invent URLs or headlines not in the context.
 - Produce 3-6 themes in "themes" derived FROM HEADLINES ONLY — do not reuse a generic macro theme checklist.
 - Each theme in "themes" must reflect narrative heat in the news (mergers, policy shocks, sector moves, etc.).
+- Theme names, thesis, and all narrative text must be in English even when articles are not.
 - For each theme, include stage from a NEWS flow lens (early, early_mid, mid, mid_late, late).
 - If evidence is thin, use fewer themes and note limitations in narrative_backdrop.
 

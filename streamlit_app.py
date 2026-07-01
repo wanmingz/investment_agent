@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import html
 import sys
 from datetime import date as date_cls
 from pathlib import Path
@@ -128,11 +129,15 @@ def _inject_css() -> None:
     )
 
 
+def _esc(text: str) -> str:
+    return html.escape(text or "", quote=True)
+
+
 def _stage_badge(stage_key: str, label: str) -> str:
     fg, bg = STAGE_COLORS.get(stage_key, ("#e2e8f0", "#334155"))
     return (
         f'<span class="stage-badge" style="color:{fg};background:{bg};border:1px solid {fg}40">'
-        f"{label}</span>"
+        f"{_esc(label)}</span>"
     )
 
 
@@ -144,20 +149,27 @@ def _agent_pills(theme: FinalTheme) -> str:
         agent = _agent_label(key)
         if key in stages:
             lbl = stage_label(stages[key])
-            parts.append(f'<span class="agent-pill">{agent}: {lbl}</span>')
+            parts.append(f'<span class="agent-pill">{_esc(agent)}: {_esc(lbl)}</span>')
         elif key in contrib:
             parts.append(
-                f'<span class="agent-pill" style="opacity:0.65">{agent}: merged</span>'
+                f'<span class="agent-pill" style="opacity:0.65">{_esc(agent)}: merged</span>'
             )
         else:
             parts.append(
-                f'<span class="agent-pill" style="opacity:0.4">{agent}: —</span>'
+                f'<span class="agent-pill" style="opacity:0.4">{_esc(agent)}: —</span>'
             )
     return "".join(parts)
 
 
 def _theme_title(theme: FinalTheme) -> str:
-    return theme.subtitle or theme.name
+    return theme.name
+
+
+def _theme_subtitle(theme: FinalTheme) -> str:
+    sub = (theme.subtitle or "").strip()
+    if sub and sub != theme.name:
+        return sub
+    return ""
 
 
 def _render_theme_card(rank: int, theme: FinalTheme) -> None:
@@ -165,25 +177,27 @@ def _render_theme_card(rank: int, theme: FinalTheme) -> None:
     stage_key = stage.value
     label = theme.stage_label or stage_label(stage)
 
-    st.markdown(
-        f"""
-        <div class="theme-card">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;">
-                <div>
-                    <span style="color:#64748b;font-size:0.85rem;">#{rank}</span>
-                    <span style="font-size:1.15rem;font-weight:700;margin-left:0.5rem;">
-                        {_theme_title(theme)}
-                    </span>
-                    <span style="color:#64748b;font-size:0.85rem;margin-left:0.5rem;">{theme.name}</span>
-                </div>
-                {_stage_badge(stage_key, label)}
-            </div>
-            <p style="color:#cbd5e1;margin:0.75rem 0 0.5rem;line-height:1.6;">{theme.thesis}</p>
-            <p style="color:#94a3b8;font-size:0.9rem;margin:0;">{theme.synthesis}</p>
-            <div style="margin-top:0.75rem;">{_agent_pills(theme)}</div>
-        </div>
-        """,
-        unsafe_allow_html=True,
+    subtitle = _theme_subtitle(theme)
+    subtitle_html = (
+        f'<span style="color:#64748b;font-size:0.85rem;margin-left:0.5rem;">{_esc(subtitle)}</span>'
+        if subtitle
+        else ""
+    )
+    st.html(
+        f'<div class="theme-card">'
+        f'<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;">'
+        f"<div>"
+        f'<span style="color:#64748b;font-size:0.85rem;">#{rank}</span>'
+        f'<span style="font-size:1.15rem;font-weight:700;margin-left:0.5rem;">'
+        f"{_esc(_theme_title(theme))}</span>"
+        f"{subtitle_html}"
+        f"</div>"
+        f"{_stage_badge(stage_key, label)}"
+        f"</div>"
+        f'<p style="color:#cbd5e1;margin:0.75rem 0 0.5rem;line-height:1.6;">{_esc(theme.thesis)}</p>'
+        f'<p style="color:#94a3b8;font-size:0.9rem;margin:0;">{_esc(theme.synthesis)}</p>'
+        f'<div style="margin-top:0.75rem;">{_agent_pills(theme)}</div>'
+        f"</div>"
     )
     contrib = theme.contributing_agents or []
     if contrib or theme.primary_agent:
@@ -258,9 +272,9 @@ def _render_brief(brief: InvestmentBrief) -> None:
         unsafe_allow_html=True,
     )
     if brief.as_of_context:
-        st.markdown(f'<p class="sub-header">{brief.as_of_context}</p>', unsafe_allow_html=True)
+        st.html(f'<p class="sub-header">{_esc(brief.as_of_context)}</p>')
 
-    st.markdown(f'<div class="summary-box">{brief.executive_summary}</div>', unsafe_allow_html=True)
+    st.html(f'<div class="summary-box">{_esc(brief.executive_summary)}</div>')
 
     st.markdown("### Agent views")
     tab1, tab2, tab3 = st.tabs(
