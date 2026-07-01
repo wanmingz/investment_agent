@@ -1,13 +1,13 @@
 # Investment Agent — Multi-Agent Theme Analysis (v2)
 
-Three domain agents analyze **disjoint inputs** from a shared **Data Plane**; a programmatic **Brief Assembler** merges themes with lifecycle stage: **Early / Early-Mid / Mid / Mid-Late / Late**.
+Three domain agents analyze **disjoint inputs** from a shared **Data Plane**; a programmatic **Brief Assembler** merges themes by **sector** and lifecycle stage: **Early / Early-Mid / Mid / Mid-Late / Late**.
 
 | Agent | Role | Input builder | External data |
 |-------|------|---------------|---------------|
 | **Regime** | Macro regime themes | `agents/regime/input.py` → `RegimeInput` | yfinance-derived cross-asset summary + LLM |
 | **Narrative** | Headline narrative heat | `agents/narrative/input.py` → `NarrativeInput` | Finnhub (optional) + TickerTick RAG |
 | **Markets** | Fundamentals + vol themes | `agents/markets/input.py` → `MarketsInput` | yfinance fundamentals + vol snapshots |
-| **Assembler** | Cluster & rank | Three agent reports | Programmatic (`theme_key()` in `brief_assembler.py`) |
+| **Assembler** | Sector merge & rank | Three agent reports | Programmatic (`brief_assembler.py`) |
 
 `data_plane.py` orchestrates the three input builders (no LLM). **3 LLM calls** per run (no CIO LLM). **All outputs in English.**
 
@@ -30,8 +30,31 @@ source .venv/bin/activate
 pip install -e .
 
 cp .env.example .env
-# Set GEMINI_API_KEY or OPENAI_API_KEY in .env
+# Set GEMINI_API_KEY or OPENAI_API_KEY (Groq / OpenRouter / OpenAI) in .env
 ```
+
+### Groq (current default in `.env.example`)
+
+1. Create an API key at [Groq Console](https://console.groq.com/keys)
+2. In `.env`:
+
+```bash
+LLM_PROVIDER=openai
+OPENAI_API_KEY=gsk_...
+OPENAI_BASE_URL=https://api.groq.com/openai/v1
+OPENAI_MODEL=llama-3.3-70b-versatile
+
+MARKET_REGION=global
+RESUME_CHECKPOINT=1
+
+# Groq on-demand ~12k tokens/request — keep narrative RAG small
+RAG_TOP_K=5
+RAG_SUMMARY_MAX_CHARS=180
+RAG_CONTEXT_MAX_CHARS=3000
+NEWS_MAX_ARTICLES=25
+```
+
+Groq defaults (when vars are unset): **sequential** agents, compact JSON schema, capped news context. After changing `.env`, **restart** Streamlit/CLI. If Narrative fails with prompt-too-large, click **Clear checkpoint** in the sidebar (stale `data_plane` cache can hold an oversized context block).
 
 ### Gemini
 
@@ -43,6 +66,10 @@ LLM_PROVIDER=gemini
 GEMINI_API_KEY=your-key
 GEMINI_MODEL=gemini-2.5-flash-lite
 ```
+
+### OpenRouter / OpenAI
+
+See commented blocks in `.env.example` for OpenRouter (`:free` models run sequentially) and OpenAI (`gpt-4o`).
 
 Run:
 
@@ -65,28 +92,32 @@ invest-dashboard
 
 1. Select market region, click **Run analysis**
 2. Or **Load last result** for `reports/latest.json`
-3. **Agent views** — three tabs: Regime · Narrative · Markets (fundamentals + vol)
-4. Expand **Independent agent themes (before merge)** — three columns: Regime · Narrative · Markets
-
-Merged theme cards show contributor pills (`regime`, `narrative`, `markets`).
+3. **Resume from checkpoint** — skip completed agents (`reports/cache/`)
+4. **Clear checkpoint** — after `.env` or RAG limit changes
+5. **Agent views** — Regime · Narrative · Markets tabs
+6. **Recommended themes** — one card per sector (e.g. Financials, Tech); pills show each agent's stage (`—` if that agent had no matching theme)
 
 ## Environment variables
 
 | Variable | Description |
 |----------|-------------|
-| `GEMINI_API_KEY` | Gemini key (with `LLM_PROVIDER=gemini`) |
-| `GEMINI_MODEL` | Default in code: `gemini-2.0-flash`; `.env.example` suggests `gemini-2.5-flash-lite` |
-| `LLM_PROVIDER` | `gemini` or `openai` |
-| `OPENAI_API_KEY` | OpenAI or compatible API key |
-| `OPENAI_BASE_URL` | Optional; Gemini uses Google OpenAI-compatible endpoint by default |
-| `OPENAI_MODEL` | OpenAI model id when using `LLM_PROVIDER=openai` |
+| `LLM_PROVIDER` | `gemini` or `openai` (Groq / OpenRouter use `openai` + `OPENAI_BASE_URL`) |
+| `GEMINI_API_KEY` / `GEMINI_MODEL` | Gemini via Google AI Studio |
+| `OPENAI_API_KEY` / `OPENAI_BASE_URL` / `OPENAI_MODEL` | OpenAI-compatible APIs (Groq, OpenRouter, OpenAI) |
 | `MARKET_REGION` | `global`, `US`, `China`, etc. |
 | `FINNHUB_API_KEY` | Optional; more Narrative headlines via [Finnhub](https://finnhub.io/) |
-| `NEWS_MAX_ARTICLES` | Max headlines for Narrative ingest (default `40`) |
-| `RAG_TOP_K` | Articles passed to Narrative LLM after retrieval (default `12`) |
-| `FUNDAMENTALS_MAX_TICKERS` | Max extra tickers for Markets fundamentals fetch (default `8`) |
-| `RESUME_CHECKPOINT` | Save steps under `reports/cache/` for resume (default `1`) |
-| `LLM_MAX_RETRIES_ON_429` | Short rate-limit retries in `llm.py` (default `2`) |
+| `NEWS_MAX_ARTICLES` | Max headlines ingested (Groq default **25** if unset) |
+| `RAG_TOP_K` | Articles in Narrative LLM prompt (Groq default **5** if unset) |
+| `RAG_SUMMARY_MAX_CHARS` | Per-article summary cap in context block (Groq default **180**) |
+| `RAG_CONTEXT_MAX_CHARS` | Total narrative context cap (Groq default **3000**) |
+| `FUNDAMENTALS_MAX_TICKERS` | Max extra tickers for Markets fundamentals (default `8`) |
+| `RESUME_CHECKPOINT` | Save steps under `reports/cache/` (default `1`) |
+| `LLM_PARALLEL_AGENTS` | `1` = parallel LLM calls; Groq/OpenRouter `:free` default **off** |
+| `LLM_AGENT_DELAY_SECONDS` | Delay between sequential agent calls (OpenRouter `:free`) |
+| `LLM_COMPACT_SCHEMA` | `1` = strip JSON schema descriptions in LLM system prompt |
+| `LLM_MAX_RETRIES_ON_429` | Short rate-limit retries in `llm.py` |
+
+Provider-aware defaults live in `config.py` (`is_groq`, `is_openrouter_free`).
 
 ## Architecture
 
@@ -107,7 +138,7 @@ flowchart TB
         NI[NarrativeInput]
     end
 
-  MF --> RI
+    MF --> RI
     MF --> MI
     DP --> MF
     DP --> NI
@@ -130,27 +161,38 @@ build_data_plane()                    no LLM
   ├─ agents/narrative/input.py        build_narrative_input() → NarrativeInput
   └─ agents/markets/input.py          build_markets_input(snapshots) → MarketsInput
 
-RegimeAgent.analyze()                 LLM → RegimeReport          ∥ parallel
-NarrativeAgent.analyze()              LLM → NarrativeReport      ∥ parallel
-MarketsAgent.analyze()                LLM → MarketsReport        ∥ parallel
+RegimeAgent.analyze()                 LLM → RegimeReport          ∥ or sequential*
+NarrativeAgent.analyze()              LLM → NarrativeReport      ∥ or sequential*
+MarketsAgent.analyze()                LLM → MarketsReport        ∥ or sequential*
 
-brief_assembler.assemble()            programmatic → InvestmentBrief
+brief_assembler.assemble()            sector merge + rank → InvestmentBrief
 _enrich_brief()                       dates, data_sources, per-agent theme snapshots
 ```
 
-**Checkpoint steps:** `data_plane`, `regime`, `narrative`, `markets` under `reports/cache/`. Cache metadata uses **pipeline version 5** (`checkpoint.py`); older caches are cleared on resume.
+\* **Groq** and **OpenRouter `:free`** run agents **sequentially** by default to avoid rate/token bursts.
 
-Agents do **not** receive other agents' reports. Inputs are **pairwise disjoint** (Regime gets a derived summary, not news text or full Markets prompt blocks).
+**Checkpoint steps:** `data_plane`, `regime`, `narrative`, `markets` under `reports/cache/`. Cache metadata uses **pipeline version 6** (`checkpoint.py`); older caches are cleared on resume. On resume, narrative `context_block` is **re-truncated** to current RAG limits.
+
+Agents do **not** receive other agents' reports. Inputs are **pairwise disjoint**.
+
+### Brief assembler (sector merge)
+
+`brief_assembler.py` groups agent themes into **one `FinalTheme` per sector** when possible:
+
+- Sector from theme title keywords (financials, tech, energy, …) or ETF tickers (XLF, XLK, …)
+- Regime + Narrative + Markets themes on the same sector → **single card** with multiple agent pills
+- Display name normalized (e.g. `Financials`, `Tech`)
+- Non-sector macro themes clustered by title similarity
 
 ### Agent ↔ data mapping
 
 | Package | Data modules | `*Input` fields | Fed to LLM as |
 |---------|--------------|---------------|---------------|
-| `agents/regime/` | `input.py` (slice from `MarketSnapshots`) | `regime_context_block` | Cross-asset regime markdown |
-| `agents/narrative/` | `ingest.py`, `rag.py`, `input.py` | `context_block`, `retrieved` | Headline RAG block |
-| `agents/markets/` | `snapshot.py`, `price.py`, `valuation.py`, `revisions.py`, `universe.py`, `input.py` | `fundamentals`, `vol` | Full fundamentals + vol prompt blocks |
+| `agents/regime/` | `input.py` | `regime_context_block` | Cross-asset regime markdown |
+| `agents/narrative/` | `ingest.py`, `rag.py`, `input.py` | `context_block`, `retrieved` | Truncated headline RAG block |
+| `agents/markets/` | `snapshot.py`, `universe.py`, … | `fundamentals`, `vol` | Full fundamentals + vol prompt blocks |
 
-Markets performs the **only yfinance fetch** per run (`fetch_market_snapshots`). Regime reuses that payload as a compact summary (no second network round-trip).
+Markets performs the **only yfinance fetch** per run. Regime reuses that payload as a compact summary.
 
 ### Brief fields
 
@@ -158,11 +200,10 @@ Markets performs the **only yfinance fetch** per run (`fetch_market_snapshots`).
 |-------------|--------------|
 | `regime_view`, `regime_themes` | `RegimeReport` |
 | `narrative_view`, `narrative_themes`, `narrative_citations` | `NarrativeReport` |
-| `markets_fundamentals_view`, `markets_vol_view`, `markets_themes` | `MarketsReport` (`fundamentals_themes` + `vol_themes`) |
+| `markets_fundamentals_view`, `markets_vol_view`, `markets_themes` | `MarketsReport` |
+| `themes[]` | Merged `FinalTheme` rows (sector-deduped) |
 
-Merged `FinalTheme.contributing_agents` / `primary_agent` use `regime`, `narrative`, `markets`.
-
-Loading older `reports/latest.json` files migrates legacy field names (`macro_view`, `news_themes`, etc.) via `storage.migrate_brief_dict()`.
+Loading older `reports/latest.json` migrates legacy names (`macro_view`, `news_themes`, …) via `storage.migrate_brief_dict()`.
 
 ### Repository layout
 
@@ -171,108 +212,106 @@ investment_agent/
 ├── main.py
 ├── streamlit_app.py
 ├── tests/test_pipeline.py
-├── research/data-agent-relationship.md
+├── research/                      # design notes (incl. data-agent map)
 ├── reports/
 │   ├── latest.json
-│   └── cache/
+│   └── cache/                     # checkpoint resume
 └── src/investment_agent/
     ├── orchestrator.py
-    ├── data_plane.py              # orchestrates build_data_plane(); re-exports *Input
-    ├── brief_assembler.py
-    ├── agents/
-    │   ├── regime/
-    │   │   ├── agent.py           # RegimeAgent (LLM)
-    │   │   └── input.py           # RegimeInput, build_regime_input()
-    │   ├── narrative/
-    │   │   ├── agent.py           # NarrativeAgent (LLM)
-    │   │   ├── input.py           # NarrativeInput, build_narrative_input()
-    │   │   ├── ingest.py          # Finnhub + TickerTick
-    │   │   └── rag.py             # lexical retrieval
-    │   └── markets/
-    │       ├── agent.py           # MarketsAgent (LLM)
-    │       ├── input.py           # MarketsInput, fetch_market_snapshots()
-    │       ├── snapshot.py        # FundamentalsSnapshot, VolSnapshot
-    │       └── universe.py, price.py, valuation.py, revisions.py
-    ├── checkpoint.py
-    ├── llm.py
+    ├── data_plane.py
+    ├── brief_assembler.py         # sector merge + theme_key clustering
+    ├── agents/regime|narrative|markets/
+    ├── checkpoint.py              # PIPELINE_VERSION=6
+    ├── llm.py                     # structured JSON, 429/413 handling
     ├── models.py
     ├── storage.py
     ├── config.py
-    ├── dates.py
     └── cli.py
 ```
 
-Console scripts (`pyproject.toml`): `invest-themes` → `cli.main`, `invest-dashboard` → `cli.dashboard_main`.
+Console scripts: `invest-themes`, `invest-dashboard`.
 
 ## Data sources
 
-| Output | Source | Notes |
-|--------|--------|-------|
-| `report_date`, `as_of_context` | Local clock | `dates.py` + `_enrich_brief()` |
-| Regime themes, `regime_backdrop`, `dominant_regime` | LLM + cross-asset context | `agents/regime/input.py` |
-| Narrative themes, citations, sourced drivers/risks | LLM + RAG | `agents/narrative/` |
-| Markets themes, fundamentals/vol views | LLM + yfinance | `agents/markets/snapshot.py` prompt blocks |
-| `fundamentals_notes` | Program | `FundamentalsSnapshot.summary_lines()` |
-| Final `themes[]`, scores, `contributing_agents` | `brief_assembler.py` | `theme_key()` clustering |
-| `key_drivers_sourced` / `risks_sourced` | Program | When merged cluster includes narrative themes |
-| `data_sources` | Program | `_enrich_brief()` |
+| Output | Source |
+|--------|--------|
+| Regime themes, cross-asset context | LLM + `agents/regime/input.py` |
+| Narrative themes, citations | LLM + truncated RAG (`agents/narrative/`) |
+| Markets themes, fundamentals/vol views | LLM + yfinance |
+| Final `themes[]`, sector labels, agent stages | `brief_assembler.py` |
+| `data_sources`, `fundamentals_notes` | `_enrich_brief()` |
 
-### Regime cross-asset context
+### Sector ETF universe (`agents/markets/universe.py`)
 
-Built in `agents/regime/input.py` from the same `MarketSnapshots` as Markets:
+XLK, XLE, XLV, XLF, IGV, XLY, XLI, XLU, SPY, ^VIX — used for Markets/Regime snapshots and sector tagging in the assembler.
 
-- VIX level and 20d change
-- Sector 20d annualized vol (XLK, XLE, XLV, XLF, IGV)
-- ETF 20d returns and vs-SPY spreads
-- Rule-based `signals` from the fundamentals snapshot
+### LLM quotas & errors
 
-No news text; no full per-symbol Markets prompt.
+| Provider | Typical limit | Mitigation |
+|----------|---------------|------------|
+| Gemini flash-lite | ~20 req/day | `RESUME_CHECKPOINT=1`, load `latest.json` |
+| Groq on-demand | ~12k **tokens/request** | Low `RAG_*` vars, compact schema, clear checkpoint |
+| OpenRouter `:free` | ~50/day, ~20/min | Sequential agents + delay |
 
-### Narrative ingest (free tier)
+`QuotaExhaustedError` (429) and prompt-too-large (413) hints are in `llm.py`. Use sidebar **Resume from checkpoint** or **Load last result**.
 
-| Provider | Auth | Used in |
-|----------|------|---------|
-| [Finnhub](https://finnhub.io/) | `FINNHUB_API_KEY` (optional) | `agents/narrative/ingest.py` |
-| [TickerTick](https://github.com/hczhu/TickerTick-API) | None | `agents/narrative/ingest.py` |
+## Roadmap: Portfolio management
 
-Corpus capped by `NEWS_MAX_ARTICLES`; `RAG_TOP_K` articles enter the Narrative LLM prompt.
+Today the pipeline is **theme discovery only** — no holdings, weights, or rebalance logic. Portfolio management fits **after** `brief_assembler.assemble()`, as a **programmatic module** (not a 4th parallel agent), to preserve agent input isolation.
 
-### Live market data (yfinance)
+```mermaid
+flowchart LR
+    A[3 Agents] --> B[BriefAssembler]
+    B --> C[Portfolio module — planned]
+    U[User holdings JSON] --> C
+    M[MarketSnapshots prices] --> C
+    C --> D[InvestmentBrief + portfolio section]
+```
 
-Fetched in `agents/markets/snapshot.py`:
+### Design principles
 
-| Label | Symbol | Use |
-|-------|--------|-----|
-| VIX proxy | `^VIX` | Level and 20-day change |
-| Tech / Energy / Healthcare / Financials / AI-Cloud | `XLK` `XLE` `XLV` `XLF` `IGV` | Sector vol + fundamentals universe |
-| Benchmark | `SPY` | Relative performance |
+- **Input:** `PortfolioInput` (holdings, cash %, risk profile, max single-name weight) — user-supplied, not from other agents' LLM reports
+- **Signal:** `FinalTheme[]` — `investability_score`, `stage`, `tickers_or_sectors`
+- **Prices:** reuse `MarketSnapshots` / yfinance (no new fetch layer in v1)
+- **No broker execution** — research and drift analysis only; disclaimer unchanged
 
-Universe is fixed sector ETFs + SPY (`agents/markets/universe.py`). `FUNDAMENTALS_MAX_TICKERS` caps optional extra symbols if enabled later.
+### Planned phases
 
-### Gemini free-tier quota (429)
+| Phase | Scope | Deliverable |
+|-------|--------|-------------|
+| **P1 — Model portfolio** | No user holdings | `suggested_allocation` from top themes → sector ETF weights (XLF, XLK, …); Streamlit pie chart |
+| **P2 — Holdings alignment** | User portfolio file / sidebar form | `current_vs_target` drift table, `theme_alignment_score`, rebalance hints (symbol, current %, target %, delta %) |
+| **P3 — Constraints & narrative** | Risk caps, min cash | `portfolio_optimizer.py` (heuristic, no LP required); optional LLM **narrator** that explains pre-computed numbers only |
 
-A full run uses **3 LLM requests**. `gemini-2.5-flash-lite` free tier is often **~20 requests/day** (~6 full runs).
+### Proposed modules (not implemented yet)
 
-### OpenRouter free models (429)
+```
+src/investment_agent/
+├── portfolio/
+│   ├── models.py          # PortfolioInput, Position, PortfolioReport
+│   ├── suggest.py         # P1 theme → target weights
+│   ├── alignment.py       # P2 drift vs holdings
+│   └── optimizer.py       # P3 constraints (optional)
+```
 
-With `OPENAI_BASE_URL=https://openrouter.ai/api/v1` and a `:free` model, agents run **sequentially** with a short delay between calls (override with `LLM_PARALLEL_AGENTS=1`). Free tier is roughly **50 requests/day** and **20/min**.
+`InvestmentBrief` would gain optional fields: `suggested_allocation`, `portfolio_alignment`, `rebalance_suggestions[]`.
 
-On `429 RESOURCE_EXHAUSTED` or rate limit:
+### Out of scope (for now)
 
-1. Wait for quota reset (UTC) or switch API key / `LLM_PROVIDER`
-2. **Load last result** from `reports/latest.json`
-3. Enable **Resume from checkpoint** — partial progress under `reports/cache/`
+- Live trading / broker APIs
+- Full equity universe (stays sector-ETF-centric until universe expands)
+- Feeding holdings back into Regime/Narrative/Markets prompts
 
-`QuotaExhaustedError` and retry logic are in `llm.py`.
+See `research/data-agent-relationship.md` for data-plane notes. Portfolio PRs should land after P1 assembler/sector merge behavior is stable.
 
 ## Tests
 
 ```bash
-pip install pytest   # optional
+pip install pytest
 PYTHONPATH=src python -m pytest tests/test_pipeline.py -v
 ```
 
-Covers per-agent input builders, `build_data_plane()` wiring, `brief_assembler.assemble()` clustering, and legacy brief JSON migration.
+Covers data plane wiring, sector clustering in `brief_assembler`, RAG truncation, and legacy brief JSON migration.
 
 ## Disclaimer
 
