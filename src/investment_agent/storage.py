@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -18,6 +19,7 @@ from investment_agent.models import (
 )
 
 DEFAULT_REPORT_PATH = Path(__file__).resolve().parents[2] / "reports" / "latest.json"
+RUNS_DIR = DEFAULT_REPORT_PATH.parent / "runs"
 
 _LEGACY_AGENT_KEYS = {
     "macro": AGENT_REGIME,
@@ -183,6 +185,14 @@ def migrate_brief_dict(data: dict) -> dict:
     return data
 
 
+def run_archive_path(brief: InvestmentBrief, *, now: datetime | None = None) -> Path:
+    """Timestamped path under reports/runs/ (multiple runs per calendar day)."""
+    now = now or datetime.now()
+    date_part = brief.report_date or format_date_iso(analysis_date())
+    stamp = now.strftime("%H%M%S")
+    return RUNS_DIR / f"{date_part}_{stamp}.json"
+
+
 def save_brief(brief: InvestmentBrief, path: Path | None = None) -> Path:
     target = path or DEFAULT_REPORT_PATH
     target.parent.mkdir(parents=True, exist_ok=True)
@@ -191,6 +201,21 @@ def save_brief(brief: InvestmentBrief, path: Path | None = None) -> Path:
         encoding="utf-8",
     )
     return target
+
+
+def save_run_reports(brief: InvestmentBrief) -> tuple[Path, Path]:
+    """Persist latest.json and a timestamped archive copy for this run."""
+    latest = save_brief(brief)
+    archive = save_brief(brief, run_archive_path(brief))
+    return latest, archive
+
+
+def list_run_reports(*, limit: int = 50) -> list[Path]:
+    """Newest-first paths under reports/runs/."""
+    if not RUNS_DIR.is_dir():
+        return []
+    files = sorted(RUNS_DIR.glob("*.json"), reverse=True)
+    return files[:limit]
 
 
 def load_brief(path: Path | None = None) -> InvestmentBrief | None:

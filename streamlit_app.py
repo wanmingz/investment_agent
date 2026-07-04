@@ -41,7 +41,7 @@ from investment_agent.config import Settings
 from investment_agent.dates import analysis_date, format_date_iso
 from investment_agent.llm import QuotaExhaustedError
 from investment_agent.orchestrator import ThemeOrchestrator
-from investment_agent.storage import DEFAULT_REPORT_PATH, load_brief, save_brief
+from investment_agent.storage import DEFAULT_REPORT_PATH, load_brief, save_run_reports
 
 try:
     from investment_agent.dates import format_date_display
@@ -409,10 +409,10 @@ def main() -> None:
             st.write("Brief assembler (programmatic merge)")
             try:
                 brief = ThemeOrchestrator(settings).run(resume=resume_ckpt)
-                path = save_brief(brief)
+                latest_path, archive_path = save_run_reports(brief)
                 st.session_state.brief = brief
                 status.update(label="Analysis complete", state="complete")
-                st.success(f"Saved to `{path}`")
+                st.success(f"Saved to `{latest_path}` · archive `{archive_path}`")
             except QuotaExhaustedError as e:
                 status.update(label="API quota exceeded", state="error")
                 st.error(e.user_hint())

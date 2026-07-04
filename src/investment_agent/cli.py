@@ -11,6 +11,7 @@ from investment_agent.storage import (
     brief_narrative_citations,
     brief_narrative_view,
     save_brief,
+    save_run_reports,
     theme_drivers_sourced,
     theme_risks_sourced,
 )
@@ -181,9 +182,13 @@ def main() -> None:
         orchestrator = ThemeOrchestrator(settings)
         brief = orchestrator.run()
 
+        latest_path, archive_path = save_run_reports(brief)
+        console.print(f"[green]Report saved:[/green] {latest_path}")
+        console.print(f"[dim]Archive:[/dim] {archive_path}")
+
         if args.output is not None:
             out_path = save_brief(brief, args.output)
-            console.print(f"[green]Report saved:[/green] {out_path}")
+            console.print(f"[green]Copy saved:[/green] {out_path}")
 
         if args.json:
             print(brief.model_dump_json(indent=2, ensure_ascii=False))
