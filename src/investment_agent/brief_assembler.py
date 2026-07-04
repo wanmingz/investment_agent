@@ -8,6 +8,7 @@ from dataclasses import dataclass
 from datetime import date
 
 from investment_agent.dates import format_date_iso
+from investment_agent.universe import SECTOR_DISPLAY_ETF, sector_key_for_symbol
 from investment_agent.models import (
     AGENT_MARKETS,
     AGENT_NARRATIVE,
@@ -46,8 +47,8 @@ _SECTOR_WORDS: dict[str, str] = {
     "tech": "tech",
     "technology": "tech",
     "software": "tech",
-    "ai": "tech",
-    "cloud": "tech",
+    "ai": "ai",
+    "cloud": "cloud",
     "energy": "energy",
     "oil": "energy",
     "financial": "financials",
@@ -78,6 +79,8 @@ _MERGEABLE_SECTORS = frozenset(
         "consumer",
         "industrials",
         "utilities",
+        "ai",
+        "cloud",
         * _BROAD_SECTORS,
     }
 )
@@ -88,6 +91,8 @@ _SECTOR_PRIORITY = (
     "consumer",
     "industrials",
     "utilities",
+    "ai",
+    "cloud",
     "tech",
     "growth",
     "value",
@@ -103,22 +108,13 @@ _SECTOR_DISPLAY: dict[str, str] = {
     "consumer": "Consumer",
     "industrials": "Industrials",
     "utilities": "Utilities",
+    "ai": "AI",
+    "cloud": "Cloud",
     "growth": "Growth",
     "value": "Value",
     "rates": "Rates & Policy",
     "inflation": "Inflation",
     "disinflation": "Disinflation",
-}
-_TICKER_SECTOR: dict[str, str] = {
-    "xlk": "tech",
-    "xle": "energy",
-    "xlv": "healthcare",
-    "xlf": "financials",
-    "igv": "tech",
-    "xly": "consumer",
-    "xli": "industrials",
-    "xlu": "utilities",
-    "spy": "benchmark",
 }
 
 
@@ -150,8 +146,9 @@ def _primary_sector(theme: AgentTheme) -> str | None:
     for raw in theme.tickers_or_sectors:
         for part in re.split(r"[,;/\s]+", str(raw).lower()):
             sym = part.strip().lstrip("$").lower()
-            if sym in _TICKER_SECTOR and _TICKER_SECTOR[sym] != "benchmark":
-                return _TICKER_SECTOR[sym]
+            sector = sector_key_for_symbol(sym)
+            if sector and sector != "benchmark":
+                return sector
     return None
 
 
@@ -221,7 +218,9 @@ def _group_display_name(group: list[_TaggedTheme]) -> str:
     sectors = {_primary_sector(t.theme) for t in group} - {None}
     if len(sectors) == 1:
         sector = next(iter(sectors))
-        return _SECTOR_DISPLAY.get(sector, sector.replace("_", " ").title())
+        return SECTOR_DISPLAY_ETF.get(sector) or _SECTOR_DISPLAY.get(
+            sector, sector.replace("_", " ").title()
+        )
     return max(group, key=lambda t: t.theme.confidence).theme.name
 
 

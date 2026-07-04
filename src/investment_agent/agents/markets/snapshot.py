@@ -9,7 +9,12 @@ from datetime import date
 
 from investment_agent.agents.markets.price import PriceMetrics, fetch_price_metrics
 from investment_agent.agents.markets.revisions import RevisionMetrics, fetch_revision_metrics
-from investment_agent.agents.markets.universe import BENCHMARK_SYMBOL, SECTOR_ETFS, symbols_for_fundamentals
+from investment_agent.universe import (
+    BENCHMARK_SYMBOL,
+    SECTOR_ETFS,
+    symbols_for_fundamentals,
+    vol_labeled_symbols,
+)
 from investment_agent.agents.markets.valuation import ValuationMetrics, fetch_valuation_metrics
 
 _ETF_SYMBOLS = set(SECTOR_ETFS.values()) | {BENCHMARK_SYMBOL}
@@ -234,16 +239,7 @@ def fetch_vol_snapshot() -> VolSnapshot:
     except ImportError:
         return VolSnapshot(None, None, {}, ["yfinance not installed"])
 
-    tickers = {
-        "VIX": "^VIX",
-        "Tech": "XLK",
-        "Energy": "XLE",
-        "Healthcare": "XLV",
-        "Financials": "XLF",
-        "AI/Cloud": "IGV",
-    }
-
-    for label, symbol in tickers.items():
+    for label, symbol in vol_labeled_symbols():
         try:
             hist = yf.Ticker(symbol).history(period="1mo")
             if hist.empty or len(hist) < 5:

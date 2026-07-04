@@ -184,13 +184,13 @@ def test_assemble_clusters_and_maps_views():
     regime = RegimeReport(
         regime_backdrop="Regime backdrop.",
         dominant_regime="soft landing",
-        themes=[_theme("AI Infrastructure")],
+        themes=[_theme("AI Infrastructure", tickers=["AIQ"])],
         cross_asset_signals=["rates stable"],
     )
     narrative = NarrativeReport(
         narrative_backdrop="Narrative backdrop.",
         narrative_sentiment="neutral",
-        themes=[_theme("AI Infrastructure", 0.7)],
+        themes=[_theme("AI Infrastructure", 0.7, tickers=["AIQ"])],
         key_drivers_sourced=[
             SourcedItem(
                 text="Infrastructure spending accelerates",
@@ -204,21 +204,21 @@ def test_assemble_clusters_and_maps_views():
         vol_regime="normal",
         fundamentals_view="Fundamentals paragraph.",
         vol_view="Vol paragraph.",
-        fundamentals_themes=[_theme("Software margin recovery")],
-        vol_themes=[_theme("Low vol tech carry")],
+        fundamentals_themes=[_theme("AI Infrastructure buildout", tickers=["AIQ"])],
+        vol_themes=[_theme("AI vol regime", tickers=["AIQ"])],
     )
     brief = assemble(regime, narrative, markets, as_of=date(2026, 6, 16))
     assert brief.regime_view
     assert brief.narrative_view == "Narrative backdrop."
     assert brief.markets_fundamentals_view == "Fundamentals paragraph."
     assert len(brief.themes) == 1
-    tech = brief.themes[0]
-    assert tech.name == "Tech"
-    assert len(tech.contributing_agents) == 3
-    assert AGENT_REGIME in tech.contributing_agents
-    assert AGENT_NARRATIVE in tech.contributing_agents
-    assert AGENT_MARKETS in tech.contributing_agents
-    assert len(tech.key_drivers_sourced) >= 1
+    ai_theme = brief.themes[0]
+    assert ai_theme.name == "AI"
+    assert len(ai_theme.contributing_agents) == 3
+    assert AGENT_REGIME in ai_theme.contributing_agents
+    assert AGENT_NARRATIVE in ai_theme.contributing_agents
+    assert AGENT_MARKETS in ai_theme.contributing_agents
+    assert len(ai_theme.key_drivers_sourced) >= 1
 
 
 def test_format_context_block_truncates_for_token_budget():

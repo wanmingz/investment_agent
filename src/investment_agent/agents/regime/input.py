@@ -7,7 +7,7 @@ from datetime import date
 
 from investment_agent.agents.markets.input import MarketSnapshots
 from investment_agent.agents.markets.snapshot import FundamentalsSnapshot, VolSnapshot
-from investment_agent.agents.markets.universe import BENCHMARK_SYMBOL
+from investment_agent.universe import BENCHMARK_SYMBOL
 
 
 @dataclass(frozen=True)

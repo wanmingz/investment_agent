@@ -1,25 +1,16 @@
-"""Sector ETF + benchmark universe for Markets agent yfinance fetches.
-
-Regime agent reads a derived summary built from the same snapshots (see ``agents/regime/input.py``).
-"""
+"""Symbol list helpers derived from the shared universe registry."""
 
 from __future__ import annotations
 
 import re
 
-# Sector proxies for yfinance fetches (Markets + Regime summary)
-SECTOR_ETFS: dict[str, str] = {
-    "Tech": "XLK",
-    "Energy": "XLE",
-    "Healthcare": "XLV",
-    "Financials": "XLF",
-    "AI/Cloud": "IGV",
-    "Consumer": "XLY",
-    "Industrials": "XLI",
-    "Utilities": "XLU",
-}
-
-BENCHMARK_SYMBOL = "SPY"
+from investment_agent.universe.constants import (
+    BENCHMARK_SYMBOL,
+    SECTOR_ETFS,
+    TICKER_TO_SECTOR,
+    VIX_SYMBOL,
+    VOL_SECTOR_LABELS,
+)
 
 _TICKER_RE = re.compile(r"^[A-Z][A-Z0-9.\-]{0,9}$")
 
@@ -48,11 +39,13 @@ def symbols_for_fundamentals(
     theme_tickers: list[str],
     *,
     max_extra: int = 8,
+    sector_etfs: dict[str, str] | None = None,
 ) -> tuple[list[tuple[str, str]], list[str]]:
     """
     Returns (labeled_symbols, notes).
     labeled_symbols: (label, symbol) — sectors first, then theme tickers, SPY benchmark.
     """
+    etfs = sector_etfs if sector_etfs is not None else SECTOR_ETFS
     notes: list[str] = []
     labeled: list[tuple[str, str]] = []
     seen: set[str] = set()
@@ -64,7 +57,7 @@ def symbols_for_fundamentals(
         seen.add(sym)
         labeled.append((label, sym))
 
-    for label, sym in SECTOR_ETFS.items():
+    for label, sym in etfs.items():
         add(label, sym)
     add("Benchmark", BENCHMARK_SYMBOL)
 
@@ -78,3 +71,21 @@ def symbols_for_fundamentals(
             extra += 1
 
     return labeled, notes
+
+
+def vol_labeled_symbols(
+    *,
+    sector_etfs: dict[str, str] | None = None,
+    vol_labels: frozenset[str] | None = None,
+) -> list[tuple[str, str]]:
+    etfs = sector_etfs if sector_etfs is not None else SECTOR_ETFS
+    labels = vol_labels if vol_labels is not None else VOL_SECTOR_LABELS
+    out: list[tuple[str, str]] = [("VIX", VIX_SYMBOL)]
+    for label, sym in etfs.items():
+        if label in labels:
+            out.append((label, sym))
+    return out
+
+
+def sector_key_for_symbol(symbol: str) -> str | None:
+    return TICKER_TO_SECTOR.get(symbol.strip().lower())
