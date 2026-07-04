@@ -41,7 +41,24 @@ from investment_agent.config import Settings
 from investment_agent.dates import analysis_date, format_date_iso
 from investment_agent.llm import QuotaExhaustedError
 from investment_agent.orchestrator import ThemeOrchestrator
+from investment_agent.portfolio.quotes import fetch_close_on_date, fetch_symbol_name
+from investment_agent.universe.symbols import is_likely_ticker
 from investment_agent.storage import DEFAULT_REPORT_PATH, load_brief, save_run_reports
+from investment_agent.portfolio import db as portfolio_db
+from investment_agent.portfolio.ledger import (
+    InsufficientSharesError,
+    InvalidDeleteError,
+    TradeNotFoundError,
+    add_trade,
+    delete_trade,
+    list_trades,
+)
+from investment_agent.portfolio.models import TradeInput, TradeSide, model_name
+from investment_agent.portfolio.performance import (
+    DEFAULT_COMPARE_START,
+    compare_performance_series,
+    summarize_performance,
+)
 
 try:
     from investment_agent.dates import format_date_display
@@ -351,6 +368,321 @@ def _render_brief(brief: InvestmentBrief) -> None:
     st.caption(brief.disclaimer)
 
 
+def _position_label(p) -> str:
+    name = model_name(p)
+    if name and name != p.symbol:
+        return f"{name} ({p.symbol})"
+    return p.symbol
+
+
+def _render_position_pie(positions) -> None:
+    """Pie chart of open positions by market value (cost basis fallback)."""
+    import altair as alt
+    import pandas as pd
+
+    slices: list[dict[str, object]] = []
+    for p in positions:
+        weight = p.market_value if p.market_value is not None else p.cost_basis
+        if weight is None or weight <= 0:
+            continue
+        slices.append({"label": _position_label(p), "value": float(weight)})
+
+    if not slices:
+        st.caption("_No position weights to chart._")
+        return
+
+    df = pd.DataFrame(slices)
+    total = float(df["value"].sum())
+    df["pct"] = df["value"] / total * 100
+
+    chart = (
+        alt.Chart(df)
+        .mark_arc(innerRadius=48)
+        .encode(
+            theta=alt.Theta("value:Q", stack=True),
+            color=alt.Color(
+                "label:N",
+                legend=alt.Legend(title="Holding", orient="right"),
+            ),
+            tooltip=[
+                alt.Tooltip("label:N", title="Holding"),
+                alt.Tooltip("value:Q", title="Value ($)", format=",.2f"),
+                alt.Tooltip("pct:Q", title="Weight (%)", format=".1f"),
+            ],
+        )
+        .properties(height=340)
+        .configure_view(strokeWidth=0)
+    )
+    st.altair_chart(chart, use_container_width=True)
+
+
+def _render_performance_compare() -> None:
+    """Line chart: portfolio vs SPY indexed to 100 from DEFAULT_COMPARE_START."""
+    import altair as alt
+    import pandas as pd
+
+    st.markdown("#### Performance vs S&P 500")
+    st.caption(f"Indexed to 100 on {DEFAULT_COMPARE_START.isoformat()} · SPY benchmark")
+
+    with st.spinner("Loading performance history…"):
+        points = compare_performance_series(from_date=DEFAULT_COMPARE_START)
+
+    if not points:
+        st.caption("_Benchmark data unavailable._")
+        return
+
+    rows: list[dict[str, object]] = []
+    for pt in points:
+        rows.append(
+            {
+                "date": pt.date.isoformat(),
+                "Index": pt.portfolio_index,
+                "Series": "Portfolio",
+            }
+        )
+        rows.append(
+            {
+                "date": pt.date.isoformat(),
+                "Index": pt.spy_index,
+                "Series": "S&P 500 (SPY)",
+            }
+        )
+    df = pd.DataFrame(rows)
+    df["date"] = pd.to_datetime(df["date"])
+
+    chart = (
+        alt.Chart(df)
+        .mark_line(strokeWidth=2)
+        .encode(
+            x=alt.X("date:T", title="Date"),
+            y=alt.Y("Index:Q", title="Index (100 = start)", scale=alt.Scale(zero=False)),
+            color=alt.Color(
+                "Series:N",
+                scale=alt.Scale(
+                    domain=["Portfolio", "S&P 500 (SPY)"],
+                    range=["#38bdf8", "#fbbf24"],
+                ),
+                legend=alt.Legend(title=""),
+            ),
+            tooltip=[
+                alt.Tooltip("date:T", title="Date"),
+                alt.Tooltip("Series:N", title=""),
+                alt.Tooltip("Index:Q", title="Index", format=".2f"),
+            ],
+        )
+        .properties(height=360)
+        .configure_view(strokeWidth=0)
+    )
+    st.altair_chart(chart, use_container_width=True)
+
+    last = points[-1]
+    st.caption(
+        f"Latest · Portfolio **{last.portfolio_index:.1f}** · "
+        f"SPY **{last.spy_index:.1f}** · "
+        f"Spread **{last.portfolio_index - last.spy_index:+.1f}** pts"
+    )
+
+
+def _render_portfolio() -> None:
+    st.markdown(
+        '<p class="main-header">💼 Portfolio</p>',
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        '<p class="sub-header">Record trades · open positions · performance vs SPY</p>',
+        unsafe_allow_html=True,
+    )
+
+    db_path = portfolio_db.db_path()
+    st.caption(f"Ledger: `{db_path}`")
+
+    st.markdown("#### Record trade")
+    c_sym, c_date = st.columns(2)
+    with c_sym:
+        symbol_raw = st.text_input("Symbol", placeholder="AAPL", key="portfolio_trade_symbol")
+        symbol = symbol_raw.strip().upper()
+    with c_date:
+        trade_date = st.date_input("Trade date", value=analysis_date(), key="portfolio_trade_date")
+
+    close_price: float | None = None
+    symbol_name = ""
+    if symbol:
+        if is_likely_ticker(symbol):
+            with st.spinner("Loading quote…"):
+                close_price = fetch_close_on_date(symbol, trade_date)
+                symbol_name = fetch_symbol_name(symbol)
+            if close_price is not None:
+                st.caption(
+                    f"Close on {trade_date.isoformat()}: **${close_price:.2f}** (editable below)"
+                )
+            else:
+                st.caption("Close price unavailable — enter price manually.")
+            if symbol_name:
+                st.caption(f"**{symbol_name}** ({symbol})")
+        else:
+            st.caption("Enter a valid ticker (e.g. AAPL) to load name and close price.")
+
+    default_price = close_price if close_price is not None else 100.0
+
+    with st.form("add_trade_form", clear_on_submit=True):
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            side = st.selectbox("Side", ["buy", "sell"])
+            name = st.text_input(
+                "Name",
+                value=symbol_name,
+                help="Auto-filled from yfinance; editable.",
+            )
+        with c2:
+            quantity = st.number_input("Quantity", min_value=0.0001, value=1.0, step=1.0)
+            price = st.number_input(
+                "Price ($)",
+                min_value=0.01,
+                value=float(default_price),
+                step=0.01,
+                help="Prefilled from market close; override if needed.",
+            )
+        with c3:
+            fees = st.number_input("Fees ($)", min_value=0.0, value=0.0, step=0.01)
+            notes = st.text_input("Notes (optional)", "")
+        submitted = st.form_submit_button("Save trade", type="primary")
+
+    if submitted:
+        if not symbol:
+            st.error("Symbol is required.")
+        else:
+            try:
+                trade = TradeInput(
+                    symbol=symbol,
+                    side=TradeSide(side),
+                    quantity=float(quantity),
+                    price=float(price),
+                    trade_date=trade_date,
+                    name=name.strip(),
+                    fees=float(fees),
+                    notes=notes,
+                )
+                stored = add_trade(trade)
+                label = (
+                    f"{model_name(stored)} ({stored.symbol})"
+                    if model_name(stored)
+                    else stored.symbol
+                )
+                st.success(
+                    f"Recorded {stored.side.value} {stored.quantity:g} {label} "
+                    f"@ ${stored.price:.2f} on {stored.trade_date.isoformat()}"
+                )
+            except InsufficientSharesError as e:
+                st.error(str(e))
+            except ValueError as e:
+                st.error(str(e))
+
+    try:
+        summary = summarize_performance()
+    except RuntimeError as e:
+        st.error(f"Database error: {e}")
+        return
+
+    if summary.first_trade_date is None:
+        st.info("No trades yet. Use the form above to record your first trade.")
+        return
+
+    m1, m2, m3, m4 = st.columns(4)
+    m1.metric("Gross invested", f"${summary.gross_invested:,.2f}")
+    m2.metric("Total P&L", f"${summary.total_pnl:,.2f}")
+    m3.metric(
+        "Total return",
+        f"{summary.total_return_pct:.1f}%" if summary.total_return_pct is not None else "—",
+    )
+    m4.metric(
+        "vs SPY",
+        f"{summary.vs_spy_pct:+.1f} pp" if summary.vs_spy_pct is not None else "—",
+    )
+
+    st.caption(
+        f"Realized ${summary.realized_pnl:,.2f} · "
+        f"Unrealized ${summary.snapshot.total_unrealized_pnl:,.2f} · "
+        f"SPY {summary.spy_return_pct:.1f}% since {summary.first_trade_date.isoformat()}"
+        if summary.spy_return_pct is not None
+        else ""
+    )
+
+    _render_performance_compare()
+
+    st.markdown("#### Open positions")
+    if summary.snapshot.positions:
+        col_table, col_chart = st.columns([3, 2])
+        with col_table:
+            rows = []
+            for p in summary.snapshot.positions:
+                rows.append(
+                    {
+                        "Name": model_name(p) or "—",
+                        "Symbol": p.symbol,
+                        "Qty": p.quantity,
+                        "Avg cost": p.avg_cost,
+                        "Last": p.last_price,
+                        "Market value": p.market_value,
+                        "Unrealized P&L": p.unrealized_pnl,
+                        "Unrealized %": p.unrealized_pnl_pct,
+                    }
+                )
+            st.dataframe(rows, use_container_width=True, hide_index=True)
+        with col_chart:
+            st.markdown("##### Allocation")
+            st.caption("By market value")
+            _render_position_pie(summary.snapshot.positions)
+    else:
+        st.caption("_All positions closed._")
+
+    trades = list_trades()
+    if trades:
+        with st.expander(f"Trade history ({len(trades)})", expanded=False):
+            pending_id = st.session_state.get("pending_delete_trade_id")
+            if pending_id is not None:
+                pending = next((t for t in trades if t.id == pending_id), None)
+                if pending is None:
+                    st.session_state.pending_delete_trade_id = None
+                else:
+                    st.warning(
+                        f"Delete trade **#{pending.id}**? "
+                        f"{pending.side.value} {pending.quantity:g} {pending.symbol} "
+                        f"@ ${pending.price:.2f} on {pending.trade_date.isoformat()}"
+                    )
+                    c1, c2 = st.columns(2)
+                    with c1:
+                        if st.button("Confirm delete", type="primary", key="confirm_delete_trade"):
+                            try:
+                                delete_trade(pending.id)
+                                st.session_state.pending_delete_trade_id = None
+                                st.success(f"Deleted trade #{pending.id}")
+                                st.rerun()
+                            except (TradeNotFoundError, InvalidDeleteError) as e:
+                                st.error(str(e))
+                    with c2:
+                        if st.button("Cancel", key="cancel_delete_trade"):
+                            st.session_state.pending_delete_trade_id = None
+                            st.rerun()
+
+            for t in reversed(trades):
+                sym_label = (
+                    f"{model_name(t)} ({t.symbol})" if model_name(t) else t.symbol
+                )
+                label = (
+                    f"#{t.id} · {t.trade_date.isoformat()} · {t.side.value} · "
+                    f"{t.quantity:g} {sym_label} @ ${t.price:.2f}"
+                )
+                if t.notes:
+                    label += f" · {t.notes}"
+                row1, row2 = st.columns([5, 1])
+                with row1:
+                    st.text(label)
+                with row2:
+                    if st.button("Delete", key=f"delete_trade_{t.id}"):
+                        st.session_state.pending_delete_trade_id = t.id
+                        st.rerun()
+
+
 def main() -> None:
     _inject_css()
 
@@ -359,6 +691,8 @@ def main() -> None:
 
     with st.sidebar:
         st.header("Controls")
+        page = st.radio("View", ["Themes", "Portfolio"], index=0, horizontal=True)
+        st.divider()
         region = st.selectbox(
             "Market region",
             ["global", "China", "US", "Europe", "Japan"],
@@ -433,6 +767,10 @@ def main() -> None:
                         "Enable resume and retry."
                     )
                 st.stop()
+
+    if page == "Portfolio":
+        _render_portfolio()
+        return
 
     brief: InvestmentBrief | None = st.session_state.get("brief")
 

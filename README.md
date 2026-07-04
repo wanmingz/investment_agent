@@ -66,7 +66,25 @@ python main.py -o reports/latest.json
 streamlit run streamlit_app.py   # or: invest-dashboard
 ```
 
-**Streamlit:** Run analysis · Load last result · Resume / Clear checkpoint · Agent tabs · Recommended themes (one card per sector, sorted by score).
+**Streamlit:** Run analysis · Load last result · Resume / Clear checkpoint · Agent tabs · Recommended themes (one card per sector, sorted by score). Switch **View → Portfolio** for trade ledger.
+
+### Portfolio ledger
+
+Record trades, view open positions, and track performance (mark-to-market via yfinance, vs SPY). Data stored locally in `reports/portfolio.db`.
+
+```bash
+invest-portfolio add-trade AAPL buy 10 175.50 --date 2026-01-15
+invest-portfolio list-trades
+invest-portfolio delete-trade 3
+invest-portfolio list-trades --symbol AAPL
+invest-portfolio positions
+invest-portfolio performance
+invest-portfolio performance --from 2026-01-01 --to 2026-06-30
+```
+
+Or use the **Portfolio** tab in `invest-dashboard`. Override DB path with `PORTFOLIO_DB_PATH`.
+
+Weighted average cost; sells exceeding holdings are rejected. Back up `reports/portfolio.db` before upgrades.
 
 ## Environment variables
 
@@ -87,6 +105,7 @@ streamlit run streamlit_app.py   # or: invest-dashboard
 | `LLM_AGENT_DELAY_SECONDS` | Delay between sequential calls (OpenRouter `:free`) |
 | `LLM_COMPACT_SCHEMA` | `1` = smaller JSON schema in LLM system prompt |
 | `LLM_MAX_RETRIES_ON_429` | Rate-limit retries in `llm.py` |
+| `PORTFOLIO_DB_PATH` | Portfolio SQLite file (default `reports/portfolio.db`) |
 
 Provider-aware defaults: `config.py` (`is_groq`, `is_openrouter_free`).
 
@@ -261,26 +280,9 @@ Errors: `QuotaExhaustedError` (429), prompt-too-large (413) — see `llm.py` hin
 
 ## Roadmap: Portfolio management
 
-Theme discovery only today — no holdings or rebalance logic. Planned as a **programmatic module after `brief_assembler`**, not a 4th parallel agent.
+**Implemented (ledger):** manual trade recording, weighted-avg positions, mark-to-market P&L, CLI (`invest-portfolio`) and Streamlit **Portfolio** tab. See `research/portfolio-ledger-design.md`.
 
-```mermaid
-flowchart LR
-    A[3 Agents] --> B[BriefAssembler]
-    B --> C[Portfolio module — planned]
-    U[User holdings] --> C
-    M[MarketSnapshots] --> C
-    C --> D[InvestmentBrief + portfolio section]
-```
-
-| Phase | Deliverable |
-|-------|-------------|
-| **P1** | `suggested_allocation` from top themes → sector ETF weights; UI pie chart |
-| **P2** | User holdings → drift vs theme-implied targets, `theme_alignment_score` |
-| **P3** | Constraints (max weight, min cash); optional LLM narrator for pre-computed numbers |
-
-Proposed path: `src/investment_agent/portfolio/{models,suggest,alignment,optimizer}.py`.
-
-**Out of scope:** broker APIs, feeding holdings into Regime/Narrative/Markets prompts.
+**Planned (theme alignment):** programmatic module after `brief_assembler` — suggested allocation from top themes, drift vs holdings, optional constraints. Does **not** feed holdings into agent prompts.
 
 Optional design notes may live under `research/` (not required to run the pipeline).
 
@@ -288,10 +290,10 @@ Optional design notes may live under `research/` (not required to run the pipeli
 
 ```bash
 pip install pytest
-PYTHONPATH=src python -m pytest tests/test_pipeline.py -v
+PYTHONPATH=src python -m pytest tests/test_pipeline.py tests/test_portfolio.py -v
 ```
 
-Covers: data plane wiring, regime context, sector clustering & ranking, RAG truncation, legacy brief migration.
+Covers: data plane wiring, regime context, sector clustering & ranking, RAG truncation, legacy brief migration, portfolio ledger.
 
 ## Disclaimer
 

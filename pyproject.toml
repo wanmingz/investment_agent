@@ -17,6 +17,7 @@ dependencies = [
 [project.scripts]
 invest-themes = "investment_agent.cli:main"
 invest-dashboard = "investment_agent.cli:dashboard_main"
+invest-portfolio = "investment_agent.portfolio.cli:main"
 
 [build-system]
 requires = ["hatchling"]
