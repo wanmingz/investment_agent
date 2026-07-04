@@ -29,25 +29,6 @@ def build_news_retrieval_query(
     return " ".join(parts)
 
 
-def build_retrieval_query(
-    *,
-    region: str,
-    theme_names: list[str],
-    macro_backdrop: str = "",
-    extra_terms: list[str] | None = None,
-) -> str:
-    """Legacy helper — prefer build_news_retrieval_query for independent news agent."""
-    parts = [
-        region,
-        "rates inflation fed ecb policy earnings ai semiconductor energy oil",
-        macro_backdrop[:500],
-        " ".join(theme_names),
-    ]
-    if extra_terms:
-        parts.append(" ".join(extra_terms))
-    return " ".join(parts)
-
-
 def retrieve_articles(
     articles: list[NewsArticle],
     query: str,

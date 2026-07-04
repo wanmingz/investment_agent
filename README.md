@@ -161,7 +161,7 @@ src/investment_agent/
 ├── checkpoint.py              # PIPELINE_VERSION=6
 ├── llm.py                     # structured JSON; 429 / 413 handling
 ├── models.py                  # *Report, FinalTheme, InvestmentBrief
-├── storage.py                 # save/load brief; migrate_brief_dict()
+├── storage.py                 # save/load brief; normalize_brief_dict()
 ├── config.py                  # Settings.from_env()
 ├── dates.py
 ├── cli.py
@@ -225,7 +225,7 @@ This matches the project rule: **fetch and slice before any LLM**; Narrative nev
 | `themes[]` | Merged `FinalTheme` (sector-deduped, scored, ranked) |
 | `fundamentals_notes` | `FundamentalsSnapshot.summary_lines()` |
 
-Legacy JSON keys (`macro_view`, `news_themes`, …) migrate on load via `storage.migrate_brief_dict()`.
+Legacy theme display fields (`name_zh`, `stage_label_zh`) normalize on load via `storage.normalize_brief_dict()`.
 
 ## Data sources
 

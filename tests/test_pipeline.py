@@ -20,7 +20,7 @@ from investment_agent.models import (
     SourcedItem,
     ThemeStage,
 )
-from investment_agent.storage import migrate_brief_dict
+from investment_agent.storage import normalize_brief_dict
 
 
 def _theme(
@@ -273,17 +273,12 @@ def test_combined_theme_score_sort_order():
     assert ranked[0].name == "B"
 
 
-def test_migrate_brief_dict_maps_legacy_agent_keys():
-    data = migrate_brief_dict(
+def test_normalize_brief_dict_fills_theme_defaults():
+    data = normalize_brief_dict(
         {
-            "macro_view": "m",
-            "news_view": "n",
-            "equity_view": "e",
-            "quant_view": "q",
-            "macro_themes": [],
-            "news_themes": [],
-            "equity_themes": [{"name": "x"}],
-            "quant_themes": [{"name": "y"}],
+            "as_of_context": "As of 2026-01-01",
+            "executive_summary": "x",
+            "regime_view": "r",
             "themes": [
                 {
                     "name": "T",
@@ -295,21 +290,11 @@ def test_migrate_brief_dict_maps_legacy_agent_keys():
                     "key_drivers": [],
                     "risks": [],
                     "tickers_or_sectors": [],
-                    "contributing_agents": ["macro", "news", "equity"],
-                    "primary_agent": "news",
-                    "agent_stages": {"macro": "early", "equity": "mid"},
                 }
             ],
-            "as_of_context": "As of 2026-01-01",
-            "executive_summary": "x",
         }
     )
-    assert data["regime_view"] == "m"
-    assert data["narrative_view"] == "n"
-    assert data["markets_fundamentals_view"] == "e"
-    assert data["markets_vol_view"] == "q"
-    assert len(data["markets_themes"]) == 2
     theme = data["themes"][0]
-    assert theme["contributing_agents"] == [AGENT_MARKETS, AGENT_NARRATIVE, AGENT_REGIME]
-    assert theme["primary_agent"] == AGENT_NARRATIVE
-    assert theme["agent_stages"] == {AGENT_REGIME: "early", AGENT_MARKETS: "mid"}
+    assert theme["contributing_agents"] == []
+    assert theme["agent_stages"] == {}
+    assert data["regime_themes"] == []

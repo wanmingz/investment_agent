@@ -184,7 +184,6 @@ def save_data_plane(plane: DataPlaneSnapshot) -> None:
             "as_of": plane.regime_input.as_of.isoformat(),
             "region": plane.regime_input.region,
             "regime_context_block": plane.regime_input.regime_context_block,
-            "macro_context_block": plane.regime_input.regime_context_block,
             "context_notes": list(plane.regime_input.context_notes),
         },
         "narrative_input": {
@@ -224,8 +223,7 @@ def load_data_plane() -> DataPlaneSnapshot | None:
         regime_input = RegimeInput(
             as_of=date.fromisoformat(ri["as_of"]),
             region=ri["region"],
-            regime_context_block=ri.get("regime_context_block")
-            or ri.get("macro_context_block", ""),
+            regime_context_block=ri.get("regime_context_block", ""),
             context_notes=tuple(ri.get("context_notes", [])),
         )
         narrative_input = _refresh_narrative_input(
