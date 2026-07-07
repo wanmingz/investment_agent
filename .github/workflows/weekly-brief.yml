@@ -1,12 +1,12 @@
 # Weekly investment theme brief — Monday schedule + manual trigger.
 #
 # Required repo secrets (Settings → Secrets and variables → Actions):
-#   GEMINI_API_KEY  — or use OpenAI-compatible secrets below instead
-#
-# Optional secrets (mirror .env.example):
-#   LLM_PROVIDER, GEMINI_MODEL, OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_MODEL
-#   FINNHUB_API_KEY, MARKET_REGION, RAG_TOP_K, RAG_SUMMARY_MAX_CHARS, RAG_CONTEXT_MAX_CHARS
-#   NEWS_MAX_ARTICLES, RESUME_CHECKPOINT, LLM_PARALLEL_AGENTS, LLM_AGENT_DELAY_SECONDS
+#   GEMINI_API_KEY  — Google AI Studio
+#   — or OPENAI_API_KEY only:
+#       gsk_...     Groq (auto: api.groq.com + llama-3.3-70b-versatile)
+#       sk-or-...   OpenRouter (auto: openrouter.ai + :free model)
+#       sk-...      OpenAI (api.openai.com + gpt-4o)
+# Optional: OPENAI_BASE_URL, OPENAI_MODEL, GEMINI_MODEL, FINNHUB_API_KEY, MARKET_REGION
 
 name: Weekly theme brief
 

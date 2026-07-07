@@ -120,7 +120,11 @@ Workflow: [`.github/workflows/weekly-brief.yml`](.github/workflows/weekly-brief.
 
 1. Push this repo to GitHub.
 2. **Settings → Secrets and variables → Actions** — add at minimum:
-   - `GEMINI_API_KEY` (Gemini), **or** `OPENAI_API_KEY` + optional `OPENAI_BASE_URL` / `OPENAI_MODEL` (Groq / OpenRouter / OpenAI)
+   - `GEMINI_API_KEY` (Gemini), **or** `OPENAI_API_KEY` alone:
+     - `gsk_...` → Groq (auto-detects `api.groq.com` + `llama-3.3-70b-versatile`)
+     - `sk-or-...` → OpenRouter (auto-detects base URL + free Llama model)
+     - other `sk-...` → OpenAI (`gpt-4o` unless `OPENAI_MODEL` secret is set)
+   - Override with optional `OPENAI_BASE_URL` / `OPENAI_MODEL` secrets if needed.
 3. Optional: `FINNHUB_API_KEY`, `MARKET_REGION`, RAG caps (see `.env.example`).
 4. **Actions → Weekly theme brief → Run workflow** to test before Monday.
 

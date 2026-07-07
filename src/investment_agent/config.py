@@ -7,6 +7,12 @@ load_dotenv()
 
 GEMINI_OPENAI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
 GEMINI_DEFAULT_MODEL = "gemini-2.0-flash"
+GROQ_BASE_URL = "https://api.groq.com/openai/v1"
+GROQ_DEFAULT_MODEL = "llama-3.3-70b-versatile"
+OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
+OPENROUTER_FREE_MODEL = "meta-llama/llama-3.3-70b-instruct:free"
+OPENAI_DEFAULT_BASE = "https://api.openai.com/v1"
+OPENAI_DEFAULT_MODEL = "gpt-4o"
 
 
 def env_int(name: str, default: int) -> int:
@@ -71,6 +77,17 @@ def _llm_agent_delay_seconds(base_url: str, model: str) -> float:
     return 0.0
 
 
+def _resolve_openai_compat(api_key: str) -> tuple[str, str]:
+    """Infer Groq/OpenRouter base URL + model from key prefix when env is unset."""
+    base = env_str("OPENAI_BASE_URL", "")
+    model = env_str("OPENAI_MODEL", "")
+    if api_key.startswith("gsk_"):
+        return base or GROQ_BASE_URL, model or GROQ_DEFAULT_MODEL
+    if api_key.startswith("sk-or-"):
+        return base or OPENROUTER_BASE_URL, model or OPENROUTER_FREE_MODEL
+    return base or OPENAI_DEFAULT_BASE, model or OPENAI_DEFAULT_MODEL
+
+
 @dataclass(frozen=True)
 class Settings:
     api_key: str
@@ -108,10 +125,11 @@ class Settings:
             )
 
         if openai_key:
+            base_url, model = _resolve_openai_compat(openai_key)
             return cls._with_news(
                 api_key=openai_key,
-                base_url=env_str("OPENAI_BASE_URL", "https://api.openai.com/v1"),
-                model=env_str("OPENAI_MODEL", "gpt-4o"),
+                base_url=base_url,
+                model=model,
                 market_region=env_str("MARKET_REGION", "global"),
                 provider="openai",
             )
