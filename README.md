@@ -109,6 +109,23 @@ Weighted average cost; sells exceeding holdings are rejected. Back up `reports/p
 
 Provider-aware defaults: `config.py` (`is_groq`, `is_openrouter_free`).
 
+## Scheduled runs (GitHub Actions)
+
+Workflow: [`.github/workflows/weekly-brief.yml`](.github/workflows/weekly-brief.yml)
+
+- **Schedule:** every Monday 06:00 UTC (`workflow_dispatch` for manual runs)
+- **Output:** `reports/latest.json` + dated archive under `reports/runs/` as a **90-day artifact** (not committed — `reports/` is gitignored)
+
+### Setup
+
+1. Push this repo to GitHub.
+2. **Settings → Secrets and variables → Actions** — add at minimum:
+   - `GEMINI_API_KEY` (Gemini), **or** `OPENAI_API_KEY` + optional `OPENAI_BASE_URL` / `OPENAI_MODEL` (Groq / OpenRouter / OpenAI)
+3. Optional: `FINNHUB_API_KEY`, `MARKET_REGION`, RAG caps (see `.env.example`).
+4. **Actions → Weekly theme brief → Run workflow** to test before Monday.
+
+Download artifacts from the completed run page. Copy `latest.json` locally for `invest-dashboard` → **Load last result**.
+
 ## Architecture
 
 ```mermaid

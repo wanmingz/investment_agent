@@ -1,0 +1,84 @@
+# Weekly investment theme brief — Monday schedule + manual trigger.
+#
+# Required repo secrets (Settings → Secrets and variables → Actions):
+#   GEMINI_API_KEY  — or use OpenAI-compatible secrets below instead
+#
+# Optional secrets (mirror .env.example):
+#   LLM_PROVIDER, GEMINI_MODEL, OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_MODEL
+#   FINNHUB_API_KEY, MARKET_REGION, RAG_TOP_K, RAG_SUMMARY_MAX_CHARS, RAG_CONTEXT_MAX_CHARS
+#   NEWS_MAX_ARTICLES, RESUME_CHECKPOINT, LLM_PARALLEL_AGENTS, LLM_AGENT_DELAY_SECONDS
+
+name: Weekly theme brief
+
+on:
+  schedule:
+    # Monday 06:00 UTC (08:00 CET / 09:00 CEST)
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+    inputs:
+      region:
+        description: MARKET_REGION override
+        required: false
+        default: global
+        type: choice
+        options:
+          - global
+          - US
+          - China
+          - Europe
+          - Japan
+
+concurrency:
+  group: weekly-brief
+  cancel-in-progress: false
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install package
+        run: pip install -e .
+
+      - name: Run 3-agent pipeline
+        env:
+          LLM_PROVIDER: ${{ secrets.LLM_PROVIDER }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: ${{ secrets.GEMINI_MODEL }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
+          OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+          FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
+          MARKET_REGION: ${{ github.event.inputs.region || secrets.MARKET_REGION || 'global' }}
+          RESUME_CHECKPOINT: "1"
+          RAG_TOP_K: ${{ secrets.RAG_TOP_K }}
+          RAG_SUMMARY_MAX_CHARS: ${{ secrets.RAG_SUMMARY_MAX_CHARS }}
+          RAG_CONTEXT_MAX_CHARS: ${{ secrets.RAG_CONTEXT_MAX_CHARS }}
+          NEWS_MAX_ARTICLES: ${{ secrets.NEWS_MAX_ARTICLES }}
+          LLM_PARALLEL_AGENTS: ${{ secrets.LLM_PARALLEL_AGENTS }}
+          LLM_AGENT_DELAY_SECONDS: ${{ secrets.LLM_AGENT_DELAY_SECONDS }}
+        run: |
+          set -euo pipefail
+          invest-themes -o reports/latest.json
+          echo "Run complete. Archive under reports/runs/:"
+          ls -la reports/runs/ 2>/dev/null | tail -5 || true
+
+      - name: Upload brief artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: investment-brief-${{ github.run_id }}
+          path: |
+            reports/latest.json
+            reports/runs/
+          retention-days: 90
+          if-no-files-found: error
