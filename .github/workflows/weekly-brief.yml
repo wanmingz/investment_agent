@@ -36,6 +36,8 @@ jobs:
   analyze:
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout
@@ -65,6 +67,35 @@ jobs:
           invest-themes -o reports/latest.json
           echo "Run complete. Archive under reports/runs/:"
           ls -la reports/runs/ 2>/dev/null | tail -5 || true
+
+      - name: Publish Markdown report to repo
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          from investment_agent.report_markdown import save_github_brief_reports
+          from investment_agent.storage import load_brief
+
+          brief = load_brief(Path("reports/latest.json"))
+          if brief is None:
+              raise SystemExit("reports/latest.json missing after pipeline run")
+          latest, archive = save_github_brief_reports(brief)
+          print(f"Markdown: {latest}")
+          print(f"Archive:  {archive}")
+          PY
+
+      - name: Commit brief to repository
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add brief/
+          if git diff --staged --quiet; then
+            echo "No brief changes to commit."
+          else
+            git commit -m "chore: update investment brief [skip ci]"
+            git push
+          fi
 
       - name: Upload brief artifacts
         uses: actions/upload-artifact@v4

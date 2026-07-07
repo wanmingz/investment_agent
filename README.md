@@ -1,5 +1,7 @@
 # Investment Agent — Multi-Agent Theme Analysis (v2)
 
+**[Latest investment brief](./brief/latest.md)** · [All published reports](./brief/)
+
 Three domain agents analyze **disjoint inputs** from a shared **Data Plane**; a programmatic **Brief Assembler** merges themes by **sector**, scores them, and ranks by **investability + consensus**. Lifecycle stages: **Early / Early-Mid / Mid / Mid-Late / Late**.
 
 | Agent | Role | Package | External data |
@@ -114,7 +116,7 @@ Provider-aware defaults: `config.py` (`is_groq`, `is_openrouter_free`).
 Workflow: [`.github/workflows/weekly-brief.yml`](.github/workflows/weekly-brief.yml)
 
 - **Schedule:** every Monday 06:00 UTC (`workflow_dispatch` for manual runs)
-- **Output:** `reports/latest.json` + dated archive under `reports/runs/` as a **90-day artifact** (not committed — `reports/` is gitignored)
+- **Output:** committed **[`brief/latest.md`](./brief/latest.md)** (readable on GitHub) + JSON artifact (`reports/latest.json`, 90 days) for the dashboard
 
 ### Setup
 
@@ -127,8 +129,9 @@ Workflow: [`.github/workflows/weekly-brief.yml`](.github/workflows/weekly-brief.
    - Override with optional `OPENAI_BASE_URL` / `OPENAI_MODEL` secrets if needed.
 3. Optional: `FINNHUB_API_KEY`, `MARKET_REGION`, RAG caps (see `.env.example`).
 4. **Actions → Weekly theme brief → Run workflow** to test before Monday.
+5. Open **[brief/latest.md](./brief/latest.md)** on GitHub after a successful run.
 
-Download artifacts from the completed run page. Copy `latest.json` locally for `invest-dashboard` → **Load last result**.
+Download JSON artifacts from the completed run page for `invest-dashboard` → **Load last result**.
 
 ## Architecture
 
