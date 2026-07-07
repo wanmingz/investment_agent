@@ -9,6 +9,7 @@ from datetime import date
 
 from investment_agent.agents.markets.price import PriceMetrics, fetch_price_metrics
 from investment_agent.agents.markets.revisions import RevisionMetrics, fetch_revision_metrics
+from investment_agent.config import env_int
 from investment_agent.universe import (
     BENCHMARK_SYMBOL,
     SECTOR_ETFS,
@@ -158,7 +159,7 @@ def fetch_fundamentals_snapshot(
     extra_tickers: list[str] | None = None,
 ) -> FundamentalsSnapshot:
     as_of = as_of or date.today()
-    max_extra = max_extra_tickers or int(os.getenv("FUNDAMENTALS_MAX_TICKERS", "8"))
+    max_extra = max_extra_tickers or env_int("FUNDAMENTALS_MAX_TICKERS", 8)
     tickers = list(extra_tickers or [])
 
     labeled, notes = symbols_for_fundamentals(tickers, max_extra=max_extra)

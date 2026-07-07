@@ -10,6 +10,8 @@ from typing import Any
 
 import httpx
 
+from investment_agent.config import env_int
+
 TICKERTICK_CURATED = "https://api.tickertick.com/feed"
 FINNHUB_NEWS = "https://finnhub.io/api/v1/news"
 
@@ -147,7 +149,7 @@ def fetch_news_articles(
 ) -> tuple[list[NewsArticle], list[str]]:
     """Return articles and ingest notes (providers used, errors)."""
     key = (finnhub_key or os.getenv("FINNHUB_API_KEY", "")).strip()
-    max_n = int(os.getenv("NEWS_MAX_ARTICLES", str(max_articles)))
+    max_n = env_int("NEWS_MAX_ARTICLES", max_articles)
     notes: list[str] = []
     collected: list[NewsArticle] = []
 

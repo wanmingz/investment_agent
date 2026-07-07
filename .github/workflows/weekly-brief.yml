@@ -52,7 +52,6 @@ jobs:
 
       - name: Run 3-agent pipeline
         env:
-          LLM_PROVIDER: ${{ secrets.LLM_PROVIDER }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: ${{ secrets.GEMINI_MODEL }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -61,12 +60,6 @@ jobs:
           FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
           MARKET_REGION: ${{ github.event.inputs.region || secrets.MARKET_REGION || 'global' }}
           RESUME_CHECKPOINT: "1"
-          RAG_TOP_K: ${{ secrets.RAG_TOP_K }}
-          RAG_SUMMARY_MAX_CHARS: ${{ secrets.RAG_SUMMARY_MAX_CHARS }}
-          RAG_CONTEXT_MAX_CHARS: ${{ secrets.RAG_CONTEXT_MAX_CHARS }}
-          NEWS_MAX_ARTICLES: ${{ secrets.NEWS_MAX_ARTICLES }}
-          LLM_PARALLEL_AGENTS: ${{ secrets.LLM_PARALLEL_AGENTS }}
-          LLM_AGENT_DELAY_SECONDS: ${{ secrets.LLM_AGENT_DELAY_SECONDS }}
         run: |
           set -euo pipefail
           invest-themes -o reports/latest.json

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-import os
+from investment_agent.config import env_int
 import re
 from investment_agent.agents.narrative.ingest import NewsArticle
 
@@ -35,7 +35,7 @@ def retrieve_articles(
     *,
     top_k: int | None = None,
 ) -> list[NewsArticle]:
-    k = top_k or int(os.getenv("RAG_TOP_K", "12"))
+    k = top_k or env_int("RAG_TOP_K", 12)
     if not articles:
         return []
 

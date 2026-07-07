@@ -9,7 +9,8 @@ GEMINI_OPENAI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/opena
 GEMINI_DEFAULT_MODEL = "gemini-2.0-flash"
 
 
-def _int_env(name: str, default: int) -> int:
+def env_int(name: str, default: int) -> int:
+    """Parse int env var; empty or invalid values use *default* (GitHub Actions secrets)."""
     raw = os.getenv(name, "").strip()
     if not raw:
         return default
@@ -17,6 +18,16 @@ def _int_env(name: str, default: int) -> int:
         return int(raw)
     except ValueError:
         return default
+
+
+def env_str(name: str, default: str) -> str:
+    """Non-empty env var or *default* (treats blank secrets as unset)."""
+    raw = os.getenv(name, "").strip()
+    return raw or default
+
+
+def _int_env(name: str, default: int) -> int:
+    return env_int(name, default)
 
 
 def _bool_env(name: str) -> bool | None:
@@ -90,27 +101,27 @@ class Settings:
                 )
             return cls._with_news(
                 api_key=gemini_key,
-                base_url=os.getenv("OPENAI_BASE_URL", GEMINI_OPENAI_BASE_URL),
-                model=os.getenv("GEMINI_MODEL", os.getenv("OPENAI_MODEL", GEMINI_DEFAULT_MODEL)),
-                market_region=os.getenv("MARKET_REGION", "global"),
+                base_url=env_str("OPENAI_BASE_URL", GEMINI_OPENAI_BASE_URL),
+                model=env_str("GEMINI_MODEL", env_str("OPENAI_MODEL", GEMINI_DEFAULT_MODEL)),
+                market_region=env_str("MARKET_REGION", "global"),
                 provider="gemini",
             )
 
         if openai_key:
             return cls._with_news(
                 api_key=openai_key,
-                base_url=os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1"),
-                model=os.getenv("OPENAI_MODEL", "gpt-4o"),
-                market_region=os.getenv("MARKET_REGION", "global"),
+                base_url=env_str("OPENAI_BASE_URL", "https://api.openai.com/v1"),
+                model=env_str("OPENAI_MODEL", "gpt-4o"),
+                market_region=env_str("MARKET_REGION", "global"),
                 provider="openai",
             )
 
         if gemini_key:
             return cls._with_news(
                 api_key=gemini_key,
-                base_url=os.getenv("OPENAI_BASE_URL", GEMINI_OPENAI_BASE_URL),
-                model=os.getenv("GEMINI_MODEL", GEMINI_DEFAULT_MODEL),
-                market_region=os.getenv("MARKET_REGION", "global"),
+                base_url=env_str("OPENAI_BASE_URL", GEMINI_OPENAI_BASE_URL),
+                model=env_str("GEMINI_MODEL", GEMINI_DEFAULT_MODEL),
+                market_region=env_str("MARKET_REGION", "global"),
                 provider="gemini",
             )
 
