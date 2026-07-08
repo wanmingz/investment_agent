@@ -53,7 +53,13 @@ from investment_agent.portfolio.ledger import (
     delete_trade,
     list_trades,
 )
-from investment_agent.portfolio.models import TradeInput, TradeSide, model_name
+from investment_agent.portfolio.models import (
+    TradeInput,
+    TradeSide,
+    model_name,
+    snapshot_cash_balance,
+    snapshot_total_nav,
+)
 from investment_agent.portfolio.performance import (
     DEFAULT_COMPARE_START,
     compare_performance_series,
@@ -375,8 +381,8 @@ def _position_label(p) -> str:
     return p.symbol
 
 
-def _render_position_pie(positions) -> None:
-    """Pie chart of open positions by market value (cost basis fallback)."""
+def _render_position_pie(positions, *, cash: float = 0.0) -> None:
+    """Pie chart of open positions and optional cash by market value."""
     import altair as alt
     import pandas as pd
 
@@ -386,6 +392,9 @@ def _render_position_pie(positions) -> None:
         if weight is None or weight <= 0:
             continue
         slices.append({"label": _position_label(p), "value": float(weight)})
+
+    if cash > 0.01:
+        slices.append({"label": "Cash", "value": float(cash)})
 
     if not slices:
         st.caption("_No position weights to chart._")
@@ -417,12 +426,15 @@ def _render_position_pie(positions) -> None:
 
 
 def _render_performance_compare() -> None:
-    """Line chart: portfolio vs SPY indexed to 100 from DEFAULT_COMPARE_START."""
+    """Line chart: portfolio vs SPY, chain-linked from first investment day in range."""
     import altair as alt
     import pandas as pd
 
     st.markdown("#### Performance vs S&P 500")
-    st.caption(f"Indexed to 100 on {DEFAULT_COMPARE_START.isoformat()} · SPY benchmark")
+    st.caption(
+        f"Chain-linked index (100 = first day with holdings, on or after "
+        f"{DEFAULT_COMPARE_START.isoformat()}) · SPY rebased to same start day"
+    )
 
     with st.spinner("Loading performance history…"):
         points = compare_performance_series(from_date=DEFAULT_COMPARE_START)
@@ -476,10 +488,12 @@ def _render_performance_compare() -> None:
     st.altair_chart(chart, use_container_width=True)
 
     last = points[-1]
+    port_ret = last.portfolio_index - 100.0
+    spy_ret = last.spy_index - 100.0
     st.caption(
-        f"Latest · Portfolio **{last.portfolio_index:.1f}** · "
-        f"SPY **{last.spy_index:.1f}** · "
-        f"Spread **{last.portfolio_index - last.spy_index:+.1f}** pts"
+        f"Indexed return since portfolio start · Portfolio **{port_ret:+.1f}%** · "
+        f"SPY **{spy_ret:+.1f}%** · "
+        f"Spread **{port_ret - spy_ret:+.1f} pp**"
     )
 
 
@@ -587,24 +601,38 @@ def _render_portfolio() -> None:
         st.info("No trades yet. Use the form above to record your first trade.")
         return
 
-    m1, m2, m3, m4 = st.columns(4)
-    m1.metric("Gross invested", f"${summary.gross_invested:,.2f}")
-    m2.metric("Total P&L", f"${summary.total_pnl:,.2f}")
-    m3.metric(
+    m1, m2, m3, m4, m5 = st.columns(5)
+    m1.metric("Portfolio value", f"${snapshot_total_nav(summary.snapshot):,.2f}")
+    m2.metric("Net invested", f"${summary.gross_invested:,.2f}")
+    m3.metric("Total P&L", f"${summary.total_pnl:,.2f}")
+    m4.metric(
         "Total return",
         f"{summary.total_return_pct:.1f}%" if summary.total_return_pct is not None else "—",
+        help="(Portfolio value − net invested) ÷ net invested. "
+        "Net invested counts only new cash for buys; sell proceeds can be reinvested.",
     )
-    m4.metric(
+    m5.metric(
         "vs SPY",
         f"{summary.vs_spy_pct:+.1f} pp" if summary.vs_spy_pct is not None else "—",
     )
 
+    cash_bal = snapshot_cash_balance(summary.snapshot)
+    cash_line = (
+        f"Cash ${cash_bal:,.2f} · "
+        if cash_bal > 0.01
+        else ""
+    )
     st.caption(
+        f"{cash_line}"
+        f"Holdings ${summary.snapshot.total_market_value:,.2f} · "
         f"Realized ${summary.realized_pnl:,.2f} · "
         f"Unrealized ${summary.snapshot.total_unrealized_pnl:,.2f} · "
         f"SPY {summary.spy_return_pct:.1f}% since {summary.first_trade_date.isoformat()}"
         if summary.spy_return_pct is not None
-        else ""
+        else f"{cash_line}"
+        f"Holdings ${summary.snapshot.total_market_value:,.2f} · "
+        f"Realized ${summary.realized_pnl:,.2f} · "
+        f"Unrealized ${summary.snapshot.total_unrealized_pnl:,.2f}"
     )
 
     _render_performance_compare()
@@ -631,9 +659,16 @@ def _render_portfolio() -> None:
         with col_chart:
             st.markdown("##### Allocation")
             st.caption("By market value")
-            _render_position_pie(summary.snapshot.positions)
+            _render_position_pie(
+                summary.snapshot.positions,
+                cash=cash_bal,
+            )
     else:
-        st.caption("_All positions closed._")
+        cash = cash_bal
+        if cash > 0.01:
+            st.caption(f"_All positions closed._ Cash balance: **${cash:,.2f}**")
+        else:
+            st.caption("_All positions closed._")
 
     trades = list_trades()
     if trades:

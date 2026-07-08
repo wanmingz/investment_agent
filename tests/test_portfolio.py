@@ -17,9 +17,18 @@ from investment_agent.portfolio.ledger import (
     add_trade,
     compute_positions,
     delete_trade,
+    external_inflow_on_date,
     get_open_positions,
+    net_external_contributions,
+    replay_ledger_to,
 )
-from investment_agent.portfolio.models import Trade, TradeInput, TradeSide
+from investment_agent.portfolio.models import (
+    Trade,
+    TradeInput,
+    TradeSide,
+    snapshot_cash_balance,
+    snapshot_total_nav,
+)
 from investment_agent.portfolio.performance import mark_positions, summarize_performance
 
 
@@ -53,6 +62,17 @@ def portfolio_db(tmp_path: Path) -> Path:
     path = tmp_path / "portfolio.db"
     db.init_db(path)
     return path
+
+
+def test_snapshot_total_nav_fallback_without_new_fields() -> None:
+    from types import SimpleNamespace
+
+    snap = SimpleNamespace(total_market_value=1100.0)
+    assert snapshot_total_nav(snap) == pytest.approx(1100.0)
+    assert snapshot_cash_balance(snap) == 0.0
+
+    snap2 = SimpleNamespace(total_market_value=1000.0, cash_balance=100.0)
+    assert snapshot_total_nav(snap2) == pytest.approx(1100.0)
 
 
 def test_weighted_average_cost(portfolio_db: Path) -> None:
@@ -173,6 +193,7 @@ def test_summarize_performance_mocked(portfolio_db: Path, monkeypatch: pytest.Mo
 
     summary = summarize_performance(path=portfolio_db)
     assert summary.gross_invested == pytest.approx(1000.0)
+    assert summary.snapshot.total_nav == pytest.approx(1100.0)
     assert summary.snapshot.total_unrealized_pnl == pytest.approx(100.0)
     assert summary.total_pnl == pytest.approx(100.0)
     assert summary.spy_return_pct == pytest.approx(5.0)
@@ -317,8 +338,163 @@ def test_compare_performance_series_mocked(
 
     points = compare_performance_series(from_date=DEFAULT_COMPARE_START, path=portfolio_db)
     assert len(points) == 3
-    assert points[0].spy_index == pytest.approx(100.0)
     assert points[0].portfolio_index == pytest.approx(100.0)
     assert points[1].portfolio_index == pytest.approx(100.0)
     assert points[2].portfolio_index == pytest.approx(110.0)
-    assert points[2].spy_index == pytest.approx(102.0)
+    assert points[1].spy_index == pytest.approx(100.0)
+    assert points[2].spy_index == pytest.approx(100.0 * 102.0 / 101.0)
+
+
+def test_compare_performance_series_ignores_buy_inflow(
+    portfolio_db: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import pandas as pd
+
+    from investment_agent.portfolio.performance import (
+        DEFAULT_COMPARE_START,
+        compare_performance_series,
+    )
+
+    add_trade(
+        TradeInput(symbol="AAPL", side=TradeSide.BUY, quantity=10, price=100, trade_date=date(2026, 7, 2)),
+        path=portfolio_db,
+    )
+    add_trade(
+        TradeInput(symbol="AAPL", side=TradeSide.BUY, quantity=10, price=100, trade_date=date(2026, 7, 3)),
+        path=portfolio_db,
+    )
+
+    idx = pd.to_datetime(["2026-07-01", "2026-07-02", "2026-07-03"])
+    spy_hist = pd.DataFrame({"Close": [100.0, 100.0, 100.0]}, index=idx)
+    aapl_hist = pd.DataFrame({"Close": [50.0, 100.0, 110.0]}, index=idx)
+
+    def fake_series(symbol: str, start: date, end: date) -> dict[date, float]:
+        if symbol == "SPY":
+            return {ts.date(): float(spy_hist.loc[ts, "Close"]) for ts in spy_hist.index}
+        if symbol == "AAPL":
+            return {ts.date(): float(aapl_hist.loc[ts, "Close"]) for ts in aapl_hist.index}
+        return {}
+
+    monkeypatch.setattr(
+        "investment_agent.portfolio.performance._fetch_close_series",
+        fake_series,
+    )
+    monkeypatch.setattr(
+        "investment_agent.portfolio.performance.analysis_date",
+        lambda: date(2026, 7, 3),
+    )
+
+    points = compare_performance_series(from_date=DEFAULT_COMPARE_START, path=portfolio_db)
+    assert points[2].portfolio_index == pytest.approx(110.0)
+
+
+def test_compare_performance_series_sell_keeps_nav(
+    portfolio_db: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import pandas as pd
+
+    from investment_agent.portfolio.performance import (
+        DEFAULT_COMPARE_START,
+        compare_performance_series,
+    )
+
+    add_trade(
+        TradeInput(symbol="AAPL", side=TradeSide.BUY, quantity=10, price=100, trade_date=date(2026, 7, 2)),
+        path=portfolio_db,
+    )
+    add_trade(
+        TradeInput(symbol="AAPL", side=TradeSide.SELL, quantity=5, price=100, trade_date=date(2026, 7, 3)),
+        path=portfolio_db,
+    )
+
+    idx = pd.to_datetime(["2026-07-01", "2026-07-02", "2026-07-03"])
+    spy_hist = pd.DataFrame({"Close": [100.0, 100.0, 100.0]}, index=idx)
+    aapl_hist = pd.DataFrame({"Close": [100.0, 100.0, 100.0]}, index=idx)
+
+    def fake_series(symbol: str, start: date, end: date) -> dict[date, float]:
+        if symbol == "SPY":
+            return {ts.date(): float(spy_hist.loc[ts, "Close"]) for ts in spy_hist.index}
+        if symbol == "AAPL":
+            return {ts.date(): float(aapl_hist.loc[ts, "Close"]) for ts in aapl_hist.index}
+        return {}
+
+    monkeypatch.setattr(
+        "investment_agent.portfolio.performance._fetch_close_series",
+        fake_series,
+    )
+    monkeypatch.setattr(
+        "investment_agent.portfolio.performance.analysis_date",
+        lambda: date(2026, 7, 3),
+    )
+
+    points = compare_performance_series(from_date=DEFAULT_COMPARE_START, path=portfolio_db)
+    assert points[2].portfolio_index == pytest.approx(100.0)
+
+
+def test_replay_ledger_reinvests_sell_proceeds(portfolio_db: Path) -> None:
+    d = date(2026, 1, 10)
+    add_trade(
+        TradeInput(symbol="AAPL", side=TradeSide.BUY, quantity=10, price=100, trade_date=d),
+        path=portfolio_db,
+    )
+    add_trade(
+        TradeInput(symbol="AAPL", side=TradeSide.SELL, quantity=10, price=110, trade_date=d),
+        path=portfolio_db,
+    )
+    add_trade(
+        TradeInput(symbol="MSFT", side=TradeSide.BUY, quantity=5, price=100, trade_date=d),
+        path=portfolio_db,
+    )
+    trades = db.fetch_trades(path=portfolio_db)
+    state = replay_ledger_to(trades, d)
+    assert state.cash == pytest.approx(600.0)
+    assert state.holdings == {"MSFT": 5.0}
+    assert net_external_contributions(trades) == pytest.approx(1000.0)
+    assert external_inflow_on_date(trades, d) == pytest.approx(1000.0)
+
+
+def test_compare_performance_series_sell_then_rebuy(
+    portfolio_db: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import pandas as pd
+
+    from investment_agent.portfolio.performance import (
+        DEFAULT_COMPARE_START,
+        compare_performance_series,
+    )
+
+    add_trade(
+        TradeInput(symbol="AAPL", side=TradeSide.BUY, quantity=10, price=100, trade_date=date(2026, 7, 2)),
+        path=portfolio_db,
+    )
+    add_trade(
+        TradeInput(symbol="AAPL", side=TradeSide.SELL, quantity=10, price=110, trade_date=date(2026, 7, 3)),
+        path=portfolio_db,
+    )
+    add_trade(
+        TradeInput(symbol="AAPL", side=TradeSide.BUY, quantity=10, price=100, trade_date=date(2026, 7, 3)),
+        path=portfolio_db,
+    )
+
+    idx = pd.to_datetime(["2026-07-01", "2026-07-02", "2026-07-03"])
+    spy_hist = pd.DataFrame({"Close": [100.0, 100.0, 100.0]}, index=idx)
+    aapl_hist = pd.DataFrame({"Close": [100.0, 100.0, 100.0]}, index=idx)
+
+    def fake_series(symbol: str, start: date, end: date) -> dict[date, float]:
+        if symbol == "SPY":
+            return {ts.date(): float(spy_hist.loc[ts, "Close"]) for ts in spy_hist.index}
+        if symbol == "AAPL":
+            return {ts.date(): float(aapl_hist.loc[ts, "Close"]) for ts in aapl_hist.index}
+        return {}
+
+    monkeypatch.setattr(
+        "investment_agent.portfolio.performance._fetch_close_series",
+        fake_series,
+    )
+    monkeypatch.setattr(
+        "investment_agent.portfolio.performance.analysis_date",
+        lambda: date(2026, 7, 3),
+    )
+
+    points = compare_performance_series(from_date=DEFAULT_COMPARE_START, path=portfolio_db)
+    assert points[2].portfolio_index == pytest.approx(110.0)

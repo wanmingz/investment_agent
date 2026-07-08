@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
 
@@ -11,6 +12,91 @@ from investment_agent.portfolio import db
 from investment_agent.portfolio.models import Position, Trade, TradeInput, TradeSide, model_name
 
 logger = logging.getLogger(__name__)
+
+
+@dataclass(frozen=True)
+class LedgerState:
+    """Cash balance and open share quantities after replaying trades."""
+
+    cash: float
+    holdings: dict[str, float]
+
+
+def _buy_shortfall(cash: float, cost: float) -> tuple[float, float]:
+    """Return (new_cash, external_deposit) after funding a buy from cash first."""
+    shortfall = max(0.0, cost - cash)
+    return cash + shortfall - cost, shortfall
+
+
+def replay_ledger_to(trades: list[Trade], on_date: date) -> LedgerState:
+    """Replay trades through *on_date* (inclusive): cash + share quantities."""
+    cash = 0.0
+    holdings: dict[str, float] = {}
+    active = sorted(
+        (t for t in trades if t.trade_date <= on_date),
+        key=lambda t: (t.trade_date, t.id),
+    )
+    for trade in active:
+        sym = trade.symbol
+        if trade.side == TradeSide.BUY:
+            cost = trade.quantity * trade.price + trade.fees
+            cash, _ = _buy_shortfall(cash, cost)
+            holdings[sym] = holdings.get(sym, 0.0) + trade.quantity
+        else:
+            proceeds = trade.quantity * trade.price - trade.fees
+            holdings[sym] = holdings.get(sym, 0.0) - trade.quantity
+            if holdings[sym] <= 1e-9:
+                holdings.pop(sym, None)
+            cash += proceeds
+    return LedgerState(cash=cash, holdings=holdings)
+
+
+def external_inflow_on_date(trades: list[Trade], on_date: date) -> float:
+    """New capital required on *on_date* (buys not fully covered by cash on hand)."""
+    cash = 0.0
+    holdings: dict[str, float] = {}
+    flow = 0.0
+    active = sorted(
+        (t for t in trades if t.trade_date <= on_date),
+        key=lambda t: (t.trade_date, t.id),
+    )
+    for trade in active:
+        sym = trade.symbol
+        if trade.side == TradeSide.BUY:
+            cost = trade.quantity * trade.price + trade.fees
+            shortfall = max(0.0, cost - cash)
+            if trade.trade_date == on_date:
+                flow += shortfall
+            cash, _ = _buy_shortfall(cash, cost)
+            holdings[sym] = holdings.get(sym, 0.0) + trade.quantity
+        else:
+            proceeds = trade.quantity * trade.price - trade.fees
+            holdings[sym] = holdings.get(sym, 0.0) - trade.quantity
+            if holdings[sym] <= 1e-9:
+                holdings.pop(sym, None)
+            cash += proceeds
+    return flow
+
+
+def net_external_contributions(trades: list[Trade], *, through: date | None = None) -> float:
+    """Cumulative external capital deposited to fund buys (sells stay in cash)."""
+    if not trades:
+        return 0.0
+    end = through or max(t.trade_date for t in trades)
+    cash = 0.0
+    total = 0.0
+    for trade in sorted(
+        (t for t in trades if t.trade_date <= end),
+        key=lambda t: (t.trade_date, t.id),
+    ):
+        if trade.side == TradeSide.BUY:
+            cost = trade.quantity * trade.price + trade.fees
+            shortfall = max(0.0, cost - cash)
+            total += shortfall
+            cash, _ = _buy_shortfall(cash, cost)
+        else:
+            cash += trade.quantity * trade.price - trade.fees
+    return total
 
 
 class InsufficientSharesError(ValueError):

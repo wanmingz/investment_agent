@@ -129,7 +129,9 @@ def _cmd_positions(args: argparse.Namespace) -> None:
     console.print(table)
     console.print(
         f"\n[bold]Total[/bold] cost ${snap.total_cost_basis:,.2f} · "
-        f"market ${snap.total_market_value:,.2f} · "
+        f"holdings ${snap.total_market_value:,.2f} · "
+        f"cash ${snap.cash_balance:,.2f} · "
+        f"NAV ${snap.total_nav:,.2f} · "
         f"unrealized ${snap.total_unrealized_pnl:,.2f}"
         + (f" ({snap.total_unrealized_pnl_pct:.1f}%)" if snap.total_unrealized_pnl_pct is not None else "")
     )
@@ -152,7 +154,8 @@ def _cmd_performance(args: argparse.Namespace) -> None:
         period = f" ({f} → {t})"
 
     console.print(f"[bold]Performance{period}[/bold] · as of {summary.as_of.isoformat()}")
-    console.print(f"  Gross invested:  ${summary.gross_invested:,.2f}")
+    console.print(f"  Portfolio value: ${summary.snapshot.total_nav:,.2f}")
+    console.print(f"  Net invested:    ${summary.gross_invested:,.2f}")
     console.print(f"  Realized P&L:    ${summary.realized_pnl:,.2f}")
     console.print(f"  Unrealized P&L:  ${summary.snapshot.total_unrealized_pnl:,.2f}")
     console.print(f"  Total P&L:       ${summary.total_pnl:,.2f}")

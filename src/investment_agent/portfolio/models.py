@@ -16,6 +16,25 @@ def model_name(obj: object) -> str:
     return val if isinstance(val, str) else ""
 
 
+def snapshot_cash_balance(snapshot: object) -> float:
+    """Cash in portfolio account; safe when schema predates cash_balance field."""
+    val = getattr(snapshot, "cash_balance", None)
+    if isinstance(val, (int, float)):
+        return float(val)
+    return 0.0
+
+
+def snapshot_total_nav(snapshot: object) -> float:
+    """Cash + holdings market value; safe when schema predates total_nav field."""
+    val = getattr(snapshot, "total_nav", None)
+    if isinstance(val, (int, float)) and val > 0:
+        return float(val)
+    mkt = getattr(snapshot, "total_market_value", None)
+    market = float(mkt) if isinstance(mkt, (int, float)) else 0.0
+    nav = market + snapshot_cash_balance(snapshot)
+    return nav if nav > 0 else market
+
+
 class TradeSide(str, Enum):
     BUY = "buy"
     SELL = "sell"
@@ -62,6 +81,8 @@ class PortfolioSnapshot(BaseModel):
     positions: list[Position]
     total_cost_basis: float
     total_market_value: float
+    cash_balance: float = 0.0
+    total_nav: float = 0.0
     total_unrealized_pnl: float
     total_unrealized_pnl_pct: float | None = None
 

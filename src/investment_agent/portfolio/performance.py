@@ -13,14 +13,16 @@ from investment_agent.portfolio import db
 from investment_agent.portfolio.ledger import (
     compute_positions,
     compute_realized_pnl_in_range,
-    get_open_positions,
-    gross_invested,
+    external_inflow_on_date,
+    net_external_contributions,
+    replay_ledger_to,
 )
 from investment_agent.portfolio.models import (
     PerformanceComparePoint,
     PerformanceSummary,
     PortfolioSnapshot,
     Position,
+    Trade,
     model_name,
 )
 from investment_agent.universe.constants import BENCHMARK_SYMBOL
@@ -36,15 +38,19 @@ def mark_positions(
     positions: list[Position],
     *,
     as_of: date | None = None,
+    trades: list[Trade] | None = None,
 ) -> PortfolioSnapshot:
     """Fetch latest prices and attach market value / unrealized P&L to each position."""
     as_of = as_of or analysis_date()
     if not positions:
+        cash = replay_ledger_to(trades, as_of).cash if trades else 0.0
         return PortfolioSnapshot(
             as_of=as_of,
             positions=[],
             total_cost_basis=0.0,
             total_market_value=0.0,
+            cash_balance=cash,
+            total_nav=cash,
             total_unrealized_pnl=0.0,
             total_unrealized_pnl_pct=None,
         )
@@ -88,12 +94,16 @@ def mark_positions(
     total_mkt = sum(p.market_value or 0.0 for p in marked)
     total_unreal = total_mkt - total_cost
     total_unreal_pct = (total_unreal / total_cost * 100) if total_cost else None
+    cash = replay_ledger_to(trades, as_of).cash if trades else 0.0
+    total_nav = cash + total_mkt
 
     return PortfolioSnapshot(
         as_of=as_of,
         positions=marked,
         total_cost_basis=total_cost,
         total_market_value=total_mkt,
+        cash_balance=cash,
+        total_nav=total_nav,
         total_unrealized_pnl=total_unreal,
         total_unrealized_pnl_pct=total_unreal_pct,
     )
@@ -159,19 +169,24 @@ def _price_on_or_before(series: dict[date, float], on_date: date) -> float | Non
     return series[max(candidates)]
 
 
-def _portfolio_value_on(
-    trades: list,
+def _portfolio_nav_on(
+    trades: list[Trade],
     on_date: date,
     price_maps: dict[str, dict[date, float]],
 ) -> float:
-    active = [t for t in trades if t.trade_date <= on_date]
-    positions, _ = compute_positions(active)
-    total = 0.0
-    for pos in positions:
-        px = _price_on_or_before(price_maps.get(pos.symbol, {}), on_date)
+    """Cash + mark-to-market holdings at end of *on_date* (trades applied in order)."""
+    state = replay_ledger_to(trades, on_date)
+    nav = state.cash
+    for sym, qty in state.holdings.items():
+        px = _price_on_or_before(price_maps.get(sym, {}), on_date)
         if px is not None:
-            total += pos.quantity * px
-    return total
+            nav += qty * px
+    return nav
+
+
+def _external_flow_on_date(trades: list[Trade], on_date: date) -> float:
+    """Capital added on *on_date* when buys exceed cash on hand."""
+    return external_inflow_on_date(trades, on_date)
 
 
 def compare_performance_series(
@@ -181,10 +196,11 @@ def compare_performance_series(
     path: Path | None = None,
 ) -> list[PerformanceComparePoint]:
     """
-    Indexed performance (100 = start) for portfolio MTM vs SPY.
+    Chain-linked indexed performance (100 = portfolio start) vs SPY.
 
-    Portfolio stays at 100 until the first day with holdings, then tracks
-    mark-to-market relative to value on that day.
+    Portfolio NAV = cash from sells + mark-to-market holdings. Daily returns
+    adjust for buy inflows so new capital is not counted as performance.
+    SPY is rebased to 100 on the same day the portfolio index starts.
     """
     from_date = from_date or DEFAULT_COMPARE_START
     to_date = to_date or analysis_date()
@@ -199,7 +215,6 @@ def compare_performance_series(
         return []
 
     trading_days = sorted(spy_series)
-    spy_base = spy_series[trading_days[0]]
 
     symbols = sorted({t.symbol for t in trades})
     price_maps: dict[str, dict[date, float]] = {}
@@ -213,24 +228,52 @@ def compare_performance_series(
                 sym = futures[fut]
                 price_maps[sym] = fut.result()
 
-    portfolio_values = [
-        _portfolio_value_on(trades, d, price_maps) if trades else 0.0 for d in trading_days
+    navs = [
+        _portfolio_nav_on(trades, d, price_maps) if trades else 0.0 for d in trading_days
     ]
+    flows = [_external_flow_on_date(trades, d) for d in trading_days]
 
-    first_pos_idx = next((i for i, v in enumerate(portfolio_values) if v > 0), None)
-    port_base = portfolio_values[first_pos_idx] if first_pos_idx is not None else None
+    first_nav_idx = next((i for i, nav in enumerate(navs) if nav > 0), None)
+    if first_nav_idx is None:
+        spy_base = spy_series[trading_days[0]]
+        return [
+            PerformanceComparePoint(
+                date=d,
+                portfolio_index=100.0,
+                spy_index=100.0 * spy_series[d] / spy_base if spy_base else 100.0,
+            )
+            for d in trading_days
+        ]
+
+    spy_base_day = trading_days[first_nav_idx]
+    spy_base = spy_series[spy_base_day]
+
+    port_index = 100.0
+    prev_nav = navs[first_nav_idx]
 
     points: list[PerformanceComparePoint] = []
     for i, d in enumerate(trading_days):
         spy_index = 100.0 * spy_series[d] / spy_base if spy_base else 100.0
-        if port_base is None or portfolio_values[i] <= 0:
-            port_index = 100.0
+
+        if i < first_nav_idx:
+            port_index_out = 100.0
+        elif i == first_nav_idx:
+            port_index_out = 100.0
+            prev_nav = navs[i]
         else:
-            port_index = 100.0 * portfolio_values[i] / port_base
+            nav = navs[i]
+            flow = flows[i]
+            denominator = prev_nav + flow
+            if denominator > 0:
+                port_index *= nav / denominator
+            if nav > 0:
+                prev_nav = nav
+            port_index_out = port_index
+
         points.append(
             PerformanceComparePoint(
                 date=d,
-                portfolio_index=port_index,
+                portfolio_index=port_index_out,
                 spy_index=spy_index,
             )
         )
@@ -248,13 +291,13 @@ def summarize_performance(
     as_of = to_date or analysis_date()
 
     positions, _ = compute_positions(trades)
-    snapshot = mark_positions(positions, as_of=as_of)
+    snapshot = mark_positions(positions, as_of=as_of, trades=trades)
 
     realized = compute_realized_pnl_in_range(
         trades, from_date=from_date, to_date=to_date
     )
-    invested = gross_invested(trades)
-    total_pnl = snapshot.total_unrealized_pnl + realized
+    invested = net_external_contributions(trades, through=as_of)
+    total_pnl = snapshot.total_nav - invested
     total_return_pct = (total_pnl / invested * 100) if invested else None
 
     first_trade = min((t.trade_date for t in trades), default=None)
@@ -281,5 +324,6 @@ def summarize_performance(
 
 
 def get_marked_positions(*, path: Path | None = None) -> PortfolioSnapshot:
-    positions = get_open_positions(path=path)
-    return mark_positions(positions)
+    trades = db.fetch_trades(path=path)
+    positions, _ = compute_positions(trades)
+    return mark_positions(positions, trades=trades)
