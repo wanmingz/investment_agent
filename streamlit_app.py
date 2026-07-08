@@ -65,6 +65,7 @@ from investment_agent.portfolio.performance import (
     compare_performance_series,
     summarize_performance,
 )
+from investment_agent.portfolio.theme_alignment import compute_theme_alignment
 
 try:
     from investment_agent.dates import format_date_display
@@ -497,7 +498,45 @@ def _render_performance_compare() -> None:
     )
 
 
-def _render_portfolio() -> None:
+def _render_theme_alignment(brief: InvestmentBrief, snapshot) -> None:
+    """Research themes vs holdings (read-only overlay)."""
+    st.markdown("#### Research alignment")
+    st.caption(
+        "Top themes from the latest brief vs your open positions (ticker + sector ETF match). "
+        "Read-only — does not change analysis or trades."
+    )
+    report = compute_theme_alignment(brief, snapshot)
+    if not report.rows:
+        st.caption("_No themes in brief._")
+        return
+
+    status_labels = {"high": "High overlap", "partial": "Partial", "gap": "Gap (no holdings)"}
+    table_rows = []
+    for row in report.rows:
+        symbols = ", ".join(row.overlap_symbols) if row.overlap_symbols else "—"
+        table_rows.append(
+            {
+                "Rank": row.rank,
+                "Theme": row.theme_name,
+                "Overlap": symbols,
+                "% of NAV": f"{row.overlap_pct:.1f}%",
+                "Status": status_labels.get(row.status, row.status),
+            }
+        )
+    st.dataframe(table_rows, use_container_width=True, hide_index=True)
+
+    if report.gap_themes:
+        st.caption(
+            "**Research gaps (themes without holdings):** " + ", ".join(report.gap_themes)
+        )
+    if report.uncovered_positions:
+        uncovered = ", ".join(
+            f"{p.symbol} ({p.weight_pct:.1f}%)" for p in report.uncovered_positions
+        )
+        st.caption(f"**Holdings not covered by top themes:** {uncovered}")
+
+
+def _render_portfolio(brief: InvestmentBrief | None = None) -> None:
     st.markdown(
         '<p class="main-header">💼 Portfolio</p>',
         unsafe_allow_html=True,
@@ -670,6 +709,14 @@ def _render_portfolio() -> None:
         else:
             st.caption("_All positions closed._")
 
+    if brief is not None and summary.snapshot.positions:
+        _render_theme_alignment(brief, summary.snapshot)
+    elif brief is None and summary.snapshot.positions:
+        st.info(
+            "Load a theme brief (**Themes** → **Load last result** or run analysis) "
+            "to see research alignment with your holdings."
+        )
+
     trades = list_trades()
     if trades:
         with st.expander(f"Trade history ({len(trades)})", expanded=False):
@@ -804,7 +851,7 @@ def main() -> None:
                 st.stop()
 
     if page == "Portfolio":
-        _render_portfolio()
+        _render_portfolio(brief=st.session_state.get("brief"))
         return
 
     brief: InvestmentBrief | None = st.session_state.get("brief")

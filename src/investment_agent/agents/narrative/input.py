@@ -1,4 +1,4 @@
-"""Narrative agent input — headline ingest + lexical RAG."""
+"""Narrative agent input — headline ingest + hybrid RAG."""
 
 from __future__ import annotations
 
@@ -38,7 +38,9 @@ def build_narrative_input(
         finnhub_key=settings.finnhub_api_key,
         max_articles=settings.news_max_articles,
     )
-    retrieved = retrieve_articles(articles, query, top_k=settings.rag_top_k)
+    retrieved = retrieve_articles(
+        articles, query, top_k=settings.rag_top_k, settings=settings
+    )
     context = format_context_block(
         retrieved,
         max_summary_chars=settings.rag_summary_max_chars,

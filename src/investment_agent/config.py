@@ -32,6 +32,12 @@ def env_str(name: str, default: str) -> str:
     return raw or default
 
 
+def env_bool(name: str, default: bool) -> bool:
+    """Parse bool env var; empty uses *default*."""
+    val = _bool_env(name)
+    return default if val is None else val
+
+
 def _int_env(name: str, default: int) -> int:
     return env_int(name, default)
 
@@ -100,6 +106,9 @@ class Settings:
     rag_top_k: int = 12
     rag_summary_max_chars: int = 500
     rag_context_max_chars: int = 10_000
+    rag_hybrid: bool = True
+    rag_embedding_model: str = "all-MiniLM-L6-v2"
+    rag_rrf_k: int = 60
     pipeline_version: int = 2
     llm_parallel_agents: bool = True
     llm_agent_delay_seconds: float = 0.0
@@ -160,6 +169,9 @@ class Settings:
             rag_top_k=_int_env("RAG_TOP_K", 5 if groq else 24),
             rag_summary_max_chars=_int_env("RAG_SUMMARY_MAX_CHARS", 180 if groq else 500),
             rag_context_max_chars=_int_env("RAG_CONTEXT_MAX_CHARS", 3_000 if groq else 10_000),
+            rag_hybrid=env_bool("RAG_HYBRID", True),
+            rag_embedding_model=env_str("RAG_EMBEDDING_MODEL", "all-MiniLM-L6-v2"),
+            rag_rrf_k=_int_env("RAG_RRF_K", 60),
             pipeline_version=_int_env("PIPELINE_VERSION", 2),
             llm_parallel_agents=_llm_parallel_agents(base_url, model),
             llm_agent_delay_seconds=_llm_agent_delay_seconds(base_url, model),

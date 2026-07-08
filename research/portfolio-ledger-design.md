@@ -53,7 +53,7 @@
 | 2 — Performance + CLI | 2 days | `performance.py`, `cli.py` portfolio subcommands, `invest-portfolio` script |
 | 3 — Streamlit tab | 1–2 days | Trade form, positions table, performance summary in `streamlit_app.py` |
 | 4 — Docs + polish | ~1 day | `README.md`, optional `research/codebase-current-state.md` appendix |
-| 5 — Theme overlay (optional) | 1 day | Read-only sector weight vs `FinalTheme` ranks in dashboard tab |
+| 5 — Theme overlay | Done | `portfolio/theme_alignment.py` — read-only ticker/sector match vs top `FinalTheme` ranks on Portfolio tab |
 
 **Total (Phases 1–4):** ~1–1.5 weeks for one developer. Phase 5 optional.
 
@@ -109,7 +109,7 @@
 | D7 | **`PORTFOLIO_DB_PATH` env override** | Optional; default `reports/portfolio.db` relative to project root |
 | D8 | **Sell validation** | Reject sell qty > current shares; no short positions in MVP |
 | D9 | **Streamlit tab, not new app** | One dashboard for themes + portfolio; minimal user friction |
-| D10 | **Theme overlay deferred** | Core ask is trade/portfolio/performance; alignment is optional Phase 5 |
+| D10 | **Theme overlay (Phase 5)** | `compute_theme_alignment()` in Portfolio tab; read-only; does not feed holdings into agent prompts |
 
 ### Proposed package layout
 

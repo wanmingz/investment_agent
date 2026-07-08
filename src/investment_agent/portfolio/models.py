@@ -105,3 +105,26 @@ class PerformanceComparePoint(BaseModel):
     date: date
     portfolio_index: float
     spy_index: float
+
+
+class ThemeAlignmentRow(BaseModel):
+    theme_name: str
+    rank: int
+    overlap_symbols: list[str] = Field(default_factory=list)
+    overlap_pct: float = 0.0
+    status: str  # high | partial | gap
+    theme_tickers: list[str] = Field(default_factory=list)
+
+
+class UncoveredPosition(BaseModel):
+    symbol: str
+    name: str = ""
+    weight_pct: float = 0.0
+
+
+class ThemeAlignmentReport(BaseModel):
+    as_of: date
+    rows: list[ThemeAlignmentRow] = Field(default_factory=list)
+    uncovered_positions: list[UncoveredPosition] = Field(default_factory=list)
+    gap_themes: list[str] = Field(default_factory=list)
+    total_nav: float = 0.0

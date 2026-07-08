@@ -68,7 +68,7 @@ python main.py -o reports/latest.json
 streamlit run streamlit_app.py   # or: invest-dashboard
 ```
 
-**Streamlit:** Run analysis · Load last result · Resume / Clear checkpoint · Agent tabs · Recommended themes (one card per sector, sorted by score). Switch **View → Portfolio** for trade ledger.
+**Streamlit:** Run analysis · Load last result · Resume / Clear checkpoint · Agent tabs · Recommended themes (one card per sector, sorted by score). Switch **View → Portfolio** for trade ledger and **research alignment** (themes vs holdings).
 
 ### Portfolio ledger
 
@@ -99,6 +99,9 @@ Weighted average cost; sells exceeding holdings are rejected. Back up `reports/p
 | `FINNHUB_API_KEY` | Optional Narrative headlines ([Finnhub](https://finnhub.io/)) |
 | `NEWS_MAX_ARTICLES` | Headlines ingested (Groq default **25**) |
 | `RAG_TOP_K` | Articles in Narrative LLM prompt (Groq default **5**) |
+| `RAG_HYBRID` | `1` = lexical + local embeddings (RRF); `0` = lexical only |
+| `RAG_EMBEDDING_MODEL` | sentence-transformers model (default `all-MiniLM-L6-v2`) |
+| `RAG_RRF_K` | RRF constant (default **60**) |
 | `RAG_SUMMARY_MAX_CHARS` | Per-article summary cap (Groq default **180**) |
 | `RAG_CONTEXT_MAX_CHARS` | Total narrative context cap (Groq default **3000**) |
 | `FUNDAMENTALS_MAX_TICKERS` | Max extra tickers for Markets (default `8`) |
@@ -279,7 +282,7 @@ Legacy theme display fields (`name_zh`, `stage_label_zh`) normalize on load via 
 | [Finnhub](https://finnhub.io/) | `FINNHUB_API_KEY` (optional) | `agents/narrative/ingest.py` |
 | [TickerTick](https://github.com/hczhu/TickerTick-API) | None | `agents/narrative/ingest.py` |
 
-Corpus capped by `NEWS_MAX_ARTICLES`; `RAG_TOP_K` articles after lexical retrieval; summaries truncated by `RAG_SUMMARY_MAX_CHARS` / `RAG_CONTEXT_MAX_CHARS`.
+Corpus capped by `NEWS_MAX_ARTICLES`; `RAG_TOP_K` articles after **hybrid** retrieval (lexical + local `sentence-transformers` embeddings, RRF fusion; set `RAG_HYBRID=0` for lexical only). First run downloads the embedding model (~80MB). Summaries truncated by `RAG_SUMMARY_MAX_CHARS` / `RAG_CONTEXT_MAX_CHARS`. After enabling hybrid RAG, **clear checkpoint** if resuming an old run.
 
 ### Live market data (yfinance)
 
@@ -304,9 +307,9 @@ Errors: `QuotaExhaustedError` (429), prompt-too-large (413) — see `llm.py` hin
 
 ## Roadmap: Portfolio management
 
-**Implemented (ledger):** manual trade recording, weighted-avg positions, mark-to-market P&L, CLI (`invest-portfolio`) and Streamlit **Portfolio** tab. See `research/portfolio-ledger-design.md`.
+**Implemented (ledger):** manual trade recording, weighted-avg positions, mark-to-market P&L, CLI (`invest-portfolio`) and Streamlit **Portfolio** tab. **Theme alignment** overlay compares top brief themes to holdings (ticker + sector match). See `research/portfolio-ledger-design.md`.
 
-**Planned (theme alignment):** programmatic module after `brief_assembler` — suggested allocation from top themes, drift vs holdings, optional constraints. Does **not** feed holdings into agent prompts.
+**Planned:** suggested allocation from themes, drift alerts, optional constraints.
 
 Optional design notes may live under `research/` (not required to run the pipeline).
 
@@ -317,7 +320,7 @@ pip install pytest
 PYTHONPATH=src python -m pytest tests/test_pipeline.py tests/test_portfolio.py -v
 ```
 
-Covers: data plane wiring, regime context, sector clustering & ranking, RAG truncation, legacy brief migration, portfolio ledger.
+Covers: data plane wiring, regime context, sector clustering & ranking, hybrid RAG, theme alignment, legacy brief migration, portfolio ledger.
 
 ## Disclaimer
 
