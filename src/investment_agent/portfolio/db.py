@@ -7,24 +7,40 @@ import sqlite3
 from contextlib import contextmanager
 from datetime import date, datetime
 from pathlib import Path
+from typing import Literal
 
 from investment_agent.portfolio.models import Trade, TradeInput, TradeSide
 
 SCHEMA_VERSION = 2
 
-_DEFAULT_DB = Path(__file__).resolve().parents[3] / "reports" / "portfolio.db"
+LedgerKind = Literal["manual", "model"]
+
+_REPORTS_DIR = Path(__file__).resolve().parents[3] / "reports"
+_DEFAULT_MANUAL_DB = _REPORTS_DIR / "portfolio.db"
+_DEFAULT_AI_DB = _REPORTS_DIR / "ai_portfolio.db"
 
 
-def db_path() -> Path:
+def db_path(ledger: LedgerKind = "manual") -> Path:
+    """Resolve SQLite path for manual (real) or model (paper) ledger."""
+    if ledger == "model":
+        override = os.environ.get("PORTFOLIO_AI_DB_PATH", "").strip()
+        if override:
+            return Path(override).expanduser()
+        return _DEFAULT_AI_DB
     override = os.environ.get("PORTFOLIO_DB_PATH", "").strip()
     if override:
         return Path(override).expanduser()
-    return _DEFAULT_DB
+    return _DEFAULT_MANUAL_DB
+
+
+def resolve_db_path(path: Path | None, ledger: LedgerKind = "manual") -> Path:
+    """Explicit *path* wins over *ledger* default."""
+    return path if path is not None else db_path(ledger)
 
 
 @contextmanager
-def connect(path: Path | None = None):
-    target = path or db_path()
+def connect(path: Path | None = None, *, ledger: LedgerKind = "manual"):
+    target = resolve_db_path(path, ledger)
     target.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(target)
     conn.row_factory = sqlite3.Row

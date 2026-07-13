@@ -72,10 +72,15 @@ streamlit run streamlit_app.py   # or: invest-dashboard
 
 ### Portfolio ledger
 
-Record trades, view open positions, and track performance (mark-to-market via yfinance, vs SPY). Data stored locally in `reports/portfolio.db`.
+Record trades, view open positions, and track performance (mark-to-market via yfinance, vs SPY).
+
+- **Manual ledger** (real holdings): `reports/portfolio.db` — default for CLI and **My portfolio** in the dashboard
+- **Model ledger** (paper): `reports/ai_portfolio.db` — use `--ledger model` or **Model portfolio** in the dashboard
+- **Compare** view: manual holdings vs brief target weights (diagnostic; requires allocation MVP when shipped)
 
 ```bash
 invest-portfolio add-trade AAPL buy 10 175.50 --date 2026-01-15
+invest-portfolio --ledger model add-trade NVDA buy 5 120.00
 invest-portfolio list-trades
 invest-portfolio delete-trade 3
 invest-portfolio list-trades --symbol AAPL
@@ -84,9 +89,9 @@ invest-portfolio performance
 invest-portfolio performance --from 2026-01-01 --to 2026-06-30
 ```
 
-Or use the **Portfolio** tab in `invest-dashboard`. Override DB path with `PORTFOLIO_DB_PATH`.
+Or use the **Portfolio** tab in `invest-dashboard`. Override paths with `PORTFOLIO_DB_PATH` (manual) or `PORTFOLIO_AI_DB_PATH` (model).
 
-Weighted average cost; sells exceeding holdings are rejected. Back up `reports/portfolio.db` before upgrades.
+Weighted average cost; sells exceeding holdings are rejected. Back up `reports/portfolio.db` and `reports/ai_portfolio.db` before upgrades.
 
 ## Environment variables
 
@@ -110,7 +115,8 @@ Weighted average cost; sells exceeding holdings are rejected. Back up `reports/p
 | `LLM_AGENT_DELAY_SECONDS` | Delay between sequential calls (OpenRouter `:free`) |
 | `LLM_COMPACT_SCHEMA` | `1` = smaller JSON schema in LLM system prompt |
 | `LLM_MAX_RETRIES_ON_429` | Rate-limit retries in `llm.py` |
-| `PORTFOLIO_DB_PATH` | Portfolio SQLite file (default `reports/portfolio.db`) |
+| `PORTFOLIO_DB_PATH` | Manual portfolio SQLite (default `reports/portfolio.db`) |
+| `PORTFOLIO_AI_DB_PATH` | Model / paper portfolio SQLite (default `reports/ai_portfolio.db`) |
 
 Provider-aware defaults: `config.py` (`is_groq`, `is_openrouter_free`).
 

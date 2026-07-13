@@ -45,6 +45,7 @@ from investment_agent.portfolio.quotes import fetch_close_on_date, fetch_symbol_
 from investment_agent.universe.symbols import is_likely_ticker
 from investment_agent.storage import DEFAULT_REPORT_PATH, load_brief, save_run_reports
 from investment_agent.portfolio import db as portfolio_db
+from investment_agent.portfolio.db import LedgerKind
 from investment_agent.portfolio.ledger import (
     InsufficientSharesError,
     InvalidDeleteError,
@@ -426,7 +427,7 @@ def _render_position_pie(positions, *, cash: float = 0.0) -> None:
     st.altair_chart(chart, use_container_width=True)
 
 
-def _render_performance_compare() -> None:
+def _render_performance_compare(*, ledger: LedgerKind = "manual") -> None:
     """Line chart: portfolio vs SPY, chain-linked from first investment day in range."""
     import altair as alt
     import pandas as pd
@@ -438,7 +439,7 @@ def _render_performance_compare() -> None:
     )
 
     with st.spinner("Loading performance history…"):
-        points = compare_performance_series(from_date=DEFAULT_COMPARE_START)
+        points = compare_performance_series(from_date=DEFAULT_COMPARE_START, ledger=ledger)
 
     if not points:
         st.caption("_Benchmark data unavailable._")
@@ -536,26 +537,84 @@ def _render_theme_alignment(brief: InvestmentBrief, snapshot) -> None:
         st.caption(f"**Holdings not covered by top themes:** {uncovered}")
 
 
-def _render_portfolio(brief: InvestmentBrief | None = None) -> None:
-    st.markdown(
-        '<p class="main-header">💼 Portfolio</p>',
-        unsafe_allow_html=True,
+def _render_portfolio_compare(brief: InvestmentBrief | None) -> None:
+    """Manual holdings vs brief target weights (read-only; requires allocation MVP)."""
+    st.markdown("#### Compare — manual vs research target")
+    st.caption(
+        "Your real portfolio vs target weights from the theme brief. "
+        "Read-only — does not record trades."
     )
-    st.markdown(
-        '<p class="sub-header">Record trades · open positions · performance vs SPY</p>',
-        unsafe_allow_html=True,
-    )
+    if brief is None:
+        st.info(
+            "Load a theme brief (**Themes** → **Load last result** or run analysis) "
+            "to compare holdings against research targets."
+        )
+        return
+    try:
+        summary = summarize_performance(ledger="manual")
+    except RuntimeError as e:
+        st.error(f"Database error: {e}")
+        return
+    if summary.first_trade_date is None:
+        st.info("No manual trades yet. Record trades under **My portfolio** first.")
+        return
+    try:
+        from investment_agent.portfolio.allocation import compute_target_allocation
+        from investment_agent.portfolio.drift import compute_drift_report
+    except ImportError:
+        st.info(
+            "Target allocation and drift modules are not installed yet. "
+            "Use **My portfolio** → Research alignment for theme overlap until the "
+            "allocation MVP ships."
+        )
+        return
+    target = compute_target_allocation(brief)
+    report = compute_drift_report(summary.snapshot, target)
+    if not report.rows:
+        st.caption("_No drift rows._")
+        return
+    table_rows = [
+        {
+            "Symbol": row.symbol,
+            "Target %": f"{row.target_pct:.1f}",
+            "Actual %": f"{row.actual_pct:.1f}",
+            "Drift (pp)": f"{row.drift_pp:+.1f}",
+            "Severity": row.severity,
+        }
+        for row in report.rows
+    ]
+    st.dataframe(table_rows, use_container_width=True, hide_index=True)
 
-    db_path = portfolio_db.db_path()
-    st.caption(f"Ledger: `{db_path}`")
+
+def _render_portfolio_ledger(
+    brief: InvestmentBrief | None,
+    ledger: LedgerKind,
+    *,
+    show_theme_alignment: bool,
+) -> None:
+    is_model = ledger == "model"
+    ledger_label = "Paper / model ledger" if is_model else "My portfolio (manual)"
+    st.markdown(f"##### {ledger_label}")
+    db_file = portfolio_db.db_path(ledger)
+    st.caption(f"Ledger: `{db_file}`")
+
+    key_prefix = ledger
 
     st.markdown("#### Record trade")
     c_sym, c_date = st.columns(2)
     with c_sym:
-        symbol_raw = st.text_input("Symbol", placeholder="AAPL", key="portfolio_trade_symbol")
+        symbol_raw = st.text_input(
+            "Symbol",
+            placeholder="AAPL",
+            key=f"portfolio_trade_symbol_{key_prefix}",
+        )
         symbol = symbol_raw.strip().upper()
     with c_date:
-        trade_date = st.date_input("Trade date", value=analysis_date(), key="portfolio_trade_date")
+        trade_date = st.date_input(
+            "Trade date",
+            value=analysis_date(),
+            key=f"portfolio_trade_date_{key_prefix}",
+        )
 
     close_price: float | None = None
     symbol_name = ""
@@ -577,7 +636,7 @@ def _render_portfolio(brief: InvestmentBrief | None = None) -> None:
 
     default_price = close_price if close_price is not None else 100.0
 
-    with st.form("add_trade_form", clear_on_submit=True):
+    with st.form(f"add_trade_form_{key_prefix}", clear_on_submit=True):
         c1, c2, c3 = st.columns(3)
         with c1:
             side = st.selectbox("Side", ["buy", "sell"])
@@ -615,7 +674,7 @@ def _render_portfolio(brief: InvestmentBrief | None = None) -> None:
                     fees=float(fees),
                     notes=notes,
                 )
-                stored = add_trade(trade)
+                stored = add_trade(trade, ledger=ledger)
                 label = (
                     f"{model_name(stored)} ({stored.symbol})"
                     if model_name(stored)
@@ -631,7 +690,7 @@ def _render_portfolio(brief: InvestmentBrief | None = None) -> None:
                 st.error(str(e))
 
     try:
-        summary = summarize_performance()
+        summary = summarize_performance(ledger=ledger)
     except RuntimeError as e:
         st.error(f"Database error: {e}")
         return
@@ -674,7 +733,7 @@ def _render_portfolio(brief: InvestmentBrief | None = None) -> None:
         f"Unrealized ${summary.snapshot.total_unrealized_pnl:,.2f}"
     )
 
-    _render_performance_compare()
+    _render_performance_compare(ledger=ledger)
 
     st.markdown("#### Open positions")
     if summary.snapshot.positions:
@@ -709,22 +768,23 @@ def _render_portfolio(brief: InvestmentBrief | None = None) -> None:
         else:
             st.caption("_All positions closed._")
 
-    if brief is not None and summary.snapshot.positions:
+    if show_theme_alignment and brief is not None and summary.snapshot.positions:
         _render_theme_alignment(brief, summary.snapshot)
-    elif brief is None and summary.snapshot.positions:
+    elif show_theme_alignment and brief is None and summary.snapshot.positions:
         st.info(
             "Load a theme brief (**Themes** → **Load last result** or run analysis) "
             "to see research alignment with your holdings."
         )
 
-    trades = list_trades()
+    trades = list_trades(ledger=ledger)
     if trades:
         with st.expander(f"Trade history ({len(trades)})", expanded=False):
-            pending_id = st.session_state.get("pending_delete_trade_id")
+            pending_key = f"pending_delete_trade_id_{key_prefix}"
+            pending_id = st.session_state.get(pending_key)
             if pending_id is not None:
                 pending = next((t for t in trades if t.id == pending_id), None)
                 if pending is None:
-                    st.session_state.pending_delete_trade_id = None
+                    st.session_state[pending_key] = None
                 else:
                     st.warning(
                         f"Delete trade **#{pending.id}**? "
@@ -733,17 +793,21 @@ def _render_portfolio(brief: InvestmentBrief | None = None) -> None:
                     )
                     c1, c2 = st.columns(2)
                     with c1:
-                        if st.button("Confirm delete", type="primary", key="confirm_delete_trade"):
+                        if st.button(
+                            "Confirm delete",
+                            type="primary",
+                            key=f"confirm_delete_trade_{key_prefix}",
+                        ):
                             try:
-                                delete_trade(pending.id)
-                                st.session_state.pending_delete_trade_id = None
+                                delete_trade(pending.id, ledger=ledger)
+                                st.session_state[pending_key] = None
                                 st.success(f"Deleted trade #{pending.id}")
                                 st.rerun()
                             except (TradeNotFoundError, InvalidDeleteError) as e:
                                 st.error(str(e))
                     with c2:
-                        if st.button("Cancel", key="cancel_delete_trade"):
-                            st.session_state.pending_delete_trade_id = None
+                        if st.button("Cancel", key=f"cancel_delete_trade_{key_prefix}"):
+                            st.session_state[pending_key] = None
                             st.rerun()
 
             for t in reversed(trades):
@@ -760,9 +824,38 @@ def _render_portfolio(brief: InvestmentBrief | None = None) -> None:
                 with row1:
                     st.text(label)
                 with row2:
-                    if st.button("Delete", key=f"delete_trade_{t.id}"):
-                        st.session_state.pending_delete_trade_id = t.id
+                    if st.button("Delete", key=f"delete_trade_{key_prefix}_{t.id}"):
+                        st.session_state[pending_key] = t.id
                         st.rerun()
+
+
+def _render_portfolio(brief: InvestmentBrief | None = None) -> None:
+    st.markdown(
+        '<p class="main-header">💼 Portfolio</p>',
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        '<p class="sub-header">Manual vs model ledgers · performance vs SPY</p>',
+        unsafe_allow_html=True,
+    )
+
+    view = st.radio(
+        "Portfolio view",
+        ["My portfolio", "Model portfolio", "Compare"],
+        horizontal=True,
+        key="portfolio_sub_view",
+    )
+
+    if view == "Compare":
+        _render_portfolio_compare(brief)
+        return
+
+    ledger: LedgerKind = "manual" if view == "My portfolio" else "model"
+    _render_portfolio_ledger(
+        brief,
+        ledger,
+        show_theme_alignment=(ledger == "manual"),
+    )
 
 
 def main() -> None:

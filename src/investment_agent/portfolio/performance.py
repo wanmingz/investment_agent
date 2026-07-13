@@ -10,6 +10,7 @@ from investment_agent.agents.markets.price import PriceMetrics, fetch_price_metr
 from investment_agent.portfolio.quotes import fetch_symbol_name
 from investment_agent.dates import analysis_date
 from investment_agent.portfolio import db
+from investment_agent.portfolio.db import LedgerKind, resolve_db_path
 from investment_agent.portfolio.ledger import (
     compute_positions,
     compute_realized_pnl_in_range,
@@ -194,6 +195,7 @@ def compare_performance_series(
     from_date: date | None = None,
     to_date: date | None = None,
     path: Path | None = None,
+    ledger: LedgerKind = "manual",
 ) -> list[PerformanceComparePoint]:
     """
     Chain-linked indexed performance (100 = portfolio start) vs SPY.
@@ -207,8 +209,9 @@ def compare_performance_series(
     if to_date < from_date:
         return []
 
-    db.init_db(path)
-    trades = db.fetch_trades(path=path)
+    target = resolve_db_path(path, ledger)
+    db.init_db(target)
+    trades = db.fetch_trades(path=target)
 
     spy_series = _fetch_close_series(BENCHMARK_SYMBOL, from_date, to_date)
     if not spy_series:
@@ -285,9 +288,11 @@ def summarize_performance(
     from_date: date | None = None,
     to_date: date | None = None,
     path: Path | None = None,
+    ledger: LedgerKind = "manual",
 ) -> PerformanceSummary:
-    db.init_db(path)
-    trades = db.fetch_trades(path=path)
+    target = resolve_db_path(path, ledger)
+    db.init_db(target)
+    trades = db.fetch_trades(path=target)
     as_of = to_date or analysis_date()
 
     positions, _ = compute_positions(trades)
@@ -323,7 +328,12 @@ def summarize_performance(
     )
 
 
-def get_marked_positions(*, path: Path | None = None) -> PortfolioSnapshot:
-    trades = db.fetch_trades(path=path)
+def get_marked_positions(
+    *,
+    path: Path | None = None,
+    ledger: LedgerKind = "manual",
+) -> PortfolioSnapshot:
+    target = resolve_db_path(path, ledger)
+    trades = db.fetch_trades(path=target)
     positions, _ = compute_positions(trades)
     return mark_positions(positions, trades=trades)

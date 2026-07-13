@@ -9,6 +9,7 @@ from pathlib import Path
 
 from investment_agent.portfolio.quotes import fetch_symbol_name
 from investment_agent.portfolio import db
+from investment_agent.portfolio.db import LedgerKind, resolve_db_path
 from investment_agent.portfolio.models import Position, Trade, TradeInput, TradeSide, model_name
 
 logger = logging.getLogger(__name__)
@@ -219,9 +220,15 @@ def gross_invested(trades: list[Trade]) -> float:
     return total
 
 
-def add_trade(trade: TradeInput, *, path: Path | None = None) -> Trade:
+def add_trade(
+    trade: TradeInput,
+    *,
+    path: Path | None = None,
+    ledger: LedgerKind = "manual",
+) -> Trade:
     """Validate sell against current holdings, persist, and return the stored trade."""
-    existing = db.fetch_trades(path=path)
+    target = resolve_db_path(path, ledger)
+    existing = db.fetch_trades(path=target)
     if trade.side == TradeSide.SELL:
         positions, _ = compute_positions(existing)
         held = next((p.quantity for p in positions if p.symbol == trade.symbol), 0.0)
@@ -240,7 +247,7 @@ def add_trade(trade: TradeInput, *, path: Path | None = None) -> Trade:
         if name:
             payload = trade.model_copy(update={"name": name})
 
-    stored = db.insert_trade(payload, path=path)
+    stored = db.insert_trade(payload, path=target)
     logger.info(
         "Trade recorded: %s %s %.4g @ %.4f on %s",
         stored.side.value,
@@ -252,13 +259,19 @@ def add_trade(trade: TradeInput, *, path: Path | None = None) -> Trade:
     return stored
 
 
-def delete_trade(trade_id: int, *, path: Path | None = None) -> Trade:
+def delete_trade(
+    trade_id: int,
+    *,
+    path: Path | None = None,
+    ledger: LedgerKind = "manual",
+) -> Trade:
     """Remove a trade after verifying the remaining history stays valid."""
-    existing = db.fetch_trade_by_id(trade_id, path=path)
+    target = resolve_db_path(path, ledger)
+    existing = db.fetch_trade_by_id(trade_id, path=target)
     if existing is None:
         raise TradeNotFoundError(f"Trade id={trade_id} not found")
 
-    remaining = [t for t in db.fetch_trades(path=path) if t.id != trade_id]
+    remaining = [t for t in db.fetch_trades(path=target) if t.id != trade_id]
     try:
         compute_positions(remaining)
     except InsufficientSharesError as e:
@@ -266,7 +279,7 @@ def delete_trade(trade_id: int, *, path: Path | None = None) -> Trade:
             f"Cannot delete trade #{trade_id}: remaining history would be invalid ({e})"
         ) from e
 
-    if not db.delete_trade_by_id(trade_id, path=path):
+    if not db.delete_trade_by_id(trade_id, path=target):
         raise TradeNotFoundError(f"Trade id={trade_id} not found")
 
     logger.info(
@@ -287,11 +300,20 @@ def list_trades(
     from_date: date | None = None,
     to_date: date | None = None,
     path: Path | None = None,
+    ledger: LedgerKind = "manual",
 ) -> list[Trade]:
-    return db.fetch_trades(symbol=symbol, from_date=from_date, to_date=to_date, path=path)
+    target = resolve_db_path(path, ledger)
+    return db.fetch_trades(
+        symbol=symbol, from_date=from_date, to_date=to_date, path=target
+    )
 
 
-def get_open_positions(*, path: Path | None = None) -> list[Position]:
-    trades = db.fetch_trades(path=path)
+def get_open_positions(
+    *,
+    path: Path | None = None,
+    ledger: LedgerKind = "manual",
+) -> list[Position]:
+    target = resolve_db_path(path, ledger)
+    trades = db.fetch_trades(path=target)
     positions, _ = compute_positions(trades)
     return positions

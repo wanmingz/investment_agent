@@ -37,7 +37,7 @@ orchestrator                   →  3 × Agent.analyze()  →  brief_assembler.a
 | Checkpoint / resume | `checkpoint.py` (`PIPELINE_VERSION`) |
 | Persist brief JSON | `storage.py` |
 | GitHub-readable Markdown brief | `report_markdown.py`, `brief/` |
-| Portfolio ledger / alignment UI | `portfolio/`, `streamlit_app.py` |
+| Portfolio ledger / alignment UI | `portfolio/`, `streamlit_app.py` (`PORTFOLIO_DB_PATH`, `PORTFOLIO_AI_DB_PATH`) |
 | Design notes (not runtime) | `research/` |
 
 ## Theme stages
@@ -93,7 +93,7 @@ Groq on-demand is ~12k tokens/request. When `base_url` contains `groq.com`, `con
 
 ## Portfolio subsystem (separate from theme pipeline)
 
-SQLite ledger in `reports/portfolio.db` (default). `portfolio/theme_alignment.py` is **diagnostic only** (overlap/gap vs brief themes) — not rebalance or trade suggestions.
+Two SQLite ledgers: **manual** (`reports/portfolio.db`) and **model / paper** (`reports/ai_portfolio.db`). `portfolio/theme_alignment.py` is **diagnostic only** (overlap/gap vs brief themes on the manual ledger) — not rebalance or trade suggestions. **Compare** view contrasts manual holdings vs brief target weights when allocation modules exist.
 
 ## CI
 

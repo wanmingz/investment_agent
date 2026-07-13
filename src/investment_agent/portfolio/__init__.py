@@ -1,5 +1,6 @@
 """Portfolio ledger — trade recording, positions, and performance."""
 
+from investment_agent.portfolio.db import LedgerKind, db_path
 from investment_agent.portfolio.ledger import (
     InsufficientSharesError,
     InvalidDeleteError,
@@ -32,6 +33,7 @@ __all__ = [
     "DEFAULT_COMPARE_START",
     "InsufficientSharesError",
     "InvalidDeleteError",
+    "LedgerKind",
     "PerformanceComparePoint",
     "PerformanceSummary",
     "PortfolioSnapshot",
@@ -41,6 +43,7 @@ __all__ = [
     "TradeSide",
     "TradeNotFoundError",
     "compare_performance_series",
+    "db_path",
     "model_name",
     "add_trade",
     "compute_positions",

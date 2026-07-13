@@ -24,6 +24,12 @@ from investment_agent.portfolio.performance import get_marked_positions, summari
 console = Console()
 
 
+def _portfolio_kwargs(args: argparse.Namespace) -> dict:
+    if args.db is not None:
+        return {"path": args.db}
+    return {"ledger": args.ledger}
+
+
 def _parse_date(value: str) -> date:
     try:
         return date.fromisoformat(value)
@@ -42,7 +48,7 @@ def _cmd_add_trade(args: argparse.Namespace) -> None:
         fees=args.fees,
         notes=args.notes or "",
     )
-    stored = add_trade(trade, path=args.db)
+    stored = add_trade(trade, **_portfolio_kwargs(args))
     label = f"{model_name(stored)} ({stored.symbol})" if model_name(stored) else stored.symbol
     console.print(
         f"[green]Recorded[/green] {stored.side.value} "
@@ -52,7 +58,7 @@ def _cmd_add_trade(args: argparse.Namespace) -> None:
 
 
 def _cmd_delete_trade(args: argparse.Namespace) -> None:
-    removed = delete_trade(args.trade_id, path=args.db)
+    removed = delete_trade(args.trade_id, **_portfolio_kwargs(args))
     console.print(
         f"[green]Deleted[/green] trade #{removed.id}: {removed.side.value} "
         f"{removed.quantity:g} {removed.symbol} @ ${removed.price:.2f} "
@@ -65,7 +71,7 @@ def _cmd_list_trades(args: argparse.Namespace) -> None:
         symbol=args.symbol,
         from_date=args.from_date,
         to_date=args.to_date,
-        path=args.db,
+        **_portfolio_kwargs(args),
     )
     if not trades:
         console.print("[dim]No trades found.[/dim]")
@@ -97,7 +103,7 @@ def _cmd_list_trades(args: argparse.Namespace) -> None:
 
 
 def _cmd_positions(args: argparse.Namespace) -> None:
-    snap = get_marked_positions(path=args.db)
+    snap = get_marked_positions(**_portfolio_kwargs(args))
     if not snap.positions:
         console.print("[dim]No open positions.[/dim]")
         return
@@ -141,7 +147,7 @@ def _cmd_performance(args: argparse.Namespace) -> None:
     summary = summarize_performance(
         from_date=args.from_date,
         to_date=args.to_date,
-        path=args.db,
+        **_portfolio_kwargs(args),
     )
     if not summary.first_trade_date:
         console.print("[dim]No trades recorded yet.[/dim]")
@@ -172,7 +178,7 @@ def _cmd_performance(args: argparse.Namespace) -> None:
 
     if summary.snapshot.positions:
         console.print()
-        _cmd_positions(argparse.Namespace(db=args.db))
+        _cmd_positions(argparse.Namespace(db=args.db, ledger=args.ledger))
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -183,7 +189,13 @@ def build_parser() -> argparse.ArgumentParser:
         "--db",
         type=Path,
         default=None,
-        help="Portfolio SQLite path (default: reports/portfolio.db or PORTFOLIO_DB_PATH)",
+        help="Portfolio SQLite path (overrides --ledger default path)",
+    )
+    parser.add_argument(
+        "--ledger",
+        choices=["manual", "model"],
+        default="manual",
+        help="Ledger: manual (real) or model (paper); default reports/portfolio.db vs ai_portfolio.db",
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
