@@ -68,19 +68,18 @@ python main.py -o reports/latest.json
 streamlit run streamlit_app.py   # or: invest-dashboard
 ```
 
-**Streamlit:** Run analysis · Load last result · Resume / Clear checkpoint · Agent tabs · Recommended themes (one card per sector, sorted by score). Switch **View → Portfolio** for trade ledger and **research alignment** (themes vs holdings).
+**Streamlit:** Run analysis · Load last result · Resume / Clear checkpoint · Agent tabs · Recommended themes (one card per sector, sorted by score). Switch **View → Portfolio** for **My portfolio**, **Model portfolio**, and **Compare** (see [Portfolio architecture](#portfolio-architecture)).
 
 ### Portfolio ledger
 
-Record trades, view open positions, and track performance (mark-to-market via yfinance, vs SPY).
+Record trades, view open positions, and track performance (mark-to-market via yfinance, vs SPY). The portfolio subsystem is **separate from the theme pipeline** — it reads `InvestmentBrief` for diagnostics only; it does not call LLMs or feed holdings back into agents.
 
-- **Manual ledger** (real holdings): `reports/portfolio.db` — default for CLI and **My portfolio** in the dashboard
-- **Model ledger** (paper): `reports/ai_portfolio.db` — use `--ledger model` or **Model portfolio** in the dashboard
-- **Compare** view: manual holdings vs brief target weights (diagnostic; requires allocation MVP when shipped)
+- **My portfolio** (real holdings): `reports/portfolio.db` — record trades via CLI or Streamlit
+- **Model portfolio**: benchmark targets and performance from the brief — **no trade entry**
+- **Compare**: manual holdings vs **benchmark targets** (sector ETFs / SPY; stocks roll up by theme overlap)
 
 ```bash
 invest-portfolio add-trade AAPL buy 10 175.50 --date 2026-01-15
-invest-portfolio --ledger model add-trade NVDA buy 5 120.00
 invest-portfolio list-trades
 invest-portfolio delete-trade 3
 invest-portfolio list-trades --symbol AAPL
@@ -89,9 +88,9 @@ invest-portfolio performance
 invest-portfolio performance --from 2026-01-01 --to 2026-06-30
 ```
 
-Or use the **Portfolio** tab in `invest-dashboard`. Override paths with `PORTFOLIO_DB_PATH` (manual) or `PORTFOLIO_AI_DB_PATH` (model).
+Or use the **Portfolio** tab in `invest-dashboard` (**My portfolio** to record trades). Override manual DB with `PORTFOLIO_DB_PATH`.
 
-Weighted average cost; sells exceeding holdings are rejected. Back up `reports/portfolio.db` and `reports/ai_portfolio.db` before upgrades.
+Weighted average cost; sells exceeding holdings are rejected. Back up `reports/portfolio.db` before upgrades.
 
 ## Environment variables
 
@@ -116,7 +115,6 @@ Weighted average cost; sells exceeding holdings are rejected. Back up `reports/p
 | `LLM_COMPACT_SCHEMA` | `1` = smaller JSON schema in LLM system prompt |
 | `LLM_MAX_RETRIES_ON_429` | Rate-limit retries in `llm.py` |
 | `PORTFOLIO_DB_PATH` | Manual portfolio SQLite (default `reports/portfolio.db`) |
-| `PORTFOLIO_AI_DB_PATH` | Model / paper portfolio SQLite (default `reports/ai_portfolio.db`) |
 
 Provider-aware defaults: `config.py` (`is_groq`, `is_openrouter_free`).
 
@@ -220,22 +218,27 @@ src/investment_agent/
 ├── universe/                  # shared sector ETF registry (Markets, Regime, BriefAssembler)
 │   ├── constants.py           # SECTOR_ETFS, TICKER_TO_SECTOR, VOL_SECTOR_LABELS
 │   └── symbols.py             # symbols_for_fundamentals, vol_labeled_symbols
-└── agents/
-    ├── regime/
-    │   ├── agent.py           # RegimeAgent — LLM only
-    │   └── input.py           # RegimeInput, build_regime_input() from MarketSnapshots
-    ├── narrative/
-    │   ├── ingest.py          # HTTP fetch: Finnhub + TickerTick → NewsArticle[]
-    │   ├── rag.py             # lexical retrieve + truncate → context_block
-    │   ├── input.py           # build_narrative_input() → NarrativeInput
-    │   └── agent.py           # NarrativeAgent — LLM only (reads context_block)
-    └── markets/
-        ├── input.py           # fetch_market_snapshots(), build_markets_input()
-        ├── snapshot.py        # FundamentalsSnapshot, VolSnapshot, yfinance fetch
-        ├── price.py           # PriceMetrics
-        ├── valuation.py       # ValuationMetrics
-        ├── revisions.py       # optional Finnhub revision lines
-        └── agent.py           # MarketsAgent — LLM only
+├── agents/
+│   ├── regime/
+│   │   ├── agent.py           # RegimeAgent — LLM only
+│   │   └── input.py           # RegimeInput, build_regime_input() from MarketSnapshots
+│   ├── narrative/
+│   │   ├── ingest.py          # HTTP fetch: Finnhub + TickerTick → NewsArticle[]
+│   │   ├── rag.py             # lexical retrieve + truncate → context_block
+│   │   ├── input.py           # build_narrative_input() → NarrativeInput
+│   │   └── agent.py           # NarrativeAgent — LLM only (reads context_block)
+│   └── markets/
+│       ├── input.py           # fetch_market_snapshots(), build_markets_input()
+│       ├── snapshot.py        # FundamentalsSnapshot, VolSnapshot, yfinance fetch
+│       ├── price.py           # PriceMetrics
+│       ├── valuation.py       # ValuationMetrics
+│       ├── revisions.py       # optional Finnhub revision lines
+│       └── agent.py           # MarketsAgent — LLM only
+└── portfolio/                 # trade ledger, performance, brief alignment (no LLM)
+    ├── db.py, ledger.py, performance.py, quotes.py, cli.py
+    ├── manual/                # real holdings + theme alignment
+    ├── model/                 # benchmark target performance (no Streamlit trades)
+    └── compare/               # manual vs benchmark drift
 ```
 
 ### Why Narrative has `ingest` + `rag` + `input`
@@ -279,6 +282,113 @@ This matches the project rule: **fetch and slice before any LLM**; Narrative nev
 
 Legacy theme display fields (`name_zh`, `stage_label_zh`) normalize on load via `storage.normalize_brief_dict()`.
 
+## Portfolio architecture
+
+The portfolio subsystem lives under `portfolio/`. **Trades** use the manual SQLite ledger; **model** and **compare** read `InvestmentBrief` only (no trade form on Model portfolio).
+
+**Rules:** no LLM calls; no import of `ThemeOrchestrator` / `llm.py`; brief is **read-only** input for alignment and target weights. All outputs are **diagnostic** — not rebalance or trade suggestions.
+
+### Ledger
+
+| | Path | Where |
+|---|------|--------|
+| Manual trades & positions | `reports/portfolio.db` | **My portfolio**, `invest-portfolio` CLI |
+
+Override: `PORTFOLIO_DB_PATH`.
+
+### Dashboard views
+
+| View | Package | What it shows |
+|------|---------|----------------|
+| **My portfolio** | `portfolio/manual/` | **Record trades**, positions, P&L vs SPY, research alignment |
+| **Model portfolio** | `portfolio/model/` | Score-weighted benchmark targets (sector ETFs / SPY), indexed performance vs SPY |
+| **Compare** | `portfolio/compare/` | Manual holdings rolled up to ETFs vs same benchmark targets |
+
+### Data flow
+
+Two paths — **ledger** (your trades) and **brief overlay** (research targets). They do not call the theme pipeline or LLMs; Streamlit joins them per view.
+
+**Ledger path**
+
+```
+Trade form / invest-portfolio CLI  (My portfolio only)
+  → db.py (SQLite: portfolio.db)
+  → ledger.py (positions, weighted-average cost)
+  → performance.py + quotes.py (yfinance marks, vs SPY chart)
+```
+
+**Brief overlay** (read-only)
+
+```
+InvestmentBrief.themes[]
+  → allocation.py (benchmark mode)
+  → TargetAllocation (score-weighted sector ETFs / SPY)
+       ├─ manual/theme_alignment.py   — theme ↔ holding overlap
+       ├─ model/target_performance.py — buy-and-hold index vs SPY
+       └─ compare/drift.py            — manual holdings rolled up to ETFs
+```
+
+**Per view**
+
+| View | Ledger | Brief modules | What you see |
+|------|--------|---------------|--------------|
+| **My portfolio** | `manual` | `theme_alignment` | Trades, positions, P&L vs SPY, research alignment |
+| **Model portfolio** | — | `allocation`, `target_performance` | Benchmark weights, target performance vs SPY |
+| **Compare** | `manual` | `allocation`, `drift` | Manual holdings vs benchmark targets (stocks mapped to sector ETFs) |
+
+```mermaid
+flowchart TB
+    IB[InvestmentBrief] --> TA[TargetAllocation]
+    TR[Trades] --> DB[(portfolio.db)] --> PF[performance]
+
+    MAN[My portfolio]
+    MOD[Model portfolio]
+    CMP[Compare]
+
+    PF --> MAN
+    PF --> CMP
+    IB --> MAN
+    TA --> MOD
+    TA --> CMP
+```
+
+### Package layout
+
+```
+portfolio/
+├── db.py, ledger.py, performance.py, quotes.py, models.py, cli.py   # shared core
+├── ledger_streamlit.py, ledger_streamlit_charts.py                  # shared Streamlit UI
+├── manual/
+│   ├── theme_alignment.py    # top themes vs open positions (diagnostic)
+│   └── views.py              # My portfolio
+├── model/
+│   ├── allocation.py         # compute_model_target_allocation() — ETFs / SPY only
+│   ├── target_performance.py # indexed model portfolio vs SPY
+│   ├── target_views.py       # performance + benchmark weights UI
+│   └── views.py
+└── compare/
+    ├── allocation.py         # score-weighted targets (tickers | benchmark modes)
+    ├── drift.py              # symbol drift + benchmark rollup drift
+    ├── service.py            # evaluate_manual_vs_target()
+    └── views.py
+```
+
+### Benchmark target allocation
+
+Used by **Model portfolio** and **Compare** (not single-stock weights):
+
+1. Take top **8** themes by `theme_rank_score`.
+2. Assign each theme **one** sector ETF from theme name / sector labels (`XLK`, `XLE`, …) or **SPY** when sector is unknown.
+3. Normalize theme weights to 100%; merge duplicate ETFs.
+4. **Compare actual %:** direct ETF holdings + single stocks rolled into the ETF of their highest-ranked matching brief theme; unmatched holdings reported as *unmapped*.
+
+### Performance
+
+- **My portfolio:** `summarize_performance(ledger="manual")` — NAV, P&L, vs SPY chart from recorded trades.
+- **Model portfolio:** `target_allocation_performance_series()` — buy-and-hold at benchmark weights from brief `as_of`; no trades.
+
+Further design notes: `research/portfolio-manual-vs-ai-separation.md`, `research/portfolio-ledger-design.md`.
+
 ## Data sources
 
 ### Narrative ingest
@@ -313,9 +423,9 @@ Errors: `QuotaExhaustedError` (429), prompt-too-large (413) — see `llm.py` hin
 
 ## Roadmap: Portfolio management
 
-**Implemented (ledger):** manual trade recording, weighted-avg positions, mark-to-market P&L, CLI (`invest-portfolio`) and Streamlit **Portfolio** tab. **Theme alignment** overlay compares top brief themes to holdings (ticker + sector match). See `research/portfolio-ledger-design.md`.
+**Implemented:** manual trade ledger; CLI (`invest-portfolio`) and Streamlit **Portfolio** tab (My / Model / Compare); mark-to-market P&L and vs SPY (manual); **theme alignment**; **benchmark target allocation** and drift (model + compare); model buy-and-hold performance index. Trades are **manual only** in the dashboard.
 
-**Planned:** suggested allocation from themes, drift alerts, optional constraints.
+**Planned:** rebalance suggestions, apply-to-ledger sync, optional constraints / policy store.
 
 Optional design notes may live under `research/` (not required to run the pipeline).
 
@@ -326,7 +436,7 @@ pip install pytest
 PYTHONPATH=src python -m pytest tests/test_pipeline.py tests/test_portfolio.py -v
 ```
 
-Covers: data plane wiring, regime context, sector clustering & ranking, hybrid RAG, theme alignment, legacy brief migration, portfolio ledger.
+Covers: data plane wiring, regime context, sector clustering & ranking, hybrid RAG, theme alignment, benchmark allocation & drift, portfolio dual-ledger, legacy brief migration.
 
 ## Disclaimer
 

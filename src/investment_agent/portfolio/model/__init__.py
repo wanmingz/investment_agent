@@ -1,4 +1,4 @@
-"""AI / model portfolio (paper ledger)."""
+"""Model portfolio — benchmark targets from brief (no Streamlit trades)."""
 
 LEDGER = "model"
 VIEW_LABEL = "Model portfolio"

@@ -1,12 +1,10 @@
-"""Streamlit UI for AI / model portfolio (paper ledger)."""
+"""Streamlit UI for AI / model portfolio (benchmark targets only — no trades)."""
 
 from __future__ import annotations
 
 import streamlit as st
 
 from investment_agent.models import InvestmentBrief
-from investment_agent.portfolio.ledger_streamlit import render_ledger
-from investment_agent.portfolio.model import LEDGER
 from investment_agent.portfolio.model.target_views import render_model_performance_section
 
 
@@ -16,11 +14,5 @@ def render(brief: InvestmentBrief | None) -> None:
     else:
         st.info(
             "Load a theme brief (**Themes** → **Load last result** or run analysis) "
-            "to see model portfolio performance and target weights."
+            "to see model portfolio performance and benchmark weights."
         )
-    render_ledger(
-        brief,
-        LEDGER,
-        show_theme_alignment=False,
-        skip_performance_compare=brief is not None,
-    )

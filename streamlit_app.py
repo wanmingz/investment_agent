@@ -363,7 +363,7 @@ def _render_portfolio(brief: InvestmentBrief | None = None) -> None:
         unsafe_allow_html=True,
     )
     st.markdown(
-        '<p class="sub-header">Manual vs model ledgers · performance vs SPY</p>',
+        '<p class="sub-header">My portfolio trades · model benchmarks · compare drift</p>',
         unsafe_allow_html=True,
     )
 

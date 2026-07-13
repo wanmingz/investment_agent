@@ -93,7 +93,7 @@ Groq on-demand is ~12k tokens/request. When `base_url` contains `groq.com`, `con
 
 ## Portfolio subsystem (separate from theme pipeline)
 
-Two SQLite ledgers: **manual** (`reports/portfolio.db`) and **model / paper** (`reports/ai_portfolio.db`). Subpackages: `portfolio/manual/` (my holdings + theme alignment), `portfolio/model/` (paper ledger), `portfolio/compare/` (manual vs brief target). `portfolio/manual/theme_alignment.py` is **diagnostic only** — not rebalance or trade suggestions.
+Two SQLite ledgers exist in code (`manual` / `model`), but **Streamlit trades are manual only**. Subpackages: `portfolio/manual/` (trades + theme alignment), `portfolio/model/` (brief-driven benchmarks, no trade UI), `portfolio/compare/` (manual vs brief target). `portfolio/manual/theme_alignment.py` is **diagnostic only** — not rebalance or trade suggestions.
 
 ## CI
 
