@@ -6,6 +6,7 @@ import re
 
 from investment_agent.universe.constants import (
     BENCHMARK_SYMBOL,
+    SECTOR_DISPLAY_ETF,
     SECTOR_ETFS,
     TICKER_TO_SECTOR,
     VIX_SYMBOL,
@@ -13,6 +14,37 @@ from investment_agent.universe.constants import (
 )
 
 _TICKER_RE = re.compile(r"^[A-Z][A-Z0-9.\-]{0,9}$")
+
+_SECTOR_LABEL_TOKENS: dict[str, str] = {
+    label.lower(): key
+    for label, key in (
+        ("tech", "tech"),
+        ("technology", "tech"),
+        ("energy", "energy"),
+        ("healthcare", "healthcare"),
+        ("health", "healthcare"),
+        ("financials", "financials"),
+        ("financial", "financials"),
+        ("banks", "financials"),
+        ("ai", "ai"),
+        ("cloud", "cloud"),
+        ("consumer", "consumer"),
+        ("industrials", "industrials"),
+        ("utilities", "utilities"),
+    )
+}
+
+_SECTOR_PRIORITY = (
+    "financials",
+    "energy",
+    "healthcare",
+    "consumer",
+    "industrials",
+    "utilities",
+    "ai",
+    "cloud",
+    "tech",
+)
 
 
 def is_likely_ticker(token: str) -> bool:
@@ -33,6 +65,44 @@ def extract_tickers_from_themes(tickers_or_sectors: list[str]) -> list[str]:
             if is_likely_ticker(part):
                 found.append(part)
     return found
+
+
+def primary_sector_key(name: str, tickers_or_sectors: list[str]) -> str | None:
+    """Canonical sector for a theme (title and sector labels/ETFs only — not single stocks)."""
+    name_tags: set[str] = set()
+    for token in name.lower().replace("-", " ").split():
+        if token in _SECTOR_LABEL_TOKENS:
+            name_tags.add(_SECTOR_LABEL_TOKENS[token])
+    for sector in _SECTOR_PRIORITY:
+        if sector in name_tags:
+            return sector
+
+    for raw in tickers_or_sectors:
+        for part in re.split(r"[,;/\s]+", str(raw).strip()):
+            token = part.strip().lower()
+            if token in _SECTOR_LABEL_TOKENS:
+                return _SECTOR_LABEL_TOKENS[token]
+            sym = part.strip().upper().lstrip("$")
+            if sym in SECTOR_ETFS.values():
+                key = sector_key_for_symbol(sym)
+                if key and key != "benchmark":
+                    return key
+    return None
+
+
+def benchmark_etf_for_theme(name: str, tickers_or_sectors: list[str]) -> str:
+    """Sector ETF from theme metadata, or SPY when sector is unknown."""
+    key = primary_sector_key(name, tickers_or_sectors)
+    if key:
+        label = SECTOR_DISPLAY_ETF.get(key)
+        if label and label in SECTOR_ETFS:
+            return SECTOR_ETFS[label]
+    return BENCHMARK_SYMBOL
+
+
+def is_benchmark_symbol(symbol: str) -> bool:
+    sym = symbol.strip().upper()
+    return sym == BENCHMARK_SYMBOL or sym in SECTOR_ETFS.values()
 
 
 def symbols_for_fundamentals(

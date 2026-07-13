@@ -1,4 +1,4 @@
-"""Theme–portfolio alignment (read-only overlay)."""
+"""Theme–portfolio alignment for the manual ledger (read-only overlay)."""
 
 from __future__ import annotations
 
@@ -17,7 +17,6 @@ from investment_agent.universe.symbols import extract_tickers_from_themes, secto
 
 _HIGH_OVERLAP_PCT = 25.0
 
-# Sector label tokens in theme tickers_or_sectors text (lowercase)
 _SECTOR_LABEL_TOKENS: dict[str, str] = {
     label.lower(): key
     for label, key in (

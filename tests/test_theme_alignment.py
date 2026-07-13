@@ -8,7 +8,7 @@ import pytest
 
 from investment_agent.models import FinalTheme, InvestmentBrief, ThemeStage
 from investment_agent.portfolio.models import PortfolioSnapshot, Position
-from investment_agent.portfolio.theme_alignment import compute_theme_alignment
+from investment_agent.portfolio.manual.theme_alignment import compute_theme_alignment
 
 
 def _theme(name: str, tickers: list[str], score: float = 1.5) -> FinalTheme:

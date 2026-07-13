@@ -21,6 +21,7 @@ from investment_agent.portfolio.models import (
     PerformanceComparePoint,
     model_name,
 )
+from investment_agent.portfolio.manual.theme_alignment import compute_theme_alignment
 from investment_agent.portfolio.performance import (
     DEFAULT_COMPARE_START,
     compare_performance_series,
@@ -43,6 +44,7 @@ __all__ = [
     "TradeSide",
     "TradeNotFoundError",
     "compare_performance_series",
+    "compute_theme_alignment",
     "db_path",
     "model_name",
     "add_trade",

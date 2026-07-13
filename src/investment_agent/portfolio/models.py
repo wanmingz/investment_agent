@@ -128,3 +128,31 @@ class ThemeAlignmentReport(BaseModel):
     uncovered_positions: list[UncoveredPosition] = Field(default_factory=list)
     gap_themes: list[str] = Field(default_factory=list)
     total_nav: float = 0.0
+
+
+class TargetWeightRow(BaseModel):
+    symbol: str
+    target_pct: float
+    source_themes: list[str] = Field(default_factory=list)
+
+
+class TargetAllocation(BaseModel):
+    as_of: date
+    top_n: int
+    rows: list[TargetWeightRow] = Field(default_factory=list)
+    total_target_pct: float = 0.0
+
+
+class DriftRow(BaseModel):
+    symbol: str
+    target_pct: float
+    actual_pct: float
+    drift_pp: float
+    severity: str  # ok | watch | alert
+
+
+class DriftReport(BaseModel):
+    as_of: date
+    band_pp: float
+    rows: list[DriftRow] = Field(default_factory=list)
+    total_nav: float = 0.0
