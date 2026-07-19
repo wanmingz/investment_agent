@@ -4,14 +4,14 @@
 
 Three domain agents analyze **disjoint inputs** from a shared **Data Plane**; a programmatic **Brief Assembler** merges themes by **sector**, scores them, and ranks by **investability + consensus**. Lifecycle stages: **Early / Early-Mid / Mid / Mid-Late / Late**.
 
-| Agent | Role | Package | External data |
-|-------|------|---------|---------------|
-| **Regime** | Macro regime themes | `agents/regime/` | yfinance-derived cross-asset summary + LLM |
-| **Narrative** | Headline narrative heat | `agents/narrative/` | Finnhub (optional) + TickerTick → RAG + LLM |
-| **Markets** | Fundamentals + vol themes | `agents/markets/` | yfinance fundamentals + vol snapshots + LLM |
+| Agent | Role | Package | External data / input |
+|-------|------|---------|----------------------|
+| **Regime** | Macro regime themes | `agents/regime/` | **Compact slice** of the shared yfinance snapshot: VIX, sector vol, ETF 20d / vs SPY, rule-based hints → `regime_context_block` + LLM |
+| **Narrative** | Headline narrative heat | `agents/narrative/` | Finnhub (optional) + TickerTick → hybrid RAG → `context_block` + LLM (no prices) |
+| **Markets** | Fundamentals + vol themes | `agents/markets/` | **Full** shared yfinance snapshot: per-symbol price/valuation/(optional) revision + vol blocks → `fundamentals` + `vol` + LLM |
 | **Assembler** | Sector merge & rank | `brief_assembler.py` | Programmatic (no LLM) |
 
-`data_plane.py` orchestrates input builders (no LLM). **3 LLM calls** per run. **All agent outputs in English.**
+`data_plane.py` orchestrates input builders (no LLM). Regime and Markets share **one** `fetch_market_snapshots()` call — same data, different resolution (macro summary vs full fundamentals/vol). **3 LLM calls** per run. **All agent outputs in English.**
 
 ## Stage definitions
 
