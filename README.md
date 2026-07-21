@@ -427,6 +427,12 @@ Errors: `QuotaExhaustedError` (429), prompt-too-large (413) — see `llm.py` hin
 
 **Planned:** rebalance suggestions, apply-to-ledger sync, optional constraints / policy store.
 
+## Roadmap: Stock picking
+
+**Status:** design in progress (not implemented).
+
+**TODO:** add a post-theme **stock selection** layer so ranked sector themes can surface specific names (e.g. Financials → which banks), not only sector ETFs. Direction under discussion: universe candidate pools per sector; extend the existing yfinance / Finnhub data plane into structured inputs for a **fundamental researcher** and a **quant researcher**; programmatic merge into a shortlist for the dashboard (and optionally portfolio `tickers` mode). Must keep fetch-before-LLM and must not wire researcher outputs into Regime / Narrative / Markets inputs.
+
 Optional design notes may live under `research/` (not required to run the pipeline).
 
 ## Tests
