@@ -14,6 +14,19 @@ SECTOR_ETFS: dict[str, str] = {
     "Utilities": "XLU",
 }
 
+# Second ETF per sector — dashboard ticker display only (not fetched / not portfolio).
+SECTOR_ETFS_ALT: dict[str, str] = {
+    "Tech": "VGT",
+    "Energy": "XOP",
+    "Healthcare": "VHT",
+    "Financials": "VFH",
+    "AI": "BOTZ",
+    "Cloud": "WCLD",
+    "Consumer": "VCR",
+    "Industrials": "VIS",
+    "Utilities": "VPU",
+}
+
 BENCHMARK_SYMBOL = "SPY"
 VIX_SYMBOL = "^VIX"
 
@@ -34,7 +47,7 @@ _LABEL_SECTOR_KEY: dict[str, str] = {
     "Utilities": "utilities",
 }
 
-assert set(_LABEL_SECTOR_KEY) == set(SECTOR_ETFS)
+assert set(_LABEL_SECTOR_KEY) == set(SECTOR_ETFS) == set(SECTOR_ETFS_ALT)
 
 SECTOR_DISPLAY_ETF: dict[str, str] = {
     "tech": "Tech",

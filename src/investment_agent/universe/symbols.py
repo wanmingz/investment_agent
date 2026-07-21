@@ -8,6 +8,7 @@ from investment_agent.universe.constants import (
     BENCHMARK_SYMBOL,
     SECTOR_DISPLAY_ETF,
     SECTOR_ETFS,
+    SECTOR_ETFS_ALT,
     TICKER_TO_SECTOR,
     VIX_SYMBOL,
     VOL_SECTOR_LABELS,
@@ -67,6 +68,13 @@ def extract_tickers_from_themes(tickers_or_sectors: list[str]) -> list[str]:
     return found
 
 
+_ALT_ETF_TO_SECTOR: dict[str, str] = {
+    SECTOR_ETFS_ALT[label].upper(): key
+    for key, label in SECTOR_DISPLAY_ETF.items()
+    if label in SECTOR_ETFS_ALT
+}
+
+
 def primary_sector_key(name: str, tickers_or_sectors: list[str]) -> str | None:
     """Canonical sector for a theme (title and sector labels/ETFs only — not single stocks)."""
     name_tags: set[str] = set()
@@ -83,10 +91,14 @@ def primary_sector_key(name: str, tickers_or_sectors: list[str]) -> str | None:
             if token in _SECTOR_LABEL_TOKENS:
                 return _SECTOR_LABEL_TOKENS[token]
             sym = part.strip().upper().lstrip("$")
-            if sym in SECTOR_ETFS.values():
-                key = sector_key_for_symbol(sym)
-                if key and key != "benchmark":
-                    return key
+            if not sym:
+                continue
+            key = sector_key_for_symbol(sym)
+            if key and key != "benchmark":
+                return key
+            alt_key = _ALT_ETF_TO_SECTOR.get(sym)
+            if alt_key:
+                return alt_key
     return None
 
 
@@ -159,3 +171,40 @@ def vol_labeled_symbols(
 
 def sector_key_for_symbol(symbol: str) -> str | None:
     return TICKER_TO_SECTOR.get(symbol.strip().lower())
+
+
+def universe_etfs_for_theme(name: str, tickers_or_sectors: list[str]) -> list[str]:
+    """Primary + alt sector ETFs for a theme (dashboard display only)."""
+    sector = primary_sector_key(name, tickers_or_sectors)
+    if not sector:
+        return []
+    label = SECTOR_DISPLAY_ETF.get(sector)
+    if not label:
+        return []
+    out: list[str] = []
+    for sym in (SECTOR_ETFS.get(label), SECTOR_ETFS_ALT.get(label)):
+        if sym:
+            out.append(sym)
+    return out
+
+
+def display_tickers_for_theme(name: str, tickers_or_sectors: list[str]) -> list[str]:
+    """Universe ETFs first, then remaining brief tickers — dashboard display only."""
+    out: list[str] = []
+    seen: set[str] = set()
+
+    def add(item: str) -> None:
+        raw = item.strip()
+        if not raw:
+            return
+        key = raw.upper().lstrip("$")
+        if key in seen:
+            return
+        seen.add(key)
+        out.append(raw)
+
+    for sym in universe_etfs_for_theme(name, tickers_or_sectors):
+        add(sym)
+    for item in tickers_or_sectors:
+        add(item)
+    return out

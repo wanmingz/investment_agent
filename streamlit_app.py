@@ -38,6 +38,7 @@ from investment_agent.models import (
 )
 from investment_agent import checkpoint
 from investment_agent.config import Settings
+from investment_agent.universe import display_tickers_for_theme
 from investment_agent.dates import analysis_date, format_date_iso
 from investment_agent.llm import QuotaExhaustedError
 from investment_agent.orchestrator import ThemeOrchestrator
@@ -225,6 +226,10 @@ def _render_theme_card(rank: int, theme: FinalTheme) -> None:
     with c2:
         st.progress(theme.consensus_score, text=f"Consensus {theme.consensus_score:.0%}")
 
+    display_tickers = display_tickers_for_theme(theme.name, theme.tickers_or_sectors)
+    if display_tickers:
+        st.markdown("**Tickers:** " + ", ".join(f"`{t}`" for t in display_tickers))
+
     with st.expander("Drivers · Risks · Tickers"):
         if theme.key_drivers:
             st.markdown("**Key drivers** (model synthesis)")
@@ -244,9 +249,9 @@ def _render_theme_card(rank: int, theme: FinalTheme) -> None:
             st.markdown("**Risks (narrative-sourced)**")
             for item in risks_sourced:
                 st.markdown(f"- {item.text} — `{', '.join(item.citation_ids)}`")
-        if theme.tickers_or_sectors:
+        if display_tickers:
             st.markdown("**Tickers / sectors**")
-            st.markdown(", ".join(f"`{t}`" for t in theme.tickers_or_sectors))
+            st.markdown(", ".join(f"`{t}`" for t in display_tickers))
 
 
 def _render_agent_theme_column(agent: str, themes: list[AgentTheme]) -> None:
