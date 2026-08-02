@@ -16,6 +16,7 @@ from investment_agent.models import (
 )
 
 DEFAULT_REPORT_PATH = Path(__file__).resolve().parents[2] / "reports" / "latest.json"
+PUBLISHED_BRIEF_PATH = Path(__file__).resolve().parents[2] / "brief" / "latest.json"
 RUNS_DIR = DEFAULT_REPORT_PATH.parent / "runs"
 
 
@@ -145,9 +146,20 @@ def list_run_reports(*, limit: int = 50) -> list[Path]:
     return files[:limit]
 
 
+def resolve_brief_path(path: Path | None = None) -> Path | None:
+    """Prefer local reports/latest.json; fall back to published brief/latest.json."""
+    if path is not None:
+        return path if path.is_file() else None
+    if DEFAULT_REPORT_PATH.is_file():
+        return DEFAULT_REPORT_PATH
+    if PUBLISHED_BRIEF_PATH.is_file():
+        return PUBLISHED_BRIEF_PATH
+    return None
+
+
 def load_brief(path: Path | None = None) -> InvestmentBrief | None:
-    target = path or DEFAULT_REPORT_PATH
-    if not target.is_file():
+    target = resolve_brief_path(path)
+    if target is None:
         return None
     raw = json.loads(target.read_text(encoding="utf-8"))
     brief = InvestmentBrief.model_validate(normalize_brief_dict(raw))

@@ -68,7 +68,26 @@ python main.py -o reports/latest.json
 streamlit run streamlit_app.py   # or: invest-dashboard
 ```
 
-**Streamlit:** Run analysis · Load last result · Resume / Clear checkpoint · Agent tabs · Recommended themes (one card per sector, sorted by score). Switch **View → Portfolio** for **My portfolio**, **Model portfolio**, and **Compare** (see [Portfolio architecture](#portfolio-architecture)).
+**Streamlit:** Run analysis · Load last / published brief · Resume / Clear checkpoint · Agent tabs · Recommended themes (one card per sector, sorted by score). Switch **View → Portfolio** for **My portfolio**, **Model portfolio**, and **Compare** (see [Portfolio architecture](#portfolio-architecture)).
+
+### Deploy dashboard (Streamlit Community Cloud)
+
+Share a public URL so others can open Themes without running locally. The app loads `brief/latest.json` when `reports/` is absent.
+
+1. Push this repo to GitHub (include `brief/latest.json` — written by the weekly Action, or copy from a local `reports/latest.json`).
+2. Go to [share.streamlit.io](https://share.streamlit.io/) → **New app** → select the repo → Main file: `streamlit_app.py`.
+3. **Advanced settings → Secrets** (TOML). View-only works without keys; add keys only if you want **Run analysis** on Cloud:
+
+```toml
+LLM_PROVIDER = "gemini"
+GEMINI_API_KEY = "your-key"
+RAG_HYBRID = "0"
+MARKET_REGION = "global"
+```
+
+4. Deploy and share the app URL.
+
+Cloud tips: set `RAG_HYBRID=0` to avoid downloading sentence-transformers/torch on free instances. Portfolio SQLite on Cloud is ephemeral.
 
 ### Portfolio ledger
 

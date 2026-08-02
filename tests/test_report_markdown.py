@@ -63,3 +63,6 @@ def test_save_github_brief_reports_writes_latest_and_archive(tmp_path) -> None:
     assert latest == base / "latest.md"
     assert archive == base / "runs" / "2026-07-07_060000.md"
     assert "AI Infrastructure" in latest.read_text(encoding="utf-8")
+    published = base / "latest.json"
+    assert published.is_file()
+    assert "AI Infrastructure" in published.read_text(encoding="utf-8")

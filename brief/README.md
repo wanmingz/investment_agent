@@ -5,6 +5,7 @@ Reports in this folder are updated automatically by the [**Weekly theme brief**]
 | Report | Description |
 |--------|-------------|
 | [**latest.md**](./latest.md) | Most recent analysis — open on GitHub for formatted reading |
-| [**runs/**](./runs/) | Timestamped archives (`YYYY-MM-DD_HHMMSS.md`) |
+| [**latest.json**](./latest.json) | Same brief as JSON — loaded by the Streamlit dashboard when `reports/` is absent (e.g. Streamlit Community Cloud) |
+| [**runs/**](./runs/) | Timestamped Markdown archives (`YYYY-MM-DD_HHMMSS.md`) |
 
-Raw JSON remains in workflow **artifacts** (`reports/latest.json`) for the Streamlit dashboard.
+Local runs still write `reports/latest.json` (gitignored). The dashboard prefers that path, then falls back to `brief/latest.json`.

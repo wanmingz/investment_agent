@@ -4,7 +4,14 @@ from datetime import datetime
 
 from investment_agent.models import InvestmentBrief, ThemeStage
 from investment_agent.models import FinalTheme
-from investment_agent.storage import list_run_reports, run_archive_path, save_run_reports
+from investment_agent.storage import (
+    list_run_reports,
+    load_brief,
+    resolve_brief_path,
+    run_archive_path,
+    save_brief,
+    save_run_reports,
+)
 
 
 def _minimal_brief(*, report_date: str = "2026-07-04") -> InvestmentBrief:
@@ -56,3 +63,25 @@ def test_save_run_reports_writes_latest_and_archive(tmp_path, monkeypatch):
     assert latest.is_file()
     assert archive.is_file()
     assert list_run_reports(limit=5) == [archive]
+
+
+def test_resolve_brief_path_prefers_reports_over_published(tmp_path, monkeypatch):
+    reports = tmp_path / "reports" / "latest.json"
+    published = tmp_path / "brief" / "latest.json"
+    monkeypatch.setattr("investment_agent.storage.DEFAULT_REPORT_PATH", reports)
+    monkeypatch.setattr("investment_agent.storage.PUBLISHED_BRIEF_PATH", published)
+
+    assert resolve_brief_path() is None
+
+    brief = _minimal_brief()
+    save_brief(brief, published)
+    assert resolve_brief_path() == published
+    assert load_brief() is not None
+
+    save_brief(brief, reports)
+    assert resolve_brief_path() == reports
+    assert load_brief().themes[0].name == "Tech"
+
+
+def test_load_brief_explicit_missing_path_returns_none(tmp_path):
+    assert load_brief(tmp_path / "missing.json") is None

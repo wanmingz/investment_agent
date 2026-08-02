@@ -80,8 +80,10 @@ jobs:
           if brief is None:
               raise SystemExit("reports/latest.json missing after pipeline run")
           latest, archive = save_github_brief_reports(brief)
+          json_path = Path("brief/latest.json")
           print(f"Markdown: {latest}")
           print(f"Archive:  {archive}")
+          print(f"JSON:     {json_path} exists={json_path.is_file()}")
           PY
 
       - name: Commit brief to repository

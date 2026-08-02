@@ -36,7 +36,7 @@ orchestrator                   →  3 × Agent.analyze()  →  brief_assembler.a
 | LLM provider, rate limits, RAG defaults | `config.py`, `.env.example` |
 | Checkpoint / resume | `checkpoint.py` (`PIPELINE_VERSION`) |
 | Persist brief JSON | `storage.py` |
-| GitHub-readable Markdown brief | `report_markdown.py`, `brief/` |
+| GitHub-readable brief (Markdown + JSON for Streamlit Cloud) | `report_markdown.py`, `brief/` |
 | Portfolio ledger / alignment UI | `portfolio/manual/`, `portfolio/model/`, `portfolio/compare/`, `streamlit_app.py` |
 | Design notes (not runtime) | `research/` |
 

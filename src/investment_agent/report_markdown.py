@@ -23,12 +23,14 @@ from investment_agent.storage import (
     brief_fundamentals_notes,
     brief_narrative_citations,
     brief_narrative_view,
+    save_brief,
     theme_drivers_sourced,
     theme_risks_sourced,
 )
 
 BRIEF_DIR = Path(__file__).resolve().parents[2] / "brief"
 BRIEF_LATEST = BRIEF_DIR / "latest.md"
+BRIEF_LATEST_JSON = BRIEF_DIR / "latest.json"
 BRIEF_RUNS_DIR = BRIEF_DIR / "runs"
 
 
@@ -269,8 +271,9 @@ def save_github_brief_reports(
     base_dir: Path | None = None,
     now: datetime | None = None,
 ) -> tuple[Path, Path]:
-    """Write brief/latest.md and a timestamped brief/runs/*.md copy."""
+    """Write brief/latest.md, brief/latest.json, and a timestamped brief/runs/*.md copy."""
     base = base_dir or BRIEF_DIR
     latest = save_brief_markdown(brief, base / "latest.md")
+    save_brief(brief, base / "latest.json")
     archive = save_brief_markdown(brief, markdown_archive_path(brief, base_dir=base, now=now))
     return latest, archive

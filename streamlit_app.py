@@ -42,7 +42,13 @@ from investment_agent.universe import display_tickers_for_theme
 from investment_agent.dates import analysis_date, format_date_iso
 from investment_agent.llm import QuotaExhaustedError
 from investment_agent.orchestrator import ThemeOrchestrator
-from investment_agent.storage import DEFAULT_REPORT_PATH, load_brief, save_run_reports
+from investment_agent.storage import (
+    DEFAULT_REPORT_PATH,
+    PUBLISHED_BRIEF_PATH,
+    load_brief,
+    resolve_brief_path,
+    save_run_reports,
+)
 from investment_agent.portfolio.manual import VIEW_LABEL as MANUAL_VIEW_LABEL
 from investment_agent.portfolio.model import VIEW_LABEL as MODEL_VIEW_LABEL
 from investment_agent.portfolio.compare import VIEW_LABEL as COMPARE_VIEW_LABEL
@@ -391,7 +397,14 @@ def main() -> None:
     _inject_css()
 
     if "brief" not in st.session_state:
+        resolved = resolve_brief_path()
         st.session_state.brief = load_brief()
+        if resolved == DEFAULT_REPORT_PATH:
+            st.session_state.brief_source = "cached"
+        elif resolved == PUBLISHED_BRIEF_PATH:
+            st.session_state.brief_source = "published"
+        else:
+            st.session_state.brief_source = None
 
     with st.sidebar:
         st.header("Controls")
@@ -419,16 +432,34 @@ def main() -> None:
         if DEFAULT_REPORT_PATH.is_file():
             st.success("Cached report available")
             if st.button("📂 Load last result", use_container_width=True):
-                loaded = load_brief()
+                loaded = load_brief(DEFAULT_REPORT_PATH)
                 if loaded is not None:
                     st.session_state.brief = loaded
+                    st.session_state.brief_source = "cached"
                 st.rerun()
+        elif PUBLISHED_BRIEF_PATH.is_file():
+            st.info("Published brief available")
+            if st.button("📂 Load published brief", use_container_width=True):
+                loaded = load_brief(PUBLISHED_BRIEF_PATH)
+                if loaded is not None:
+                    st.session_state.brief = loaded
+                    st.session_state.brief_source = "published"
+                st.rerun()
+        source = st.session_state.get("brief_source")
+        if st.session_state.get("brief") is not None and source:
+            if source == "cached":
+                st.caption("Showing: local cache (`reports/latest.json`)")
+            elif source == "published":
+                st.caption("Showing: published brief (`brief/latest.json`)")
+            elif source == "run":
+                st.caption("Showing: this session’s run")
         st.divider()
         try:
             s = Settings.from_env()
             st.text(f"Model: {s.provider}\n{s.model}")
         except ValueError as e:
-            st.error(str(e))
+            st.warning(str(e))
+            st.caption("View-only: published brief still loads without API keys.")
 
     if run_btn:
         try:
@@ -449,6 +480,7 @@ def main() -> None:
                 brief = ThemeOrchestrator(settings).run(resume=resume_ckpt)
                 latest_path, archive_path = save_run_reports(brief)
                 st.session_state.brief = brief
+                st.session_state.brief_source = "run"
                 status.update(label="Analysis complete", state="complete")
                 st.success(f"Saved to `{latest_path}` · archive `{archive_path}`")
             except QuotaExhaustedError as e:
@@ -479,7 +511,9 @@ def main() -> None:
     brief: InvestmentBrief | None = st.session_state.get("brief")
 
     if brief is None:
-        st.info("👈 Click **Run analysis** in the sidebar, or **Load last result** to view cache.")
+        st.info(
+            "👈 Click **Run analysis** in the sidebar, or load a cached / published brief."
+        )
         return
 
     _render_brief(brief)
