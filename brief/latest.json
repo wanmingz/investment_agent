@@ -1,46 +1,46 @@
 {
-  "report_date": "2026-08-02",
-  "as_of_context": "As of August 02, 2026 (2026-08-02)",
-  "executive_summary": "The global macro environment is characterized by moderate volatility, with the VIX proxy at 15.99 and a 20-day change of +2.7%. Sector rotation is led by Energy and Cloud, with 20-day returns of +11.9% and +6.0%, respectively, outperforming the SPY benchmark by +11.6pp and +5.7pp. Headline tone: neutral. Global economic and geopolitical trends Top themes: Cloud, Energy.",
-  "regime_view": "The global macro environment is characterized by moderate volatility, with the VIX proxy at 15.99 and a 20-day change of +2.7%. Sector rotation is led by Energy and Cloud, with 20-day returns of +11.9% and +6.0%, respectively, outperforming the SPY benchmark by +11.6pp and +5.7pp. Dominant regime: reflation. Cloud momentum Energy outperformance Financials near 52-week high",
-  "narrative_view": "Global economic and geopolitical trends",
-  "markets_fundamentals_view": "The current market landscape is characterized by strong momentum in the Energy and Cloud sectors, with 20-day returns of +11.9% and +6.0%, respectively. Financials are also nearing their 52-week highs, down only 1.1% from their peak. In contrast, the Tech sector, including AI, has experienced a decline, with AI down 4.8% over the past 20 days. The divergence in sector performance suggests a rotation towards sectors with stronger fundamentals and momentum.",
-  "markets_vol_view": "The volatility regime is currently low, with the VIX proxy at 15.99, indicating a relatively stable market environment. The 20-day annualized volatility for various sectors and assets shows a mixed picture, with Tech and AI exhibiting higher volatility at 33.4% and 36.2%, respectively, while Financials and Energy display lower volatility at 14.1% and 20.3%, respectively. This disparity in volatility could present opportunities for investors to capitalize on mispricings and sector rotations.",
+  "report_date": "2026-08-03",
+  "as_of_context": "As of August 03, 2026 (2026-08-03)",
+  "executive_summary": "The current global macro environment is characterized by moderate volatility, with the VIX proxy at 16.05, and a mixed sector rotation landscape. Energy and Cloud sectors have shown strong 20-day momentum, outperforming the SPY by 11.6pp and 5.7pp, respectively. Headline tone: neutral. Global economic uncertainty amidst Iran war and climate extremes Top themes: Cloud, Energy.",
+  "regime_view": "The current global macro environment is characterized by moderate volatility, with the VIX proxy at 16.05, and a mixed sector rotation landscape. Energy and Cloud sectors have shown strong 20-day momentum, outperforming the SPY by 11.6pp and 5.7pp, respectively. Dominant regime: reflation. Cloud sector outperformance Energy sector momentum Financials sector recovery",
+  "narrative_view": "Global economic uncertainty amidst Iran war and climate extremes",
+  "markets_fundamentals_view": "The current market landscape is characterized by strong momentum in the Energy and Cloud sectors, with Energy showing a 20-day return of +11.9% and Cloud demonstrating a 20-day return of +6.0%. This outperformance is also reflected in their relative performance against the SPY, with Energy outperforming by +11.6pp and Cloud by +5.7pp over the same period. Financials are also nearing their 52-week high, indicating a broadening of sector participation. However, not all sectors are performing equally well, with Tech and Utilities showing negative 20-day returns. The valuation metrics suggest that the market is trading at a trail P/E of 26.9 for the SPY, with sector-specific valuations ranging from 18.0 for Financials to 34.0 for Cloud.",
+  "markets_vol_view": "The volatility regime is currently normal, with the VIX proxy level at 16.05. This is reflected in the relatively stable volatility levels across sectors, with Tech showing the highest 20-day annualized volatility at 33.4% and Financials the lowest at 14.1%. The Energy sector, despite its strong momentum, has a 20-day annualized volatility of 20.3%, which is lower than that of Tech but higher than many other sectors. The Cloud sector's volatility is more moderate, at 24.2%. Overall, the volatility landscape suggests that while there are pockets of higher volatility, the market as a whole is experiencing a period of relatively normal volatility levels.",
   "narrative_citations": [
     {
-      "id": "tt--4969717517699079155",
-      "title": "Emerging markets lose momentum as AI volatility, oil prices test investors",
-      "source": "seekingalpha.com",
-      "url": "",
-      "published_at": "1785684798000"
-    },
-    {
-      "id": "tt--670310410841410235",
-      "title": "Jackson Warns US Policy Risks Caribbean Stability",
+      "id": "tt-9009785776601276954",
+      "title": "Euro-Zone Spending Cuts Driven by Iran Uncertainty Not Inflation, ECB Finds",
       "source": "bloomberg.com",
       "url": "",
-      "published_at": "1785684517000"
+      "published_at": "2026-07-21T14:08:02.000Z"
     },
     {
-      "id": "tt--3365868541812407454",
-      "title": "Bloomberg This Weekend: Governors on Affordability (Podcast)",
+      "id": "tt-2467187862632917355",
+      "title": "Iran Says Talks Underway, Stocks Rise and Oil Plunges, More",
       "source": "bloomberg.com",
       "url": "",
-      "published_at": "1785683197000"
+      "published_at": "2026-07-21T14:08:22.000Z"
     },
     {
-      "id": "tt-2069862397472414010",
-      "title": "Trump Scraps Iran Strikes, Idaho Shooting, New Jackson Ad",
-      "source": "bloomberg.com",
+      "id": "tt-1586198842861769663",
+      "title": "Warsh tightened more by pausing than by lifting rates, this bond-market veteran argues. Here’s the math.",
+      "source": "marketwatch.com",
       "url": "",
-      "published_at": "1785685340000"
+      "published_at": "2026-07-21T14:08:00.000Z"
     },
     {
-      "id": "tt--5049035728634735827",
-      "title": "Who Governs the AI Boom? - Should AI be regulated, or should society adapt to it instead?",
-      "source": "bloomberg.com",
+      "id": "tt-5282222435043764023",
+      "title": "How America is adapting to climate extremes",
+      "source": "axios.com",
       "url": "",
-      "published_at": "1785682947000"
+      "published_at": "2026-07-21T14:08:06.000Z"
+    },
+    {
+      "id": "tt--1722277731491892769",
+      "title": "Joint U.S.-Japanese intervention boosts the yen — but will it be enough?",
+      "source": "marketwatch.com",
+      "url": "",
+      "published_at": "2026-07-21T14:07:20.000Z"
     }
   ],
   "data_sources": [
@@ -68,32 +68,31 @@
     {
       "name": "Cloud",
       "subtitle": "Digital Transformation",
-      "thesis": "The strong 20-day momentum of Cloud stocks (+6.0%) and outperformance of the SPY benchmark (+5.7pp) suggest a continued shift towards digital transformation, driven by the need for remote work and efficient data management. The Cloud sector's outperformance is expected to continue, driven by its strong growth prospects and favorable market conditions.",
-      "stage": "mid",
-      "stage_label": "Mid",
+      "thesis": "The Cloud sector's strong 20-day momentum, with a return of +6.0% and outperforming SPY by 5.7pp, suggests a continued shift towards digital transformation and cloud-based services. Cloud sector's growth driven by increasing demand for cloud services",
+      "stage": "early_mid",
+      "stage_label": "Early-Mid",
       "consensus_score": 0.6666666666666666,
-      "investability_score": 0.8,
+      "investability_score": 0.7333333333333334,
       "agent_stages": {
-        "regime": "mid",
-        "markets": "mid"
+        "regime": "early_mid",
+        "markets": "early_mid"
       },
       "contributing_agents": [
         "markets",
         "regime"
       ],
       "primary_agent": "regime",
-      "synthesis": "The theme is in expansion, with earnings and policy confirming the narrative, and moderate crowding. The 20-day annualized volatility of Cloud stocks is 24.2%, indicating a relatively stable environment. The sector's growth momentum is established, but valuations are not yet stretched, suggesting further upside potential.",
+      "synthesis": "The Cloud sector's recent outperformance and strong momentum indicate early positioning and a spreading narrative, but it has not yet reached mainstream consensus. Cloud sector is showing strong 20-day momentum and outperforming the SPY",
       "key_drivers": [
         "Digital transformation",
-        "Remote work",
-        "growth prospects",
-        "sector rotation"
+        "Cloud adoption",
+        "Growth prospects",
+        "Competition"
       ],
       "risks": [
         "Regulatory risks",
         "Competition",
-        "valuation multiples",
-        "sector rotation reversal"
+        "Regulatory changes"
       ],
       "tickers_or_sectors": [
         "SKYY",
@@ -105,35 +104,36 @@
     },
     {
       "name": "Energy",
-      "subtitle": "Renewable Energy",
-      "thesis": "The strong 20-day momentum of Energy stocks (+11.9%) and outperformance of the SPY benchmark (+11.6pp) suggest a continued shift towards renewable energy, driven by government policies and declining technology costs. The Energy sector's recent surge is likely to continue, driven by favorable market conditions and strong sector fundamentals.",
-      "stage": "early_mid",
-      "stage_label": "Early-Mid",
+      "subtitle": "Strong performance in Energy sector",
+      "thesis": "Energy sector outperformance driven by fundamental factors The Energy sector's strong 20-day momentum, with a return of +11.9% and outperforming SPY by 11.6pp, suggests a growing focus on energy transition and renewable energy sources.",
+      "stage": "mid",
+      "stage_label": "Mid",
       "consensus_score": 0.6666666666666666,
-      "investability_score": 0.6999999999999998,
+      "investability_score": 0.7333333333333334,
       "agent_stages": {
-        "regime": "early_mid",
-        "markets": "early_mid"
+        "regime": "mid",
+        "markets": "mid"
       },
       "contributing_agents": [
         "markets",
         "regime"
       ],
-      "primary_agent": "regime",
-      "synthesis": "The theme is gaining traction, with early positioning and a spreading narrative, but not yet mainstream. The 20-day annualized volatility of Energy stocks is 20.3%, indicating a relatively stable environment. The sector's momentum is strong, but it has not yet reached extreme levels, suggesting further upside potential.",
+      "primary_agent": "markets",
+      "synthesis": "The Energy sector's recent outperformance and strong momentum indicate a theme in expansion, with earnings and policy confirming the trend. Energy sector is showing strong 20-day momentum and outperforming the SPY",
       "key_drivers": [
-        "Government policies",
-        "Declining technology costs",
-        "sector rotation",
-        "strong fundamentals",
-        "moderate volatility"
+        "Energy transition",
+        "Renewable energy",
+        "Commodity prices",
+        "Sector rotation",
+        "Volatility compression",
+        "Mean reversion"
       ],
       "risks": [
-        "Commodity price risks",
+        "Commodity price volatility",
         "Regulatory risks",
-        "market downturn",
-        "sector rotation reversal",
-        "volatility spike"
+        "Global economic slowdown",
+        "Regulatory changes",
+        "Geopolitical risks"
       ],
       "tickers_or_sectors": [
         "XLE",
@@ -143,74 +143,35 @@
       "risks_sourced": []
     },
     {
-      "name": "Tech",
-      "subtitle": "Growth Sector",
-      "thesis": "The relatively weak performance of Tech stocks (-2.9% vs SPY) suggests a continued growth slowdown, driven by the rates path and declining margins. The high volatility in Tech presents an opportunity for investors to capitalize on mispricings and generate returns through volatility arbitrage.",
-      "stage": "mid_late",
-      "stage_label": "Mid-Late",
+      "name": "Financials",
+      "subtitle": "Financials sector's low volatility",
+      "thesis": "Financials sector's low volatility makes it attractive for carry trades The Financials sector's near 52-week high, with a return of +2.4% and outperforming SPY by 2.1pp, suggests a recovery in the banking and finance sector.",
+      "stage": "mid",
+      "stage_label": "Mid",
       "consensus_score": 0.6666666666666666,
-      "investability_score": 0.6,
+      "investability_score": 0.6666666666666666,
       "agent_stages": {
-        "regime": "mid_late",
+        "regime": "early_mid",
         "markets": "mid"
       },
       "contributing_agents": [
         "markets",
         "regime"
       ],
-      "primary_agent": "regime",
-      "synthesis": "The theme is widely recognized, with late-cycle macro positioning and crowding, but policy risks are rising. The 20-day annualized volatility of Tech stocks is 33.4%, indicating a relatively unstable environment. The sector's volatility is high, but it has not yet reached extreme levels, suggesting further potential for volatility arbitrage.",
+      "primary_agent": "markets",
+      "synthesis": "The Financials sector's recent outperformance and near 52-week high indicate early positioning and a spreading narrative, but it has not yet reached mainstream consensus. Financials sector is nearing its 52-week high",
       "key_drivers": [
-        "Rates path",
-        "Declining margins",
-        "high volatility",
-        "sector rotation"
+        "Interest rates",
+        "Economic growth",
+        "Low volatility",
+        "High dividend yield"
       ],
       "risks": [
-        "Policy risks",
-        "Competition",
-        "volatility collapse",
-        "sector rotation reversal"
-      ],
-      "tickers_or_sectors": [
-        "XLK",
-        "AAPL",
-        "GOOGL"
-      ],
-      "key_drivers_sourced": [],
-      "risks_sourced": []
-    },
-    {
-      "name": "Financials",
-      "subtitle": "Interest Rate Sensitivity",
-      "thesis": "The near 52-week high of Financials stocks (-1.1% vs high) suggests a continued positive outlook, driven by the rates path and improving credit conditions. The Financials sector's recovery is likely to continue, driven by improving sector fundamentals and favorable market conditions.",
-      "stage": "mid_late",
-      "stage_label": "Mid-Late",
-      "consensus_score": 0.6666666666666666,
-      "investability_score": 0.5666666666666667,
-      "agent_stages": {
-        "regime": "mid_late",
-        "markets": "mid_late"
-      },
-      "contributing_agents": [
-        "markets",
-        "regime"
-      ],
-      "primary_agent": "regime",
-      "synthesis": "The theme is widely recognized, with late-cycle macro positioning and crowding, but policy risks are rising. The 20-day annualized volatility of Financials stocks is 14.1%, indicating a relatively stable environment. The sector's recovery is well-established, but valuations are not yet stretched, suggesting further upside potential.",
-      "key_drivers": [
-        "Rates path",
-        "Improving credit conditions",
-        "sector rotation",
-        "improving fundamentals",
-        "low volatility"
-      ],
-      "risks": [
-        "Policy risks",
         "Credit cycle risks",
-        "valuation multiples",
-        "sector rotation reversal",
-        "volatility spike"
+        "Regulatory risks",
+        "Global economic slowdown",
+        "Regulatory changes",
+        "Interest rate changes"
       ],
       "tickers_or_sectors": [
         "XLF",
@@ -221,9 +182,84 @@
       "risks_sourced": []
     },
     {
-      "name": "Global Economy",
-      "subtitle": "Interconnected trends and challenges",
-      "thesis": "The global economy is facing interconnected trends and challenges",
+      "name": "Healthcare",
+      "subtitle": "Healthcare sector's resilience",
+      "thesis": "Healthcare sector resilience driven by steady demand The Healthcare sector's moderate volatility, with a 20-day annualized volatility of 21.0%, suggests a continued focus on innovation and research in the biotechnology and pharmaceuticals sectors.",
+      "stage": "early_mid",
+      "stage_label": "Early-Mid",
+      "consensus_score": 0.6666666666666666,
+      "investability_score": 0.6,
+      "agent_stages": {
+        "regime": "mid",
+        "markets": "early_mid"
+      },
+      "contributing_agents": [
+        "markets",
+        "regime"
+      ],
+      "primary_agent": "markets",
+      "synthesis": "The Healthcare sector's moderate volatility and recent performance indicate a theme in expansion, with earnings and policy confirming the trend. Healthcare sector is showing positive 60-day returns",
+      "key_drivers": [
+        "Innovation",
+        "Research and development",
+        "Steady demand"
+      ],
+      "risks": [
+        "Regulatory risks",
+        "Competition",
+        "Regulatory changes"
+      ],
+      "tickers_or_sectors": [
+        "XLV",
+        "JNJ",
+        "PFE"
+      ],
+      "key_drivers_sourced": [],
+      "risks_sourced": []
+    },
+    {
+      "name": "Tech",
+      "subtitle": "Tech sector's high volatility",
+      "thesis": "Tech sector's high volatility makes it attractive for trading Tech sector consolidation driven by valuation concerns",
+      "stage": "mid_late",
+      "stage_label": "Mid-Late",
+      "consensus_score": 0.6666666666666666,
+      "investability_score": 0.5,
+      "agent_stages": {
+        "regime": "mid_late",
+        "markets": "mid_late"
+      },
+      "contributing_agents": [
+        "markets",
+        "regime"
+      ],
+      "primary_agent": "markets",
+      "synthesis": "The Tech sector's recent underperformance and high volatility indicate a widely recognized theme, with late-cycle macro positioning and crowding and policy risk rising. Tech sector is showing negative 20-day returns",
+      "key_drivers": [
+        "Growth vs. value",
+        "Sector rotation",
+        "Valuation concerns",
+        "High volatility",
+        "Mean reversion"
+      ],
+      "risks": [
+        "Competition",
+        "Regulatory risks",
+        "Global economic slowdown",
+        "Regulatory changes"
+      ],
+      "tickers_or_sectors": [
+        "XLK",
+        "AAPL",
+        "GOOGL"
+      ],
+      "key_drivers_sourced": [],
+      "risks_sourced": []
+    },
+    {
+      "name": "Climate Adaptation",
+      "subtitle": "Communities adapting to climate extremes",
+      "thesis": "Communities across the U.S. are adapting to climate extremes.",
       "stage": "mid_late",
       "stage_label": "Mid-Late",
       "consensus_score": 0.3333333333333333,
@@ -235,26 +271,32 @@
         "narrative"
       ],
       "primary_agent": "narrative",
-      "synthesis": "The global economy is experiencing a complex set of trends and challenges",
+      "synthesis": "Climate adaptation is increasingly moving from planning to real-world action.",
       "key_drivers": [
-        "emerging markets",
-        "US policy",
-        "AI regulation"
+        "Climate extremes"
       ],
       "risks": [
-        "global instability",
-        "economic downturn"
+        "Increased frequency of natural disasters",
+        "Economic losses"
       ],
       "tickers_or_sectors": [
-        "global economy"
+        "Renewable energy",
+        "Infrastructure"
       ],
       "key_drivers_sourced": [],
-      "risks_sourced": []
+      "risks_sourced": [
+        {
+          "text": "Climate extremes testing communities across the U.S.",
+          "citation_ids": [
+            "tt-5282222435043764023"
+          ]
+        }
+      ]
     },
     {
-      "name": "Emerging Markets",
-      "subtitle": "Momentum loss due to AI and oil prices",
-      "thesis": "Emerging markets are facing challenges due to AI volatility and oil prices",
+      "name": "Global Economic Uncertainty",
+      "subtitle": "Iran war and climate extremes impacting global economy",
+      "thesis": "The global economy is facing significant uncertainty due to the Iran war and climate extremes.",
       "stage": "mid",
       "stage_label": "Mid",
       "consensus_score": 0.3333333333333333,
@@ -266,39 +308,53 @@
         "narrative"
       ],
       "primary_agent": "narrative",
-      "synthesis": "The loss of momentum in emerging markets is a significant trend",
+      "synthesis": "The Iran war and climate extremes are already having an impact on the global economy, but the full extent of the damage is still unknown.",
       "key_drivers": [
-        "AI volatility",
-        "oil prices"
+        "Iran war",
+        "Climate extremes"
       ],
       "risks": [
-        "market instability",
-        "economic downturn"
+        "Global economic downturn",
+        "Increased inflation"
       ],
       "tickers_or_sectors": [
-        "emerging markets"
+        "SP500",
+        "Oil"
       ],
       "key_drivers_sourced": [
         {
-          "text": "Emerging markets lose momentum due to AI volatility and oil prices",
+          "text": "Euro-area households curtailing spending after the start of the Iran war seemed more worried by the overall uncertainty rather than faster inflation",
           "citation_ids": [
-            "tt--4969717517699079155"
+            "tt-9009785776601276954"
+          ]
+        },
+        {
+          "text": "Federal Reserve Chair Kevin Warsh may have tightened the economy by not lifting interest rates than he would have by actually increasing them",
+          "citation_ids": [
+            "tt-1586198842861769663"
           ]
         }
       ],
       "risks_sourced": [
         {
-          "text": "AI volatility and oil prices affecting emerging markets",
+          "text": "Iran war and its impact on global economy",
           "citation_ids": [
-            "tt--4969717517699079155"
+            "tt-9009785776601276954",
+            "tt-2467187862632917355"
+          ]
+        },
+        {
+          "text": "Climate extremes testing communities across the U.S.",
+          "citation_ids": [
+            "tt-5282222435043764023"
           ]
         }
       ]
     },
     {
-      "name": "US Policy",
-      "subtitle": "Risks to Caribbean stability",
-      "thesis": "US policy poses risks to stability in the Caribbean region",
+      "name": "Monetary Policy",
+      "subtitle": "Federal Reserve's interest rate decisions impacting the economy",
+      "thesis": "The Federal Reserve's interest rate decisions are having a significant impact on the economy.",
       "stage": "early_mid",
       "stage_label": "Early-Mid",
       "consensus_score": 0.3333333333333333,
@@ -310,78 +366,48 @@
         "narrative"
       ],
       "primary_agent": "narrative",
-      "synthesis": "The potential impact of US policy on the Caribbean is a developing trend",
+      "synthesis": "The Federal Reserve's decision to pause interest rate hikes may have tightened the economy more than expected.",
       "key_drivers": [
-        "US policy decisions"
+        "Federal Reserve's interest rate decisions"
       ],
       "risks": [
-        "regional instability",
-        "economic disruption"
+        "Economic slowdown",
+        "Inflation"
       ],
       "tickers_or_sectors": [
-        "Caribbean region"
+        "SP500",
+        "Bonds"
       ],
       "key_drivers_sourced": [
         {
-          "text": "US policy risks destabilizing the Caribbean",
+          "text": "Federal Reserve Chair Kevin Warsh may have tightened the economy by not lifting interest rates than he would have by actually increasing them",
           "citation_ids": [
-            "tt--670310410841410235"
+            "tt-1586198842861769663"
           ]
         }
       ],
       "risks_sourced": [
         {
-          "text": "US policy potentially destabilizing the Caribbean region",
+          "text": "Iran war and its impact on global economy",
           "citation_ids": [
-            "tt--670310410841410235"
+            "tt-9009785776601276954",
+            "tt-2467187862632917355"
           ]
         }
       ]
-    },
-    {
-      "name": "Healthcare",
-      "subtitle": "Defensive Sector",
-      "thesis": "The relatively stable performance of Healthcare stocks (-0.7% vs SPY) suggests a continued defensive positioning, driven by the need for stable returns in a volatile environment.",
-      "stage": "late",
-      "stage_label": "Late",
-      "consensus_score": 0.3333333333333333,
-      "investability_score": 0.5,
-      "agent_stages": {
-        "regime": "late"
-      },
-      "contributing_agents": [
-        "regime"
-      ],
-      "primary_agent": "regime",
-      "synthesis": "The theme is fully priced in macro terms, with reversal risk dominant. The 20-day annualized volatility of Healthcare stocks is 21.0%, indicating a relatively stable environment.",
-      "key_drivers": [
-        "Defensive positioning",
-        "Stable returns"
-      ],
-      "risks": [
-        "Valuation risks",
-        "Regulatory risks"
-      ],
-      "tickers_or_sectors": [
-        "XLV",
-        "JNJ",
-        "PFE"
-      ],
-      "key_drivers_sourced": [],
-      "risks_sourced": []
     }
   ],
   "regime_themes": [
     {
       "name": "Cloud Computing",
       "subtitle": "Digital Transformation",
-      "thesis": "The strong 20-day momentum of Cloud stocks (+6.0%) and outperformance of the SPY benchmark (+5.7pp) suggest a continued shift towards digital transformation, driven by the need for remote work and efficient data management.",
-      "stage": "mid",
-      "stage_rationale": "The theme is in expansion, with earnings and policy confirming the narrative, and moderate crowding. The 20-day annualized volatility of Cloud stocks is 24.2%, indicating a relatively stable environment.",
+      "thesis": "The Cloud sector's strong 20-day momentum, with a return of +6.0% and outperforming SPY by 5.7pp, suggests a continued shift towards digital transformation and cloud-based services.",
+      "stage": "early_mid",
+      "stage_rationale": "The Cloud sector's recent outperformance and strong momentum indicate early positioning and a spreading narrative, but it has not yet reached mainstream consensus.",
       "confidence": 0.8,
       "key_drivers": [
         "Digital transformation",
-        "Remote work"
+        "Cloud adoption"
       ],
       "risks": [
         "Regulatory risks",
@@ -396,16 +422,16 @@
     {
       "name": "Energy Transition",
       "subtitle": "Renewable Energy",
-      "thesis": "The strong 20-day momentum of Energy stocks (+11.9%) and outperformance of the SPY benchmark (+11.6pp) suggest a continued shift towards renewable energy, driven by government policies and declining technology costs.",
-      "stage": "early_mid",
-      "stage_rationale": "The theme is gaining traction, with early positioning and a spreading narrative, but not yet mainstream. The 20-day annualized volatility of Energy stocks is 20.3%, indicating a relatively stable environment.",
+      "thesis": "The Energy sector's strong 20-day momentum, with a return of +11.9% and outperforming SPY by 11.6pp, suggests a growing focus on energy transition and renewable energy sources.",
+      "stage": "mid",
+      "stage_rationale": "The Energy sector's recent outperformance and strong momentum indicate a theme in expansion, with earnings and policy confirming the trend.",
       "confidence": 0.7,
       "key_drivers": [
-        "Government policies",
-        "Declining technology costs"
+        "Energy transition",
+        "Renewable energy"
       ],
       "risks": [
-        "Commodity price risks",
+        "Commodity price volatility",
         "Regulatory risks"
       ],
       "tickers_or_sectors": [
@@ -414,19 +440,19 @@
       ]
     },
     {
-      "name": "Financials",
-      "subtitle": "Interest Rate Sensitivity",
-      "thesis": "The near 52-week high of Financials stocks (-1.1% vs high) suggests a continued positive outlook, driven by the rates path and improving credit conditions.",
-      "stage": "mid_late",
-      "stage_rationale": "The theme is widely recognized, with late-cycle macro positioning and crowding, but policy risks are rising. The 20-day annualized volatility of Financials stocks is 14.1%, indicating a relatively stable environment.",
+      "name": "Financials Recovery",
+      "subtitle": "Banking and Finance",
+      "thesis": "The Financials sector's near 52-week high, with a return of +2.4% and outperforming SPY by 2.1pp, suggests a recovery in the banking and finance sector.",
+      "stage": "early_mid",
+      "stage_rationale": "The Financials sector's recent outperformance and near 52-week high indicate early positioning and a spreading narrative, but it has not yet reached mainstream consensus.",
       "confidence": 0.6,
       "key_drivers": [
-        "Rates path",
-        "Improving credit conditions"
+        "Interest rates",
+        "Economic growth"
       ],
       "risks": [
-        "Policy risks",
-        "Credit cycle risks"
+        "Credit cycle risks",
+        "Regulatory risks"
       ],
       "tickers_or_sectors": [
         "XLF",
@@ -435,19 +461,19 @@
       ]
     },
     {
-      "name": "Healthcare",
-      "subtitle": "Defensive Sector",
-      "thesis": "The relatively stable performance of Healthcare stocks (-0.7% vs SPY) suggests a continued defensive positioning, driven by the need for stable returns in a volatile environment.",
-      "stage": "late",
-      "stage_rationale": "The theme is fully priced in macro terms, with reversal risk dominant. The 20-day annualized volatility of Healthcare stocks is 21.0%, indicating a relatively stable environment.",
+      "name": "Healthcare Innovation",
+      "subtitle": "Biotechnology and Pharmaceuticals",
+      "thesis": "The Healthcare sector's moderate volatility, with a 20-day annualized volatility of 21.0%, suggests a continued focus on innovation and research in the biotechnology and pharmaceuticals sectors.",
+      "stage": "mid",
+      "stage_rationale": "The Healthcare sector's moderate volatility and recent performance indicate a theme in expansion, with earnings and policy confirming the trend.",
       "confidence": 0.5,
       "key_drivers": [
-        "Defensive positioning",
-        "Stable returns"
+        "Innovation",
+        "Research and development"
       ],
       "risks": [
-        "Valuation risks",
-        "Regulatory risks"
+        "Regulatory risks",
+        "Competition"
       ],
       "tickers_or_sectors": [
         "XLV",
@@ -456,19 +482,19 @@
       ]
     },
     {
-      "name": "Tech",
-      "subtitle": "Growth Sector",
-      "thesis": "The relatively weak performance of Tech stocks (-2.9% vs SPY) suggests a continued growth slowdown, driven by the rates path and declining margins.",
+      "name": "Tech Sector Rotation",
+      "subtitle": "Growth vs. Value",
+      "thesis": "The Tech sector's underperformance, with a return of -2.9% and underperforming SPY by 3.2pp, suggests a rotation within the sector, with growth stocks potentially giving way to value stocks.",
       "stage": "mid_late",
-      "stage_rationale": "The theme is widely recognized, with late-cycle macro positioning and crowding, but policy risks are rising. The 20-day annualized volatility of Tech stocks is 33.4%, indicating a relatively unstable environment.",
-      "confidence": 0.6,
+      "stage_rationale": "The Tech sector's recent underperformance and high volatility indicate a widely recognized theme, with late-cycle macro positioning and crowding and policy risk rising.",
+      "confidence": 0.4,
       "key_drivers": [
-        "Rates path",
-        "Declining margins"
+        "Growth vs. value",
+        "Sector rotation"
       ],
       "risks": [
-        "Policy risks",
-        "Competition"
+        "Competition",
+        "Regulatory risks"
       ],
       "tickers_or_sectors": [
         "XLK",
@@ -477,120 +503,121 @@
       ]
     },
     {
-      "name": "Utilities",
-      "subtitle": "Defensive Sector",
-      "thesis": "The relatively weak performance of Utilities stocks (-3.1% vs SPY) suggests a continued defensive positioning, driven by the need for stable returns in a volatile environment.",
-      "stage": "late",
-      "stage_rationale": "The theme is fully priced in macro terms, with reversal risk dominant. The sector is relatively stable, but valuations are high.",
-      "confidence": 0.5,
+      "name": "Inflation Protection",
+      "subtitle": "Commodities and Real Assets",
+      "thesis": "The current reflation environment, with moderate volatility and a strong Energy sector, suggests a continued focus on inflation protection and real assets.",
+      "stage": "early",
+      "stage_rationale": "The reflation environment and strong Energy sector indicate a macro tailwind forming, with policy and liquidity supportive, but the theme has not yet reached consensus.",
+      "confidence": 0.3,
       "key_drivers": [
-        "Defensive positioning",
-        "Stable returns"
+        "Inflation",
+        "Commodities"
       ],
       "risks": [
-        "Valuation risks",
+        "Commodity price volatility",
         "Regulatory risks"
       ],
       "tickers_or_sectors": [
-        "XLU",
-        "DUK",
-        "EXC"
+        "DBC",
+        "GLD",
+        "SLV"
       ]
     }
   ],
   "narrative_themes": [
     {
-      "name": "Emerging Markets",
-      "subtitle": "Momentum loss due to AI and oil prices",
-      "thesis": "Emerging markets are facing challenges due to AI volatility and oil prices",
+      "name": "Global Economic Uncertainty",
+      "subtitle": "Iran war and climate extremes impacting global economy",
+      "thesis": "The global economy is facing significant uncertainty due to the Iran war and climate extremes.",
       "stage": "mid",
-      "stage_rationale": "The loss of momentum in emerging markets is a significant trend",
+      "stage_rationale": "The Iran war and climate extremes are already having an impact on the global economy, but the full extent of the damage is still unknown.",
       "confidence": 0.7,
       "key_drivers": [
-        "AI volatility",
-        "oil prices"
+        "Iran war",
+        "Climate extremes"
       ],
       "risks": [
-        "market instability",
-        "economic downturn"
+        "Global economic downturn",
+        "Increased inflation"
       ],
       "tickers_or_sectors": [
-        "emerging markets"
+        "SP500",
+        "Oil"
       ]
     },
     {
-      "name": "US Policy",
-      "subtitle": "Risks to Caribbean stability",
-      "thesis": "US policy poses risks to stability in the Caribbean region",
+      "name": "Monetary Policy",
+      "subtitle": "Federal Reserve's interest rate decisions impacting the economy",
+      "thesis": "The Federal Reserve's interest rate decisions are having a significant impact on the economy.",
       "stage": "early_mid",
-      "stage_rationale": "The potential impact of US policy on the Caribbean is a developing trend",
+      "stage_rationale": "The Federal Reserve's decision to pause interest rate hikes may have tightened the economy more than expected.",
       "confidence": 0.6,
       "key_drivers": [
-        "US policy decisions"
+        "Federal Reserve's interest rate decisions"
       ],
       "risks": [
-        "regional instability",
-        "economic disruption"
+        "Economic slowdown",
+        "Inflation"
       ],
       "tickers_or_sectors": [
-        "Caribbean region"
+        "SP500",
+        "Bonds"
       ]
     },
     {
-      "name": "AI Regulation",
-      "subtitle": "Debate on governance and adaptation",
-      "thesis": "The debate on AI regulation and governance is ongoing",
-      "stage": "early",
-      "stage_rationale": "The discussion on AI regulation is still in its early stages",
-      "confidence": 0.5,
-      "key_drivers": [
-        "AI development",
-        "regulatory discussions"
-      ],
-      "risks": [
-        "unintended consequences",
-        "regulatory challenges"
-      ],
-      "tickers_or_sectors": [
-        "AI industry"
-      ]
-    },
-    {
-      "name": "Global Economy",
-      "subtitle": "Interconnected trends and challenges",
-      "thesis": "The global economy is facing interconnected trends and challenges",
+      "name": "Climate Adaptation",
+      "subtitle": "Communities adapting to climate extremes",
+      "thesis": "Communities across the U.S. are adapting to climate extremes.",
       "stage": "mid_late",
-      "stage_rationale": "The global economy is experiencing a complex set of trends and challenges",
+      "stage_rationale": "Climate adaptation is increasingly moving from planning to real-world action.",
       "confidence": 0.8,
       "key_drivers": [
-        "emerging markets",
-        "US policy",
-        "AI regulation"
+        "Climate extremes"
       ],
       "risks": [
-        "global instability",
-        "economic downturn"
+        "Increased frequency of natural disasters",
+        "Economic losses"
       ],
       "tickers_or_sectors": [
-        "global economy"
+        "Renewable energy",
+        "Infrastructure"
+      ]
+    },
+    {
+      "name": "Forex Market Intervention",
+      "subtitle": "Joint U.S.-Japanese intervention impacting the yen",
+      "thesis": "The joint U.S.-Japanese intervention is having an impact on the yen.",
+      "stage": "early",
+      "stage_rationale": "The intervention is a recent development, and its full impact is still unknown.",
+      "confidence": 0.5,
+      "key_drivers": [
+        "Forex market intervention"
+      ],
+      "risks": [
+        "Currency fluctuations",
+        "Trade tensions"
+      ],
+      "tickers_or_sectors": [
+        "Yen",
+        "USDJPY"
       ]
     }
   ],
   "markets_themes": [
     {
       "name": "Energy Momentum",
-      "subtitle": "Strong 20-day momentum in Energy sector",
-      "thesis": "The Energy sector's recent surge is likely to continue, driven by favorable market conditions and strong sector fundamentals.",
-      "stage": "early_mid",
-      "stage_rationale": "The sector's momentum is strong, but it has not yet reached extreme levels, suggesting further upside potential.",
-      "confidence": 0.7,
+      "subtitle": "Strong performance in Energy sector",
+      "thesis": "Energy sector outperformance driven by fundamental factors",
+      "stage": "mid",
+      "stage_rationale": "Energy sector is showing strong 20-day momentum and outperforming the SPY",
+      "confidence": 0.8,
       "key_drivers": [
-        "sector rotation",
-        "strong fundamentals"
+        "Commodity prices",
+        "Sector rotation"
       ],
       "risks": [
-        "market downturn",
-        "sector rotation reversal"
+        "Global economic slowdown",
+        "Regulatory changes"
       ],
       "tickers_or_sectors": [
         "XLE"
@@ -598,18 +625,18 @@
     },
     {
       "name": "Cloud Growth",
-      "subtitle": "Cloud sector outperforming SPY over 20 days",
-      "thesis": "The Cloud sector's outperformance is expected to continue, driven by its strong growth prospects and favorable market conditions.",
-      "stage": "mid",
-      "stage_rationale": "The sector's growth momentum is established, but valuations are not yet stretched, suggesting further upside potential.",
-      "confidence": 0.8,
+      "subtitle": "Cloud sector's strong growth prospects",
+      "thesis": "Cloud sector's growth driven by increasing demand for cloud services",
+      "stage": "early_mid",
+      "stage_rationale": "Cloud sector is showing strong 20-day momentum and outperforming the SPY",
+      "confidence": 0.7,
       "key_drivers": [
-        "growth prospects",
-        "sector rotation"
+        "Digital transformation",
+        "Cloud adoption"
       ],
       "risks": [
-        "valuation multiples",
-        "sector rotation reversal"
+        "Competition",
+        "Regulatory changes"
       ],
       "tickers_or_sectors": [
         "SKYY"
@@ -617,78 +644,154 @@
     },
     {
       "name": "Financials Recovery",
-      "subtitle": "Financials nearing 52-week highs",
-      "thesis": "The Financials sector's recovery is likely to continue, driven by improving sector fundamentals and favorable market conditions.",
+      "subtitle": "Financials sector nearing 52-week high",
+      "thesis": "Financials sector recovery driven by improving economic conditions",
       "stage": "mid_late",
-      "stage_rationale": "The sector's recovery is well-established, but valuations are not yet stretched, suggesting further upside potential.",
+      "stage_rationale": "Financials sector is nearing its 52-week high",
       "confidence": 0.6,
       "key_drivers": [
-        "sector rotation",
-        "improving fundamentals"
+        "Economic growth",
+        "Interest rates"
       ],
       "risks": [
-        "valuation multiples",
-        "sector rotation reversal"
+        "Global economic slowdown",
+        "Regulatory changes"
       ],
       "tickers_or_sectors": [
         "XLF"
       ]
     },
     {
-      "name": "Low-vol Carry in Financials",
-      "subtitle": "Financials exhibiting low volatility",
-      "thesis": "The low volatility in Financials presents an opportunity for investors to generate carry returns, driven by the sector's stable market conditions.",
-      "stage": "early",
-      "stage_rationale": "The sector's volatility is low, but it has not yet reached extreme levels, suggesting further potential for carry returns.",
+      "name": "Tech Consolidation",
+      "subtitle": "Tech sector's consolidation phase",
+      "thesis": "Tech sector consolidation driven by valuation concerns",
+      "stage": "mid_late",
+      "stage_rationale": "Tech sector is showing negative 20-day returns",
       "confidence": 0.5,
       "key_drivers": [
-        "low volatility",
-        "sector rotation"
+        "Valuation concerns",
+        "Sector rotation"
       ],
       "risks": [
-        "volatility spike",
-        "sector rotation reversal"
-      ],
-      "tickers_or_sectors": [
-        "XLF"
-      ]
-    },
-    {
-      "name": "Volatility Arbitrage in Tech",
-      "subtitle": "Tech exhibiting high volatility",
-      "thesis": "The high volatility in Tech presents an opportunity for investors to capitalize on mispricings and generate returns through volatility arbitrage.",
-      "stage": "mid",
-      "stage_rationale": "The sector's volatility is high, but it has not yet reached extreme levels, suggesting further potential for volatility arbitrage.",
-      "confidence": 0.6,
-      "key_drivers": [
-        "high volatility",
-        "sector rotation"
-      ],
-      "risks": [
-        "volatility collapse",
-        "sector rotation reversal"
+        "Global economic slowdown",
+        "Regulatory changes"
       ],
       "tickers_or_sectors": [
         "XLK"
       ]
     },
     {
-      "name": "Risk Premia in Energy",
-      "subtitle": "Energy exhibiting moderate volatility",
-      "thesis": "The moderate volatility in Energy presents an opportunity for investors to generate risk premia returns, driven by the sector's relatively stable market conditions.",
-      "stage": "mid_late",
-      "stage_rationale": "The sector's volatility is moderate, but it has not yet reached extreme levels, suggesting further potential for risk premia returns.",
+      "name": "Healthcare Resilience",
+      "subtitle": "Healthcare sector's resilience",
+      "thesis": "Healthcare sector resilience driven by steady demand",
+      "stage": "early_mid",
+      "stage_rationale": "Healthcare sector is showing positive 60-day returns",
       "confidence": 0.7,
       "key_drivers": [
-        "moderate volatility",
-        "sector rotation"
+        "Steady demand",
+        "Innovation"
       ],
       "risks": [
-        "volatility spike",
-        "sector rotation reversal"
+        "Regulatory changes",
+        "Competition"
+      ],
+      "tickers_or_sectors": [
+        "XLV"
+      ]
+    },
+    {
+      "name": "Low-vol Carry in Financials",
+      "subtitle": "Financials sector's low volatility",
+      "thesis": "Financials sector's low volatility makes it attractive for carry trades",
+      "stage": "mid",
+      "stage_rationale": "Financials sector has the lowest 20-day annualized volatility",
+      "confidence": 0.8,
+      "key_drivers": [
+        "Low volatility",
+        "High dividend yield"
+      ],
+      "risks": [
+        "Interest rate changes",
+        "Credit risk"
+      ],
+      "tickers_or_sectors": [
+        "XLF"
+      ]
+    },
+    {
+      "name": "Volatility Compression in Energy",
+      "subtitle": "Energy sector's volatility compression",
+      "thesis": "Energy sector's volatility compression makes it attractive for trading",
+      "stage": "early_mid",
+      "stage_rationale": "Energy sector's 20-day annualized volatility is lower than its historical average",
+      "confidence": 0.7,
+      "key_drivers": [
+        "Volatility compression",
+        "Mean reversion"
+      ],
+      "risks": [
+        "Global economic slowdown",
+        "Geopolitical risks"
       ],
       "tickers_or_sectors": [
         "XLE"
+      ]
+    },
+    {
+      "name": "High-vol Trading in Tech",
+      "subtitle": "Tech sector's high volatility",
+      "thesis": "Tech sector's high volatility makes it attractive for trading",
+      "stage": "mid_late",
+      "stage_rationale": "Tech sector has the highest 20-day annualized volatility",
+      "confidence": 0.6,
+      "key_drivers": [
+        "High volatility",
+        "Mean reversion"
+      ],
+      "risks": [
+        "Global economic slowdown",
+        "Regulatory changes"
+      ],
+      "tickers_or_sectors": [
+        "XLK"
+      ]
+    },
+    {
+      "name": "Volatility Regime Shift",
+      "subtitle": "Shift in volatility regime",
+      "thesis": "Volatility regime shift driven by changes in market conditions",
+      "stage": "early",
+      "stage_rationale": "VIX proxy level is relatively stable",
+      "confidence": 0.5,
+      "key_drivers": [
+        "Market conditions",
+        "Central bank actions"
+      ],
+      "risks": [
+        "Global economic slowdown",
+        "Geopolitical risks"
+      ],
+      "tickers_or_sectors": [
+        "^VIX"
+      ]
+    },
+    {
+      "name": "Cloud Volatility",
+      "subtitle": "Cloud sector's volatility",
+      "thesis": "Cloud sector's volatility driven by growth prospects",
+      "stage": "early_mid",
+      "stage_rationale": "Cloud sector's 20-day annualized volatility is moderate",
+      "confidence": 0.7,
+      "key_drivers": [
+        "Growth prospects",
+        "Competition"
+      ],
+      "risks": [
+        "Regulatory changes",
+        "Competition"
+      ],
+      "tickers_or_sectors": [
+        "SKYY"
       ]
     }
   ],
