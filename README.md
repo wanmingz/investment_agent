@@ -74,7 +74,15 @@ streamlit run stock_research_app.py   # or: invest-stock-dashboard
 
 ### Single-stock research (separate app)
 
-Independent of the theme dashboard. Four domain agents (Business, Financial, Valuation, Expectation) plus Reasoning produce an **Investment Memo** (`buy` / `hold` / `sell` / `watch`).
+Independent of the theme dashboard. Four domain agents (Business, Financial, Valuation, Expectation) plus Reasoning produce an **Investment Memo** (`buy` / `hold` / `sell` / `watch`). `bundle.py` fetches once and slices **disjoint** context blocks; domain agents do not see each other’s reports.
+
+| Agent | Input data (from `bundle.py` context block) |
+|-------|---------------------------------------------|
+| **Business** | Company profile (`longBusinessSummary`, sector/industry/country/employees/website); recent TickerTick headlines (**title + short summary**) |
+| **Financial** | Key ratios from `info` (growth, margins, ROE/ROA, leverage, FCF); **annual** income/cashflow/balance key rows; **quarterly** income/cashflow/balance (up to 8 quarters) + **programmatic YoY %** |
+| **Valuation** | Spot multiples (PE/PB/PS/EV-EBITDA/PEG, 52w, moving averages, beta, shares); **~5y PE/PS history percentiles** (quarterly TTM + price history); **3–5 industry/sector peer multiples** (`peers.py`) |
+| **Expectation** | Analyst targets / recommendation fields; optional Finnhub recommendation trend; yfinance **earnings_estimate**, **revenue_estimate**, **earnings_history** (surprises), **earnings_dates** |
+| **Reasoning** | The four domain **reports** (JSON) + ticker / company / last price — no raw yfinance re-fetch |
 
 ```bash
 invest-stock AAPL
@@ -462,9 +470,19 @@ Errors: `QuotaExhaustedError` (429), prompt-too-large (413) — see `llm.py` hin
 
 ## Roadmap: Stock picking
 
-**Status:** design in progress (not implemented).
+**Implemented:** independent **single-stock research** subsystem (`stock_research/`): Business · Financial · Valuation · Expectation → Reasoning → `InvestmentMemo` (buy/hold/sell/watch). CLI `invest-stock`, UI `stock_research_app.py` / `invest-stock-dashboard`. Separate checkpoint under `reports/cache/stock_research/`. **Not** wired into theme Regime / Narrative / Markets or `streamlit_app.py`.
 
-**TODO:** add a post-theme **stock selection** layer so ranked sector themes can surface specific names (e.g. Financials → which banks), not only sector ETFs. Direction under discussion: universe candidate pools per sector; extend the existing yfinance / Finnhub data plane into structured inputs for a **fundamental researcher** and a **quant researcher**; programmatic merge into a shortlist for the dashboard (and optionally portfolio `tickers` mode). Must keep fetch-before-LLM and must not wire researcher outputs into Regime / Narrative / Markets inputs.
+Agent inputs (fetch-before-LLM via `bundle.py`):
+
+| Agent | Input |
+|-------|--------|
+| **Business** | Profile + `longBusinessSummary`; TickerTick title + summary headlines |
+| **Financial** | `info` ratios; annual + **quarterly** statements (≤8) with **YoY %** |
+| **Valuation** | Spot multiples; **5y PE/PS percentiles**; industry/sector **peer** multiples |
+| **Expectation** | Targets/recs (+ optional Finnhub); earnings/revenue **estimates**, **history**, **dates** |
+| **Reasoning** | Four domain reports + last price only |
+
+**Planned:** post-theme **stock selection** so ranked sector themes surface specific names (e.g. Financials → which banks), not only sector ETFs — candidate pools per sector, shortlist into the theme dashboard (and optionally portfolio `tickers` mode). Keep fetch-before-LLM; do not feed stock-research outputs back into theme agent inputs.
 
 Optional design notes may live under `research/` (not required to run the pipeline).
 
