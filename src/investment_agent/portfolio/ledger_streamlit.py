@@ -75,6 +75,103 @@ def _render_theme_alignment(brief: InvestmentBrief, snapshot) -> None:
         st.caption(f"**Holdings not covered by top themes:** {uncovered}")
 
 
+def _render_published_portfolio(
+    brief: InvestmentBrief | None,
+    published,
+) -> None:
+    """Read-only Cloud / friend view from brief/portfolio_latest.json."""
+    summary = published.summary
+    st.markdown("##### My portfolio (published snapshot)")
+    st.info(
+        f"Read-only snapshot published **{published.published_at or '—'}**. "
+        "Figures are frozen at publish time (not live mark-to-market). "
+        "Owner refreshes with `invest-portfolio publish` then git push."
+    )
+    if summary.first_trade_date is None:
+        st.caption("_Published snapshot has no trades._")
+        return
+
+    m1, m2, m3, m4, m5 = st.columns(5)
+    m1.metric("Portfolio value", f"${snapshot_total_nav(summary.snapshot):,.2f}")
+    m2.metric("Net invested", f"${summary.gross_invested:,.2f}")
+    m3.metric("Total P&L", f"${summary.total_pnl:,.2f}")
+    m4.metric(
+        "Total return",
+        f"{summary.total_return_pct:.1f}%" if summary.total_return_pct is not None else "—",
+    )
+    m5.metric(
+        "vs SPY",
+        f"{summary.vs_spy_pct:+.1f} pp" if summary.vs_spy_pct is not None else "—",
+    )
+
+    cash_bal = snapshot_cash_balance(summary.snapshot)
+    cash_line = f"Cash ${cash_bal:,.2f} · " if cash_bal > 0.01 else ""
+    if summary.spy_return_pct is not None and summary.first_trade_date is not None:
+        st.caption(
+            f"{cash_line}"
+            f"Holdings ${summary.snapshot.total_market_value:,.2f} · "
+            f"Realized ${summary.realized_pnl:,.2f} · "
+            f"Unrealized ${summary.snapshot.total_unrealized_pnl:,.2f} · "
+            f"SPY {summary.spy_return_pct:.1f}% since {summary.first_trade_date.isoformat()}"
+        )
+    else:
+        st.caption(
+            f"{cash_line}"
+            f"Holdings ${summary.snapshot.total_market_value:,.2f} · "
+            f"Realized ${summary.realized_pnl:,.2f} · "
+            f"Unrealized ${summary.snapshot.total_unrealized_pnl:,.2f}"
+        )
+
+    st.markdown("#### Open positions")
+    if summary.snapshot.positions:
+        col_table, col_chart = st.columns([3, 2])
+        with col_table:
+            rows = []
+            for p in summary.snapshot.positions:
+                rows.append(
+                    {
+                        "Name": model_name(p) or "—",
+                        "Symbol": p.symbol,
+                        "Qty": p.quantity,
+                        "Avg cost": p.avg_cost,
+                        "Last": p.last_price,
+                        "Market value": p.market_value,
+                        "Unrealized P&L": p.unrealized_pnl,
+                        "Unrealized %": p.unrealized_pnl_pct,
+                    }
+                )
+            st.dataframe(rows, use_container_width=True, hide_index=True)
+        with col_chart:
+            st.markdown("##### Allocation")
+            st.caption("By market value (at publish)")
+            render_position_pie(summary.snapshot.positions, cash=cash_bal)
+    else:
+        st.caption("_No open positions in snapshot._")
+
+    if brief is not None and summary.snapshot.positions:
+        _render_theme_alignment(brief, summary.snapshot)
+    elif brief is None and summary.snapshot.positions:
+        st.info(
+            "Load a theme brief (**Themes** → **Load last result**) "
+            "to see research alignment with published holdings."
+        )
+
+    trades = list(published.trades)
+    if trades:
+        with st.expander(f"Trade history ({len(trades)})", expanded=False):
+            for t in reversed(trades):
+                sym_label = (
+                    f"{model_name(t)} ({t.symbol})" if model_name(t) else t.symbol
+                )
+                label = (
+                    f"#{t.id} · {t.trade_date.isoformat()} · {t.side.value} · "
+                    f"{t.quantity:g} {sym_label} @ ${t.price:.2f}"
+                )
+                if t.notes:
+                    label += f" · {t.notes}"
+                st.text(label)
+
+
 def render_ledger(
     brief: InvestmentBrief | None,
     ledger: LedgerKind,
@@ -83,6 +180,30 @@ def render_ledger(
     skip_performance_compare: bool = False,
 ) -> None:
     """Trade form, metrics, positions, and optional theme alignment for one ledger."""
+    from investment_agent.portfolio.publish import (
+        load_published,
+        publish_manual_portfolio,
+        should_use_published,
+    )
+
+    if should_use_published(ledger=ledger) and not st.session_state.get(
+        "force_local_portfolio_edit"
+    ):
+        published = load_published()
+        if published is not None:
+            _render_published_portfolio(brief, published)
+            st.caption(
+                "Local ledger has no trades — showing the published snapshot. "
+                "Owners can switch to the editable local ledger below."
+            )
+            if st.button(
+                "Edit local ledger instead",
+                key="force_local_portfolio_edit_btn",
+            ):
+                st.session_state.force_local_portfolio_edit = True
+                st.rerun()
+            return
+
     st.markdown(f"##### {_LEDGER_LABELS[ledger]}")
     st.caption(f"Ledger: `{portfolio_db.db_path(ledger)}`")
 
@@ -313,3 +434,18 @@ def render_ledger(
                     if st.button("Delete", key=f"delete_trade_{key_prefix}_{t.id}"):
                         st.session_state[pending_key] = t.id
                         st.rerun()
+
+    if ledger == "manual" and trades:
+        st.divider()
+        st.caption(
+            "Publish a read-only snapshot to `brief/portfolio_latest.json` "
+            "so friends on Streamlit Cloud can see this portfolio."
+        )
+        if st.button("Publish portfolio snapshot", key="publish_portfolio_snapshot"):
+            try:
+                out = publish_manual_portfolio()
+                st.success(f"Wrote `{out}`. Commit and push to update Cloud.")
+            except ValueError as e:
+                st.error(str(e))
+            except Exception as e:  # noqa: BLE001
+                st.error(f"Publish failed: {e}")

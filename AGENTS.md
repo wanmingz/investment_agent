@@ -38,6 +38,7 @@ orchestrator                   →  3 × Agent.analyze()  →  brief_assembler.a
 | Persist brief JSON | `storage.py` |
 | GitHub-readable brief (Markdown + JSON for Streamlit Cloud) | `report_markdown.py`, `brief/` |
 | Portfolio ledger / alignment UI | `portfolio/manual/`, `portfolio/model/`, `portfolio/compare/`, `streamlit_app.py` |
+| Publish portfolio for Cloud (read-only) | `portfolio/publish.py` → `brief/portfolio_latest.json` |
 | Single-stock research | `stock_research/`, View → **Stock** in `streamlit_app.py` (`stock_research/streamlit_ui.py`) |
 | Design notes (not runtime) | `research/` |
 

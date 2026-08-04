@@ -127,9 +127,12 @@ invest-portfolio list-trades --symbol AAPL
 invest-portfolio positions
 invest-portfolio performance
 invest-portfolio performance --from 2026-01-01 --to 2026-06-30
+invest-portfolio publish          # write brief/portfolio_latest.json for Streamlit Cloud
 ```
 
-Or use the **Portfolio** tab in `invest-dashboard` (**My portfolio** to record trades). Override manual DB with `PORTFOLIO_DB_PATH`.
+Or use the **Portfolio** tab in `invest-dashboard` (**My portfolio** to record trades; **Publish portfolio snapshot** button when you have trades).
+
+**Friends on Streamlit Cloud:** `reports/portfolio.db` is not in git. After `invest-portfolio publish` and push, Cloud shows a **read-only** snapshot from `brief/portfolio_latest.json` (no trade form). Re-publish whenever holdings change.
 
 Weighted average cost; sells exceeding holdings are rejected. Back up `reports/portfolio.db` before upgrades.
 

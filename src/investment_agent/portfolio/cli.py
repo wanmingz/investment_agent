@@ -228,7 +228,24 @@ def build_parser() -> argparse.ArgumentParser:
     p_perf.add_argument("--to", dest="to_date", type=_parse_date, help="As-of / to date")
     p_perf.set_defaults(func=_cmd_performance)
 
+    p_pub = sub.add_parser(
+        "publish",
+        help="Write brief/portfolio_latest.json for Streamlit Cloud (read-only friends view)",
+    )
+    p_pub.set_defaults(func=_cmd_publish)
+
     return parser
+
+
+def _cmd_publish(args: argparse.Namespace) -> None:
+    from investment_agent.portfolio.publish import PUBLISHED_PATH, publish_manual_portfolio
+
+    path = publish_manual_portfolio()
+    console.print(f"[green]Published[/green] {path}")
+    console.print(
+        "[dim]Commit and push so Streamlit Cloud can load the snapshot "
+        f"(tracked file: {PUBLISHED_PATH.name}).[/dim]"
+    )
 
 
 def main() -> None:
