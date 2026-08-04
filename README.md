@@ -66,9 +66,23 @@ python main.py --region US
 python main.py -o reports/latest.json
 
 streamlit run streamlit_app.py   # or: invest-dashboard
+invest-stock AAPL                # single-stock research memo
+streamlit run stock_research_app.py   # or: invest-stock-dashboard
 ```
 
-**Streamlit:** Run analysis · Load last / published brief · Resume / Clear checkpoint · Agent tabs · Recommended themes (one card per sector, sorted by score). Switch **View → Portfolio** for **My portfolio**, **Model portfolio**, and **Compare** (see [Portfolio architecture](#portfolio-architecture)).
+**Streamlit (themes):** Run analysis · Load last / published brief · Resume / Clear checkpoint · Agent tabs · Recommended themes (one card per sector, sorted by score). Switch **View → Portfolio** for **My portfolio**, **Model portfolio**, and **Compare** (see [Portfolio architecture](#portfolio-architecture)).
+
+### Single-stock research (separate app)
+
+Independent of the theme dashboard. Four domain agents (Business, Financial, Valuation, Expectation) plus Reasoning produce an **Investment Memo** (`buy` / `hold` / `sell` / `watch`).
+
+```bash
+invest-stock AAPL
+invest-stock AAPL --load          # reload last saved memo
+invest-stock-dashboard            # streamlit run stock_research_app.py
+```
+
+Memos save under `reports/stock_research/{TICKER}_latest.json`. Checkpoint: `reports/cache/stock_research/{TICKER}/`. On Streamlit Community Cloud, create a **second** app with Main file `stock_research_app.py` (same repo/secrets).
 
 ### Deploy dashboard (Streamlit Community Cloud)
 
