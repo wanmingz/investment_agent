@@ -193,8 +193,10 @@ def render_ledger(
         if published is not None:
             _render_published_portfolio(brief, published)
             st.caption(
-                "Local ledger has no trades — showing the published snapshot. "
-                "Owners can switch to the editable local ledger below."
+                f"Local ledger has no trades (`{portfolio_db.db_path(ledger)}`) — "
+                "showing the published snapshot. "
+                "To publish updates: use a machine with trades in that DB, or switch to "
+                "local editing and record trades, then use **Publish portfolio snapshot**."
             )
             if st.button(
                 "Edit local ledger instead",
@@ -342,6 +344,26 @@ def render_ledger(
         f"Unrealized ${summary.snapshot.total_unrealized_pnl:,.2f}"
     )
 
+    if ledger == "manual":
+        st.markdown("#### Share with friends")
+        st.caption(
+            "Writes a read-only snapshot to `brief/portfolio_latest.json` "
+            "for Streamlit Cloud. Commit and push after publishing."
+        )
+        if st.button(
+            "Publish portfolio snapshot",
+            type="primary",
+            use_container_width=False,
+            key=f"publish_portfolio_snapshot_{key_prefix}",
+        ):
+            try:
+                out = publish_manual_portfolio()
+                st.success(f"Wrote `{out}`. Commit and push to update Cloud.")
+            except ValueError as e:
+                st.error(str(e))
+            except Exception as e:  # noqa: BLE001
+                st.error(f"Publish failed: {e}")
+
     if not skip_performance_compare:
         render_performance_compare(ledger=ledger)
 
@@ -434,18 +456,3 @@ def render_ledger(
                     if st.button("Delete", key=f"delete_trade_{key_prefix}_{t.id}"):
                         st.session_state[pending_key] = t.id
                         st.rerun()
-
-    if ledger == "manual" and trades:
-        st.divider()
-        st.caption(
-            "Publish a read-only snapshot to `brief/portfolio_latest.json` "
-            "so friends on Streamlit Cloud can see this portfolio."
-        )
-        if st.button("Publish portfolio snapshot", key="publish_portfolio_snapshot"):
-            try:
-                out = publish_manual_portfolio()
-                st.success(f"Wrote `{out}`. Commit and push to update Cloud.")
-            except ValueError as e:
-                st.error(str(e))
-            except Exception as e:  # noqa: BLE001
-                st.error(f"Publish failed: {e}")

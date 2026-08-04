@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "ledger": "manual",
-  "published_at": "2026-08-04T21:17:18+02:00",
+  "published_at": "2026-08-04T21:23:53+02:00",
   "note": "Read-only snapshot for Streamlit Cloud. Refresh with: invest-portfolio publish",
   "trades": [
     {
@@ -66,10 +66,10 @@
           "quantity": 1.0,
           "avg_cost": 487.6499938964844,
           "cost_basis": 487.6499938964844,
-          "last_price": null,
-          "market_value": null,
-          "unrealized_pnl": null,
-          "unrealized_pnl_pct": null
+          "last_price": 496.69000244140625,
+          "market_value": 496.69000244140625,
+          "unrealized_pnl": 9.040008544921875,
+          "unrealized_pnl_pct": 1.8537903533411788
         },
         {
           "symbol": "XLE",
@@ -77,47 +77,47 @@
           "quantity": 4.0,
           "avg_cost": 54.63999938964844,
           "cost_basis": 218.55999755859375,
-          "last_price": null,
-          "market_value": null,
-          "unrealized_pnl": null,
-          "unrealized_pnl_pct": null
+          "last_price": 58.579898834228516,
+          "market_value": 234.31959533691406,
+          "unrealized_pnl": 15.759597778320312,
+          "unrealized_pnl_pct": 7.210650601373347
         },
         {
           "symbol": "XLF",
-          "name": "",
+          "name": "State Street Financial Select S",
           "quantity": 20.0,
           "avg_cost": 54.779998779296875,
           "cost_basis": 1095.5999755859375,
-          "last_price": null,
-          "market_value": null,
-          "unrealized_pnl": null,
-          "unrealized_pnl_pct": null
+          "last_price": 57.95500183105469,
+          "market_value": 1159.1000366210938,
+          "unrealized_pnl": 63.50006103515625,
+          "unrealized_pnl_pct": 5.795916616481833
         },
         {
           "symbol": "XLV",
-          "name": "",
+          "name": "State Street Health Care Select",
           "quantity": 2.0,
           "avg_cost": 159.5399932861328,
           "cost_basis": 319.0799865722656,
-          "last_price": null,
-          "market_value": null,
-          "unrealized_pnl": null,
-          "unrealized_pnl_pct": null
+          "last_price": 161.78500366210938,
+          "market_value": 323.57000732421875,
+          "unrealized_pnl": 4.490020751953125,
+          "unrealized_pnl_pct": 1.4071771784208158
         }
       ],
       "total_cost_basis": 2120.8899536132812,
-      "total_market_value": 0.0,
+      "total_market_value": 2213.679641723633,
       "cash_balance": 0.0,
-      "total_nav": 0.0,
-      "total_unrealized_pnl": -2120.8899536132812,
-      "total_unrealized_pnl_pct": -100.0
+      "total_nav": 2213.679641723633,
+      "total_unrealized_pnl": 92.78968811035156,
+      "total_unrealized_pnl_pct": 4.375035486978908
     },
     "realized_pnl": 0.0,
-    "total_pnl": -2120.8899536132812,
+    "total_pnl": 92.78968811035156,
     "gross_invested": 2120.8899536132812,
-    "total_return_pct": -100.0,
-    "spy_return_pct": null,
-    "vs_spy_pct": null,
+    "total_return_pct": 4.375035486978908,
+    "spy_return_pct": 1.597024912649081,
+    "vs_spy_pct": 2.7780105743298273,
     "first_trade_date": "2026-07-01"
   }
 }
