@@ -37,7 +37,6 @@ from investment_agent.models import (
     stage_label,
 )
 from investment_agent import checkpoint
-from investment_agent.config import Settings
 from investment_agent.universe import display_tickers_for_theme
 from investment_agent.dates import analysis_date, format_date_iso
 from investment_agent.llm import QuotaExhaustedError
@@ -60,6 +59,11 @@ from investment_agent.stock_research.streamlit_ui import (
     maybe_run_stock_research,
     render_stock_page_body,
     render_stock_sidebar,
+)
+from investment_agent.streamlit_llm import (
+    render_active_llm_caption,
+    render_visitor_llm_sidebar,
+    settings_from_sidebar,
 )
 
 try:
@@ -493,13 +497,10 @@ def main() -> None:
                     st.caption("Showing: this session’s run")
 
         st.divider()
-        try:
-            s = Settings.from_env()
-            st.text(f"Model: {s.provider}\n{s.model}")
-        except ValueError as e:
-            st.warning(str(e))
-            if page != PAGE_STOCK:
-                st.caption("View-only: published brief still loads without API keys.")
+        render_visitor_llm_sidebar()
+        render_active_llm_caption(
+            market_region=region if page != PAGE_STOCK else "global"
+        )
 
     if page == PAGE_STOCK:
         assert stock_state is not None
@@ -509,10 +510,7 @@ def main() -> None:
 
     if run_btn:
         try:
-            settings = Settings.from_env()
-            from dataclasses import replace
-
-            settings = replace(settings, market_region=region)
+            settings = settings_from_sidebar(market_region=region)
         except ValueError as e:
             st.error(str(e))
             st.stop()

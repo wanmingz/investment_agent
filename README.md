@@ -92,6 +92,8 @@ invest-dashboard                  # unified UI (use View → Stock)
 
 Memos save under `reports/stock_research/{TICKER}_latest.json`. Checkpoint: `reports/cache/stock_research/{TICKER}/`.
 
+**Friends running research:** in the sidebar open **Your LLM API key**, paste a Gemini / Groq / OpenAI / OpenRouter key, then **Run stock research** (or Themes → Run analysis). The key stays in the browser session only.
+
 ### Deploy dashboard (Streamlit Community Cloud)
 
 Share a public URL so others can open Themes without running locally. The app loads `brief/latest.json` when `reports/` is absent.

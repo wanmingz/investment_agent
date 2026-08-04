@@ -6,7 +6,6 @@ from dataclasses import dataclass
 
 import streamlit as st
 
-from investment_agent.config import Settings
 from investment_agent.llm import QuotaExhaustedError
 from investment_agent.stock_research import checkpoint as stock_checkpoint
 from investment_agent.stock_research.orchestrator import StockResearchOrchestrator
@@ -81,7 +80,9 @@ def maybe_run_stock_research(state: StockSidebarState) -> None:
         st.error("Enter a ticker.")
         st.stop()
     try:
-        settings = Settings.from_env()
+        from investment_agent.streamlit_llm import settings_from_sidebar
+
+        settings = settings_from_sidebar(market_region="global")
     except ValueError as e:
         st.error(str(e))
         st.stop()
@@ -125,7 +126,10 @@ def render_stock_page_body() -> None:
     )
     memo = st.session_state.get("memo")
     if memo is None:
-        st.info("Enter a ticker and click **Run stock research**, or load a saved memo.")
+        st.info(
+            "Enter a ticker and click **Run stock research**, or load a saved memo. "
+            "Friends: open **Your LLM API key** in the sidebar to use your own key."
+        )
         return
     render_memo(memo)
     st.divider()
@@ -135,6 +139,11 @@ def render_stock_page_body() -> None:
 
 def standalone_main() -> None:
     """Full-page entry used by ``stock_research_app.py``."""
+    from investment_agent.streamlit_llm import (
+        render_active_llm_caption,
+        render_visitor_llm_sidebar,
+    )
+
     st.set_page_config(
         page_title="Single-Stock Research",
         page_icon="🔎",
@@ -145,10 +154,7 @@ def standalone_main() -> None:
         st.header("Controls")
         state = render_stock_sidebar()
         st.divider()
-        try:
-            s = Settings.from_env()
-            st.text(f"Model: {s.provider}\n{s.model}")
-        except ValueError as e:
-            st.warning(str(e))
+        render_visitor_llm_sidebar()
+        render_active_llm_caption()
     maybe_run_stock_research(state)
     render_stock_page_body()
