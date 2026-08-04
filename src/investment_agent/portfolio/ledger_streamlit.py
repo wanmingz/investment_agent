@@ -79,16 +79,26 @@ def _render_published_portfolio(
     brief: InvestmentBrief | None,
     published,
 ) -> None:
-    """Read-only Cloud / friend view from brief/portfolio_latest.json."""
-    summary = published.summary
-    st.markdown("##### My portfolio (published snapshot)")
+    """Read-only Cloud / friend view: published trades + live yfinance mark-to-market."""
+    from investment_agent.portfolio.publish import live_summary_from_published
+
+    st.markdown("##### My portfolio (shared trades · live mark-to-market)")
     st.info(
-        f"Read-only snapshot published **{published.published_at or '—'}**. "
-        "Figures are frozen at publish time (not live mark-to-market). "
-        "Owner refreshes with `invest-portfolio publish` then git push."
+        f"Trade list published **{published.published_at or '—'}** (read-only). "
+        "Prices and P&L are marked **live** via yfinance when you open this page."
     )
-    if summary.first_trade_date is None:
-        st.caption("_Published snapshot has no trades._")
+
+    summary = None
+    live_db = None
+    try:
+        with st.spinner("Marking positions to market…"):
+            summary, live_db = live_summary_from_published(published)
+    except Exception as e:  # noqa: BLE001
+        st.warning(f"Live mark-to-market failed ({e}). Falling back to published snapshot.")
+        summary = published.summary
+
+    if summary is None or summary.first_trade_date is None:
+        st.caption("_No trades in published portfolio._")
         return
 
     m1, m2, m3, m4, m5 = st.columns(5)
@@ -106,9 +116,10 @@ def _render_published_portfolio(
 
     cash_bal = snapshot_cash_balance(summary.snapshot)
     cash_line = f"Cash ${cash_bal:,.2f} · " if cash_bal > 0.01 else ""
+    as_of = summary.as_of.isoformat() if summary.as_of else "—"
     if summary.spy_return_pct is not None and summary.first_trade_date is not None:
         st.caption(
-            f"{cash_line}"
+            f"As of {as_of} · {cash_line}"
             f"Holdings ${summary.snapshot.total_market_value:,.2f} · "
             f"Realized ${summary.realized_pnl:,.2f} · "
             f"Unrealized ${summary.snapshot.total_unrealized_pnl:,.2f} · "
@@ -116,11 +127,17 @@ def _render_published_portfolio(
         )
     else:
         st.caption(
-            f"{cash_line}"
+            f"As of {as_of} · {cash_line}"
             f"Holdings ${summary.snapshot.total_market_value:,.2f} · "
             f"Realized ${summary.realized_pnl:,.2f} · "
             f"Unrealized ${summary.snapshot.total_unrealized_pnl:,.2f}"
         )
+
+    if live_db is not None:
+        try:
+            render_performance_compare(path=live_db)
+        except Exception:  # noqa: BLE001
+            st.caption("_Performance chart unavailable._")
 
     st.markdown("#### Open positions")
     if summary.snapshot.positions:
@@ -143,10 +160,10 @@ def _render_published_portfolio(
             st.dataframe(rows, use_container_width=True, hide_index=True)
         with col_chart:
             st.markdown("##### Allocation")
-            st.caption("By market value (at publish)")
+            st.caption("By live market value")
             render_position_pie(summary.snapshot.positions, cash=cash_bal)
     else:
-        st.caption("_No open positions in snapshot._")
+        st.caption("_No open positions._")
 
     if brief is not None and summary.snapshot.positions:
         _render_theme_alignment(brief, summary.snapshot)

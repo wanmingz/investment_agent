@@ -63,11 +63,12 @@ def render_position_pie(positions, *, cash: float = 0.0) -> None:
     st.altair_chart(chart, use_container_width=True)
 
 
-def render_performance_compare(*, ledger: LedgerKind = "manual") -> None:
+def render_performance_compare(
+    *,
+    ledger: LedgerKind = "manual",
+    path=None,
+) -> None:
     """Line chart: portfolio vs SPY, chain-linked from first investment day in range."""
-    import altair as alt
-    import pandas as pd
-
     st.markdown("#### Performance vs S&P 500")
     st.caption(
         f"Chain-linked index (100 = first day with holdings, on or after "
@@ -75,7 +76,11 @@ def render_performance_compare(*, ledger: LedgerKind = "manual") -> None:
     )
 
     with st.spinner("Loading performance history…"):
-        points = compare_performance_series(from_date=DEFAULT_COMPARE_START, ledger=ledger)
+        points = compare_performance_series(
+            from_date=DEFAULT_COMPARE_START,
+            ledger=ledger,
+            path=path,
+        )
 
     if not points:
         st.caption("_Benchmark data unavailable._")

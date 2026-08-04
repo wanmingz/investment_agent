@@ -132,7 +132,7 @@ invest-portfolio publish          # write brief/portfolio_latest.json for Stream
 
 Or use the **Portfolio** tab in `invest-dashboard` (**My portfolio** to record trades; **Publish portfolio snapshot** button when you have trades).
 
-**Friends on Streamlit Cloud:** `reports/portfolio.db` is not in git. After `invest-portfolio publish` and push, Cloud shows a **read-only** snapshot from `brief/portfolio_latest.json` (no trade form). Re-publish whenever holdings change.
+**Friends on Streamlit Cloud:** `reports/portfolio.db` is not in git. After `invest-portfolio publish` and push, Cloud loads trades from `brief/portfolio_latest.json` and **mark-to-markets live** with yfinance (read-only; no trade form). Re-publish when you add/change trades.
 
 Weighted average cost; sells exceeding holdings are rejected. Back up `reports/portfolio.db` before upgrades.
 

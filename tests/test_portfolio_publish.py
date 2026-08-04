@@ -35,8 +35,6 @@ def test_publish_and_load_roundtrip(tmp_path, monkeypatch) -> None:
         ledger="manual",
     )
 
-    # Avoid live yfinance in unit test — summarize_performance needs network.
-    # Patch summarize_performance to return a minimal summary from ledger positions.
     from investment_agent.portfolio.models import (
         PerformanceSummary,
         PortfolioSnapshot,
@@ -89,12 +87,28 @@ def test_publish_and_load_roundtrip(tmp_path, monkeypatch) -> None:
     assert loaded.published_at.startswith("2026-08-04")
     assert len(loaded.trades) == 1
     assert loaded.trades[0].symbol == "AAPL"
+    assert loaded.summary is not None
     assert loaded.summary.total_pnl == 100.0
-    assert should_use_published(ledger="manual") is False  # local has trades
+    assert should_use_published(ledger="manual") is False
 
-    # Empty local ledger → published path used
     monkeypatch.setenv("PORTFOLIO_DB_PATH", str(tmp_path / "empty.db"))
     assert should_use_published(ledger="manual") is True
+
+    from investment_agent.portfolio.publish import (
+        live_summary_from_published,
+        materialize_published_db,
+    )
+
+    mat = tmp_path / "mat.db"
+    materialize_published_db(loaded, path=mat)
+    assert mat.is_file()
+    monkeypatch.setattr(
+        "investment_agent.portfolio.publish.summarize_performance",
+        lambda **kwargs: summary,
+    )
+    live, path = live_summary_from_published(loaded, db_path=mat)
+    assert live.total_pnl == 100.0
+    assert path == mat
 
 
 def test_publish_requires_trades(tmp_path, monkeypatch) -> None:
