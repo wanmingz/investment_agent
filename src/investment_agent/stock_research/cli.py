@@ -114,11 +114,12 @@ def main(argv: list[str] | None = None) -> None:
 
 
 def dashboard_main() -> None:
-    """Launch stock research Streamlit UI (`invest-stock-dashboard`)."""
+    """Launch unified Streamlit UI (`invest-stock-dashboard` → same as invest-dashboard Stock view)."""
     import subprocess
     from pathlib import Path
 
-    app = Path(__file__).resolve().parents[3] / "stock_research_app.py"
+    # Prefer unified app; Stock is available under View → Stock.
+    app = Path(__file__).resolve().parents[3] / "streamlit_app.py"
     subprocess.run(
         [sys.executable, "-m", "streamlit", "run", str(app), *sys.argv[1:]],
         check=True,

@@ -38,7 +38,7 @@ orchestrator                   →  3 × Agent.analyze()  →  brief_assembler.a
 | Persist brief JSON | `storage.py` |
 | GitHub-readable brief (Markdown + JSON for Streamlit Cloud) | `report_markdown.py`, `brief/` |
 | Portfolio ledger / alignment UI | `portfolio/manual/`, `portfolio/model/`, `portfolio/compare/`, `streamlit_app.py` |
-| Single-stock research (independent UI) | `stock_research/`, `stock_research_app.py` |
+| Single-stock research | `stock_research/`, View → **Stock** in `streamlit_app.py` (`stock_research/streamlit_ui.py`) |
 | Design notes (not runtime) | `research/` |
 
 ## Theme stages
@@ -62,9 +62,8 @@ cp .env.example .env   # set GEMINI_API_KEY or OPENAI_API_KEY
 
 pytest tests/          # run before finishing substantive changes
 python main.py         # or: invest-themes
-streamlit run streamlit_app.py   # invest-dashboard
+streamlit run streamlit_app.py   # invest-dashboard (Themes · Portfolio · Stock)
 invest-stock AAPL                # single-stock memo CLI
-streamlit run stock_research_app.py   # invest-stock-dashboard
 ```
 
 After changing `config.py` defaults or `RAG_*` env vars: **restart** Streamlit/CLI. If Narrative prompt is too large or context looks stale, **clear checkpoint** (`reports/cache/` or Streamlit UI).
@@ -100,7 +99,7 @@ Two SQLite ledgers exist in code (`manual` / `model`), but **Streamlit trades ar
 
 ## Stock research subsystem (separate from theme pipeline)
 
-Independent package `stock_research/`: Business / Financial / Valuation / Expectation (disjoint inputs from `bundle.py`) then Reasoning → `InvestmentMemo`. **Do not** fold into `ThemeOrchestrator` or `streamlit_app.py`. UI: `stock_research_app.py`. Checkpoint: `reports/cache/stock_research/{TICKER}/`.
+Independent package `stock_research/`: Business / Financial / Valuation / Expectation (disjoint inputs from `bundle.py`) then Reasoning → `InvestmentMemo`. **Do not** fold into `ThemeOrchestrator`. Unified UI: `streamlit_app.py` → View → **Stock** (`stock_research/streamlit_ui.py`). Optional standalone: `stock_research_app.py`. Checkpoint: `reports/cache/stock_research/{TICKER}/`.
 
 ## CI
 

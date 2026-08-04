@@ -65,16 +65,15 @@ python main.py --json
 python main.py --region US
 python main.py -o reports/latest.json
 
-streamlit run streamlit_app.py   # or: invest-dashboard
-invest-stock AAPL                # single-stock research memo
-streamlit run stock_research_app.py   # or: invest-stock-dashboard
+streamlit run streamlit_app.py   # or: invest-dashboard (Themes · Portfolio · Stock)
+invest-stock AAPL                # single-stock research memo CLI
 ```
 
-**Streamlit (themes):** Run analysis · Load last / published brief · Resume / Clear checkpoint · Agent tabs · Recommended themes (one card per sector, sorted by score). Switch **View → Portfolio** for **My portfolio**, **Model portfolio**, and **Compare** (see [Portfolio architecture](#portfolio-architecture)).
+**Streamlit:** sidebar **View** → **Themes** | **Portfolio** | **Stock**. Themes: Run analysis · Load brief · agent tabs. Portfolio: My / Model / Compare. Stock: ticker · Run stock research · investment memo (see [Single-stock research](#single-stock-research-in-the-same-app)).
 
-### Single-stock research (separate app)
+### Single-stock research (in the same app)
 
-Independent of the theme dashboard. Four domain agents (Business, Financial, Valuation, Expectation) plus Reasoning produce an **Investment Memo** (`buy` / `hold` / `sell` / `watch`). `bundle.py` fetches once and slices **disjoint** context blocks; domain agents do not see each other’s reports.
+Same dashboard as themes (`streamlit run streamlit_app.py` → **View → Stock**). Four domain agents (Business, Financial, Valuation, Expectation) plus Reasoning produce an **Investment Memo** (`buy` / `hold` / `sell` / `watch`). `bundle.py` fetches once and slices **disjoint** context blocks; domain agents do not see each other’s reports.
 
 | Agent | Input data (from `bundle.py` context block) |
 |-------|---------------------------------------------|
@@ -87,10 +86,11 @@ Independent of the theme dashboard. Four domain agents (Business, Financial, Val
 ```bash
 invest-stock AAPL
 invest-stock AAPL --load          # reload last saved memo
-invest-stock-dashboard            # streamlit run stock_research_app.py
+invest-dashboard                  # unified UI (use View → Stock)
+# optional standalone: streamlit run stock_research_app.py
 ```
 
-Memos save under `reports/stock_research/{TICKER}_latest.json`. Checkpoint: `reports/cache/stock_research/{TICKER}/`. On Streamlit Community Cloud, create a **second** app with Main file `stock_research_app.py` (same repo/secrets).
+Memos save under `reports/stock_research/{TICKER}_latest.json`. Checkpoint: `reports/cache/stock_research/{TICKER}/`.
 
 ### Deploy dashboard (Streamlit Community Cloud)
 
@@ -470,8 +470,7 @@ Errors: `QuotaExhaustedError` (429), prompt-too-large (413) — see `llm.py` hin
 
 ## Roadmap: Stock picking
 
-**Implemented:** independent **single-stock research** subsystem (`stock_research/`): Business · Financial · Valuation · Expectation → Reasoning → `InvestmentMemo` (buy/hold/sell/watch). CLI `invest-stock`, UI `stock_research_app.py` / `invest-stock-dashboard`. Separate checkpoint under `reports/cache/stock_research/`. **Not** wired into theme Regime / Narrative / Markets or `streamlit_app.py`.
-
+**Implemented:** **single-stock research** subsystem (`stock_research/`) in the **same** Streamlit app (`streamlit_app.py` → View → **Stock**): Business · Financial · Valuation · Expectation → Reasoning → `InvestmentMemo`. CLI `invest-stock`. Separate checkpoint under `reports/cache/stock_research/`. **Not** wired into theme Regime / Narrative / Markets inputs.
 Agent inputs (fetch-before-LLM via `bundle.py`):
 
 | Agent | Input |

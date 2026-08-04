@@ -1,4 +1,4 @@
-"""Investment theme dashboard — run: streamlit run streamlit_app.py"""
+"""Investment theme + portfolio + stock research dashboard — streamlit run streamlit_app.py"""
 
 from __future__ import annotations
 
@@ -55,6 +55,12 @@ from investment_agent.portfolio.compare import VIEW_LABEL as COMPARE_VIEW_LABEL
 from investment_agent.portfolio.manual import views as manual_portfolio_views
 from investment_agent.portfolio.model import views as model_portfolio_views
 from investment_agent.portfolio.compare import views as compare_portfolio_views
+from investment_agent.stock_research.streamlit_ui import (
+    ensure_memo_state,
+    maybe_run_stock_research,
+    render_stock_page_body,
+    render_stock_sidebar,
+)
 
 try:
     from investment_agent.dates import format_date_display
@@ -62,6 +68,11 @@ except ImportError:
     def format_date_display(d: date_cls | None = None) -> str:
         d = d or analysis_date()
         return d.strftime("%B %d, %Y")
+
+
+PAGE_THEMES = "Themes"
+PAGE_PORTFOLIO = "Portfolio"
+PAGE_STOCK = "Stock"
 
 
 st.set_page_config(
@@ -395,6 +406,7 @@ def _render_portfolio(brief: InvestmentBrief | None = None) -> None:
 
 def main() -> None:
     _inject_css()
+    ensure_memo_state()
 
     if "brief" not in st.session_state:
         resolved = resolve_brief_path()
@@ -406,60 +418,94 @@ def main() -> None:
         else:
             st.session_state.brief_source = None
 
+    stock_state = None
+    run_btn = False
+    resume_ckpt = checkpoint.is_resume_enabled()
+    region = "global"
+
     with st.sidebar:
         st.header("Controls")
-        page = st.radio("View", ["Themes", "Portfolio"], index=0, horizontal=True)
-        st.divider()
-        region = st.selectbox(
-            "Market region",
-            ["global", "China", "US", "Europe", "Japan"],
+        page = st.radio(
+            "View",
+            [PAGE_THEMES, PAGE_PORTFOLIO, PAGE_STOCK],
             index=0,
+            horizontal=True,
+            key="main_view",
         )
         st.divider()
-        run_btn = st.button("🚀 Run analysis", type="primary", use_container_width=True)
-        st.caption("Takes 2–4 min (~3 LLM calls). Regime · Narrative · Markets.")
-        resume_ckpt = st.checkbox(
-            "Resume from checkpoint (skip completed agents)",
-            value=checkpoint.is_resume_enabled(),
-            help="Saves progress under reports/cache/. After a 429 error, rerun to continue.",
-        )
-        cached_steps = checkpoint.list_checkpoint_steps()
-        if cached_steps:
-            st.caption(f"Checkpoint: {', '.join(cached_steps)}")
-            if st.button("Clear checkpoint", use_container_width=True):
-                checkpoint.clear_checkpoint()
-                st.rerun()
-        if DEFAULT_REPORT_PATH.is_file():
-            st.success("Cached report available")
-            if st.button("📂 Load last result", use_container_width=True):
-                loaded = load_brief(DEFAULT_REPORT_PATH)
-                if loaded is not None:
-                    st.session_state.brief = loaded
-                    st.session_state.brief_source = "cached"
-                st.rerun()
-        elif PUBLISHED_BRIEF_PATH.is_file():
-            st.info("Published brief available")
-            if st.button("📂 Load published brief", use_container_width=True):
-                loaded = load_brief(PUBLISHED_BRIEF_PATH)
-                if loaded is not None:
-                    st.session_state.brief = loaded
-                    st.session_state.brief_source = "published"
-                st.rerun()
-        source = st.session_state.get("brief_source")
-        if st.session_state.get("brief") is not None and source:
-            if source == "cached":
-                st.caption("Showing: local cache (`reports/latest.json`)")
-            elif source == "published":
-                st.caption("Showing: published brief (`brief/latest.json`)")
-            elif source == "run":
-                st.caption("Showing: this session’s run")
+
+        if page == PAGE_STOCK:
+            stock_state = render_stock_sidebar()
+        else:
+            region = st.selectbox(
+                "Market region",
+                ["global", "China", "US", "Europe", "Japan"],
+                index=0,
+                key="theme_region",
+            )
+            st.divider()
+            run_btn = st.button(
+                "🚀 Run analysis",
+                type="primary",
+                use_container_width=True,
+                key="theme_run_btn",
+            )
+            st.caption("Takes 2–4 min (~3 LLM calls). Regime · Narrative · Markets.")
+            resume_ckpt = st.checkbox(
+                "Resume from checkpoint (skip completed agents)",
+                value=checkpoint.is_resume_enabled(),
+                key="theme_resume_ckpt",
+                help="Saves progress under reports/cache/. After a 429 error, rerun to continue.",
+            )
+            cached_steps = checkpoint.list_checkpoint_steps()
+            if cached_steps:
+                st.caption(f"Checkpoint: {', '.join(cached_steps)}")
+                if st.button("Clear checkpoint", use_container_width=True, key="theme_clear_ckpt"):
+                    checkpoint.clear_checkpoint()
+                    st.rerun()
+            if DEFAULT_REPORT_PATH.is_file():
+                st.success("Cached report available")
+                if st.button("📂 Load last result", use_container_width=True, key="theme_load_last"):
+                    loaded = load_brief(DEFAULT_REPORT_PATH)
+                    if loaded is not None:
+                        st.session_state.brief = loaded
+                        st.session_state.brief_source = "cached"
+                    st.rerun()
+            elif PUBLISHED_BRIEF_PATH.is_file():
+                st.info("Published brief available")
+                if st.button(
+                    "📂 Load published brief",
+                    use_container_width=True,
+                    key="theme_load_published",
+                ):
+                    loaded = load_brief(PUBLISHED_BRIEF_PATH)
+                    if loaded is not None:
+                        st.session_state.brief = loaded
+                        st.session_state.brief_source = "published"
+                    st.rerun()
+            source = st.session_state.get("brief_source")
+            if st.session_state.get("brief") is not None and source:
+                if source == "cached":
+                    st.caption("Showing: local cache (`reports/latest.json`)")
+                elif source == "published":
+                    st.caption("Showing: published brief (`brief/latest.json`)")
+                elif source == "run":
+                    st.caption("Showing: this session’s run")
+
         st.divider()
         try:
             s = Settings.from_env()
             st.text(f"Model: {s.provider}\n{s.model}")
         except ValueError as e:
             st.warning(str(e))
-            st.caption("View-only: published brief still loads without API keys.")
+            if page != PAGE_STOCK:
+                st.caption("View-only: published brief still loads without API keys.")
+
+    if page == PAGE_STOCK:
+        assert stock_state is not None
+        maybe_run_stock_research(stock_state)
+        render_stock_page_body()
+        return
 
     if run_btn:
         try:
@@ -504,7 +550,7 @@ def main() -> None:
                     )
                 st.stop()
 
-    if page == "Portfolio":
+    if page == PAGE_PORTFOLIO:
         _render_portfolio(brief=st.session_state.get("brief"))
         return
 
