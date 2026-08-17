@@ -1,46 +1,46 @@
 {
-  "report_date": "2026-08-10",
-  "as_of_context": "As of August 10, 2026 (2026-08-10)",
-  "executive_summary": "The current global macro environment is characterized by a VIX proxy of 15.42, indicating moderate volatility, with a 20-day change of -6.5%, suggesting a slight decrease in risk appetite. Sector rotation shows Cloud and Energy outperforming the SPY benchmark, while Financials, Healthcare, and Industrials are near their 52-week highs. Headline tone: neutral. Global financial news Top themes: Tech, Cloud.",
-  "regime_view": "The current global macro environment is characterized by a VIX proxy of 15.42, indicating moderate volatility, with a 20-day change of -6.5%, suggesting a slight decrease in risk appetite. Sector rotation shows Cloud and Energy outperforming the SPY benchmark, while Financials, Healthcare, and Industrials are near their 52-week highs. Dominant regime: reflation. Cloud momentum Financials recovery Healthcare growth",
-  "narrative_view": "Global financial news",
-  "markets_fundamentals_view": "The current market landscape is characterized by strong momentum in the cloud sector, with a 20-day return of +11.7% and outperforming the SPY by +9.3pp. Other sectors such as financials, healthcare, and industrials are also near their 52-week highs, indicating a broad-based rally. The valuation metrics show a mixed picture, with the cloud sector trading at a premium with a trailing P/E of 34.9, while the energy sector is relatively cheaper with a trailing P/E of 19.4.",
-  "markets_vol_view": "The volatility regime is currently low, with the VIX proxy at 15.42 and a 20-day change of -6.5%. The tech sector has the highest 20-day annualized volatility at 34.9%, followed by the AI sector at 36.8%. The cloud sector has a 20-day annualized volatility of 30.5%, which is relatively high compared to other sectors such as financials and healthcare. This suggests that the market is pricing in a relatively low level of risk, but with some pockets of volatility in the tech and cloud sectors.",
+  "report_date": "2026-08-17",
+  "as_of_context": "As of August 17, 2026 (2026-08-17)",
+  "executive_summary": "The current macro environment is characterized by declining volatility, with the VIX proxy at 14.25 and a 20-day change of -23.6%. Sector rotation is led by Cloud and Tech, with 20-day returns of +21.5% and +8.2%, respectively, outperforming the SPY benchmark. The global economy is experiencing a mix of strong momentum in certain sectors and near 52-week highs in others, such as Energy, Financials, Healthcare, and Industrials. Headline tone: neutral. Global financial markets and technological advancements Top themes: Cloud, AI.",
+  "regime_view": "The current macro environment is characterized by declining volatility, with the VIX proxy at 14.25 and a 20-day change of -23.6%. Sector rotation is led by Cloud and Tech, with 20-day returns of +21.5% and +8.2%, respectively, outperforming the SPY benchmark. The global economy is experiencing a mix of strong momentum in certain sectors and near 52-week highs in others, such as Energy, Financials, Healthcare, and Industrials. Dominant regime: reflation. Cloud and Tech sector outperformance Energy and Financials near 52-week highs AI and Healthcare momentum",
+  "narrative_view": "Global financial markets and technological advancements",
+  "markets_fundamentals_view": "The current market is characterized by strong momentum in tech and cloud sectors, with 20-day returns of +8.2% and +21.5%, respectively. Energy and industrials are also near their 52-week highs, indicating a broad-based rally. The valuation metrics show a mixed picture, with some sectors like tech and cloud trading at higher P/E multiples, while others like financials and utilities are relatively cheaper. The overall market, as represented by the SPY, is trading at a P/E of 26.2 and a P/B of 1.81.",
+  "markets_vol_view": "The volatility regime is currently low, with the VIX proxy at 14.25, down 23.6% over the past 20 days. The sector-level volatility also reflects this trend, with tech and cloud exhibiting higher volatility, while financials and healthcare are relatively calmer. The low volatility environment suggests that investors are currently risk-on, and the market is poised for further gains. However, the high volatility in tech and cloud also indicates that these sectors are more prone to sharp movements, and investors should be cautious of potential pullbacks.",
   "narrative_citations": [
     {
-      "id": "tt--8394729631338156510",
-      "title": "Roth IRA Earnings: Do They Affect Your Income?",
-      "source": "investopedia.com",
-      "url": "",
-      "published_at": "1786303253000"
-    },
-    {
-      "id": "tt--7439146680090359111",
-      "title": "A look at Chinese state-owned investment bank CICC",
-      "source": "techmeme.com",
-      "url": "",
-      "published_at": "1786304400000"
-    },
-    {
-      "id": "tt--1270873475442560503",
-      "title": "McKinsey CFO Has a Warning on AI Costs: CFO Briefing",
+      "id": "tt--5447080629722647222",
+      "title": "Global Tightening Wave Puts Pressure on Bonds",
       "source": "bloomberg.com",
-      "url": "",
-      "published_at": "1786305601000"
+      "url": "https://www.bloomberg.com",
+      "published_at": "2026-08-17"
     },
     {
-      "id": "tt--2877352032665493584",
-      "title": "Embattled hedge fund Situational Awareness invests $400M in chip startup Source Foundry",
-      "source": "techcrunch.com",
-      "url": "",
-      "published_at": "1786307717000"
+      "id": "tt--420782005104360075",
+      "title": "Indian Lenders Set Record With $8 Billion in Dollar Bond Sales",
+      "source": "bloomberg.com",
+      "url": "https://www.bloomberg.com",
+      "published_at": "2026-08-17"
     },
     {
-      "id": "tt--2195762070149939191",
-      "title": "Senate moves closer to vote on sweeping U.S. crypto regulation",
+      "id": "tt-2882857229140349363",
+      "title": "FirstFT: Dimon warns UK against higher bank taxes",
+      "source": "ft.com",
+      "url": "https://www.ft.com",
+      "published_at": "2026-08-17"
+    },
+    {
+      "id": "tt-886421799079437454",
+      "title": "Yen edges higher as traders push back Fed rate hike bets",
       "source": "seekingalpha.com",
-      "url": "",
-      "published_at": "1786304240000"
+      "url": "https://seekingalpha.com",
+      "published_at": "2026-08-17"
+    },
+    {
+      "id": "tt--2794825204909043537",
+      "title": "AI in Advanced Semiconductor Packaging: Why Engineers Need New Skills for Next‑Generation Chips",
+      "source": "ieee.org",
+      "url": "https://ieee.org",
+      "published_at": "2026-08-17"
     }
   ],
   "data_sources": [
@@ -53,66 +53,100 @@
     "Data plane: fundamentals:10 symbols; finnhub: skipped (no FINNHUB_API_KEY); tickertick:25 articles (q=T:curated)"
   ],
   "fundamentals_notes": [
-    "AI (AIQ) 20d -0.1%",
-    "Benchmark (SPY) 20d +2.4%",
-    "Cloud (SKYY) 20d +11.7%",
-    "Consumer (XLY) 20d +2.2%",
-    "Energy (XLE) 20d +4.4%",
+    "AI (AIQ) 20d +5.0%",
+    "Benchmark (SPY) 20d +4.4%",
+    "Cloud (SKYY) 20d +21.5%",
+    "Consumer (XLY) 20d +2.4%",
+    "Energy (XLE) 20d +7.3%",
     "Financials (XLF) 20d +3.4%",
-    "Cloud: strong 20d momentum (+11.7%)",
-    "Cloud: near 52-week high (+0.0% vs high)",
-    "Cloud: outperforming SPY 20d by +9.3pp",
-    "Financials: near 52-week high (-0.7% vs high)"
+    "AI: strong 20d momentum (+5.0%)",
+    "Cloud: strong 20d momentum (+21.5%)",
+    "Cloud: outperforming SPY 20d by +17.0pp",
+    "Energy: strong 20d momentum (+7.3%)"
   ],
   "themes": [
     {
-      "name": "Tech",
-      "subtitle": "High volatility in tech sector",
-      "thesis": "The tech sector will continue to experience high volatility due to its high growth rates and intense competition. The underperformance of Tech stocks, with a 20-day return of +1.2% and underperforming the SPY by -1.2pp, suggests a potential reversal in the sector driven by increasing competition and regulatory scrutiny.",
-      "stage": "mid",
-      "stage_label": "Mid",
-      "consensus_score": 1.0,
-      "investability_score": 0.7,
+      "name": "Cloud",
+      "subtitle": "Increasing adoption of cloud services",
+      "thesis": "The cloud sector will continue to grow as more businesses adopt cloud services, driven by the need for flexibility, scalability, and cost savings. The cloud sector will continue to exhibit high volatility as investors adjust their growth expectations and valuations.",
+      "stage": "early_mid",
+      "stage_label": "Early-Mid",
+      "consensus_score": 0.6666666666666666,
+      "investability_score": 0.8666666666666667,
       "agent_stages": {
-        "regime": "late",
-        "narrative": "early_mid",
-        "markets": "mid"
+        "regime": "mid",
+        "markets": "early_mid"
       },
       "contributing_agents": [
         "markets",
-        "narrative",
         "regime"
       ],
       "primary_agent": "markets",
-      "synthesis": "The theme is fully priced in macro terms, with reversal risk dominant as the sector faces increasing competition and regulatory scrutiny. AI news is emerging, with various developments",
+      "synthesis": "The theme is in expansion, with earnings and policy confirming the narrative, and moderate crowding, as evidenced by the strong 20-day return and outperformance of the benchmark. The cloud sector is still in the early stages of growth, with plenty of room for expansion.",
       "key_drivers": [
-        "competition",
-        "regulatory scrutiny",
-        "AI adoption",
-        "Technological advancements",
-        "innovation in tech",
-        "competition in tech market"
+        "digital transformation",
+        "remote work",
+        "increasing demand for cloud services",
+        "expansion into new markets",
+        "growth expectations",
+        "valuation adjustments"
       ],
       "risks": [
         "regulatory risks",
-        "technological disruption",
-        "AI costs",
-        "disruption risks"
+        "competition",
+        "competition from established players",
+        "security concerns"
       ],
       "tickers_or_sectors": [
-        "XLK",
-        "AAPL",
-        "GOOGL",
-        "Technology",
-        "AI"
+        "SKYY",
+        "MSFT",
+        "AMZN",
+        "GOOGL"
       ],
       "key_drivers_sourced": [],
       "risks_sourced": []
     },
     {
-      "name": "Cloud",
+      "name": "AI",
+      "subtitle": "High volatility in AI sector driven by growth expectations and regulatory risks",
+      "thesis": "The AI sector will continue to exhibit high volatility as investors adjust their growth expectations and valuations, and regulatory risks evolve. The strong 20-day momentum of +5.0% in AI, outperforming the SPY benchmark by +0.6pp, suggests a continued shift towards AI-driven technologies, driven by increasing demand for automation and digital transformation.",
+      "stage": "early_mid",
+      "stage_label": "Early-Mid",
+      "consensus_score": 0.6666666666666666,
+      "investability_score": 0.8500000000000001,
+      "agent_stages": {
+        "regime": "mid",
+        "markets": "early_mid"
+      },
+      "contributing_agents": [
+        "markets",
+        "regime"
+      ],
+      "primary_agent": "markets",
+      "synthesis": "The theme is in expansion, with earnings and policy confirming the narrative, and moderate crowding, as evidenced by the strong 20-day return and outperformance of the benchmark. The AI sector is still in the early stages of growth, with high expectations and valuations leading to increased volatility.",
+      "key_drivers": [
+        "automation",
+        "digital transformation",
+        "growth expectations",
+        "regulatory risks"
+      ],
+      "risks": [
+        "regulatory risks",
+        "competition",
+        "competition from established players"
+      ],
+      "tickers_or_sectors": [
+        "AIQ",
+        "GOOGL",
+        "MSFT"
+      ],
+      "key_drivers_sourced": [],
+      "risks_sourced": []
+    },
+    {
+      "name": "Tech",
       "subtitle": "",
-      "thesis": "The strong 20-day momentum of Cloud stocks, with a return of +11.7% and outperforming the SPY by +9.3pp, suggests a continued growth trajectory driven by increasing demand for cloud services and digital transformation. The cloud sector will continue to outperform the broader market due to its strong momentum and growth prospects.",
+      "thesis": "The strong 20-day momentum of +8.2% in Tech, outperforming the SPY benchmark by +3.8pp, suggests a continued shift towards tech-driven growth, driven by increasing demand for digital transformation and innovation. The tech sector will continue to outperform the broader market driven by strong earnings growth and increasing demand for tech products and services.",
       "stage": "mid",
       "stage_label": "Mid",
       "consensus_score": 0.6666666666666666,
@@ -126,60 +160,25 @@
         "regime"
       ],
       "primary_agent": "regime",
-      "synthesis": "The theme is in expansion, with earnings and policy confirming the growth narrative, and moderate crowding as evidenced by the near 52-week high. The cloud sector is currently near its 52-week high and has outperformed the SPY by +9.3pp over the past 20 days.",
+      "synthesis": "The theme is in expansion, with earnings and policy confirming the narrative, and moderate crowding, as evidenced by the strong 20-day return and outperformance of the benchmark. The tech sector has already shown strong momentum, but there is still room for further growth.",
       "key_drivers": [
         "digital transformation",
-        "cloud adoption",
-        "strong demand for cloud services",
-        "innovation in cloud technology",
-        "competition in cloud market"
+        "innovation",
+        "earnings growth",
+        "demand for tech products",
+        "low volatility",
+        "stable earnings growth"
       ],
       "risks": [
         "regulatory risks",
         "competition",
-        "intensifying competition in the cloud market",
-        "disruption risks"
+        "competition from new entrants"
       ],
       "tickers_or_sectors": [
-        "SKYY",
-        "MSFT",
-        "AMZN"
-      ],
-      "key_drivers_sourced": [],
-      "risks_sourced": []
-    },
-    {
-      "name": "Healthcare",
-      "subtitle": "",
-      "thesis": "The near 52-week high of Healthcare, with a 20-day return of +3.0% and outperforming the SPY by +0.6pp, suggests a continued growth trajectory driven by an aging population and increasing demand for healthcare services. The healthcare sector will continue to grow due to its strong fundamentals and demographic trends.",
-      "stage": "mid",
-      "stage_label": "Mid",
-      "consensus_score": 0.6666666666666666,
-      "investability_score": 0.8,
-      "agent_stages": {
-        "regime": "mid",
-        "markets": "mid_late"
-      },
-      "contributing_agents": [
-        "markets",
-        "regime"
-      ],
-      "primary_agent": "regime",
-      "synthesis": "The theme is in expansion, with earnings and policy confirming the growth narrative, and moderate crowding as evidenced by the near 52-week high. The healthcare sector is currently near its 52-week high and has a trailing P/E of 29.5, which is relatively high compared to other sectors.",
-      "key_drivers": [
-        "aging population",
-        "healthcare demand",
-        "innovation in healthcare technology"
-      ],
-      "risks": [
-        "regulatory risks",
-        "competition",
-        "reimbursement risks"
-      ],
-      "tickers_or_sectors": [
-        "XLV",
-        "JNJ",
-        "PFE"
+        "XLK",
+        "AAPL",
+        "GOOGL",
+        "MSFT"
       ],
       "key_drivers_sourced": [],
       "risks_sourced": []
@@ -187,13 +186,64 @@
     {
       "name": "Financials",
       "subtitle": "",
-      "thesis": "The near 52-week high of Financials, with a 20-day return of +3.4% and outperforming the SPY by +1.0pp, suggests a continued recovery in the sector driven by a stable interest rate environment and improving credit conditions. The financials sector will continue to perform well due to its strong fundamentals and attractive valuation.",
-      "stage": "mid_late",
-      "stage_label": "Mid-Late",
+      "thesis": "The near 52-week high in Financials, with a 20-day return of +3.4%, and the strong momentum in related sectors, suggest a continued recovery in the financials sector, driven by increasing demand for financial services and a supportive interest rate environment. Global financial markets are experiencing a tightening wave, with Indian lenders setting a record in dollar bond sales.",
+      "stage": "early_mid",
+      "stage_label": "Early-Mid",
       "consensus_score": 0.6666666666666666,
       "investability_score": 0.7,
       "agent_stages": {
-        "regime": "mid_late",
+        "regime": "early_mid",
+        "narrative": "mid"
+      },
+      "contributing_agents": [
+        "narrative",
+        "regime"
+      ],
+      "primary_agent": "regime",
+      "synthesis": "The theme is gaining traction, with early positioning and a spreading narrative, but not yet mainstream, as evidenced by the strong 20-day return and near 52-week high. The global tightening wave and record bond sales indicate a mid-stage in the financial market trends.",
+      "key_drivers": [
+        "financial services",
+        "interest rates",
+        "Global tightening wave",
+        "Record dollar bond sales"
+      ],
+      "risks": [
+        "regulatory risks",
+        "competition",
+        "Higher bank taxes"
+      ],
+      "tickers_or_sectors": [
+        "XLF",
+        "JPM",
+        "BAC",
+        "Financial sector"
+      ],
+      "key_drivers_sourced": [
+        {
+          "text": "Global tightening wave puts pressure on bonds",
+          "citation_ids": [
+            "tt--5447080629722647222"
+          ]
+        },
+        {
+          "text": "Indian lenders set record with $8 billion in dollar bond sales",
+          "citation_ids": [
+            "tt--420782005104360075"
+          ]
+        }
+      ],
+      "risks_sourced": []
+    },
+    {
+      "name": "Energy",
+      "subtitle": "",
+      "thesis": "The near 52-week high in Energy, with a 20-day return of +7.3%, and the strong momentum in related sectors, suggest a continued shift towards renewable energy sources, driven by increasing demand for sustainable energy and government policies supporting the transition. The energy sector will continue to rebound as demand for energy increases, driven by economic growth and infrastructure development.",
+      "stage": "early_mid",
+      "stage_label": "Early-Mid",
+      "consensus_score": 0.6666666666666666,
+      "investability_score": 0.6999999999999998,
+      "agent_stages": {
+        "regime": "early_mid",
         "markets": "mid_late"
       },
       "contributing_agents": [
@@ -201,130 +251,72 @@
         "regime"
       ],
       "primary_agent": "regime",
-      "synthesis": "The theme is widely recognized, with late-cycle macro positioning and crowding, and policy risk rising as interest rates stabilize. The financials sector is currently near its 52-week high and has a trailing P/E of 16.9, which is relatively cheap compared to other sectors.",
+      "synthesis": "The theme is gaining traction, with early positioning and a spreading narrative, but not yet mainstream, as evidenced by the strong 20-day return and near 52-week high. The energy sector has already shown signs of recovery, but there is still room for further growth.",
       "key_drivers": [
-        "interest rates",
-        "credit conditions",
-        "strong economic growth",
-        "low interest rates"
+        "sustainable energy",
+        "government policies",
+        "increasing demand for energy",
+        "improving economic conditions",
+        "demand and supply factors",
+        "geopolitical risks"
       ],
       "risks": [
         "regulatory risks",
-        "economic downturn",
-        "credit risks"
+        "competition",
+        "competition from renewable energy sources"
       ],
       "tickers_or_sectors": [
-        "XLF",
-        "JPM",
-        "GS"
+        "XLE",
+        "VWDRY",
+        "NEE",
+        "EXXON",
+        "CVX"
+      ],
+      "key_drivers_sourced": [],
+      "risks_sourced": []
+    },
+    {
+      "name": "Healthcare",
+      "subtitle": "",
+      "thesis": "The near 52-week high in Healthcare, with a 20-day return of +3.9%, and the strong momentum in related sectors, suggest a continued shift towards innovative healthcare solutions, driven by increasing demand for personalized medicine and digital health. The healthcare sector will continue to show resilience as demand for healthcare services remains stable, driven by an aging population and increasing healthcare needs.",
+      "stage": "early_mid",
+      "stage_label": "Early-Mid",
+      "consensus_score": 0.6666666666666666,
+      "investability_score": 0.6499999999999999,
+      "agent_stages": {
+        "regime": "early_mid",
+        "markets": "late"
+      },
+      "contributing_agents": [
+        "markets",
+        "regime"
+      ],
+      "primary_agent": "regime",
+      "synthesis": "The theme is gaining traction, with early positioning and a spreading narrative, but not yet mainstream, as evidenced by the strong 20-day return and near 52-week high. The healthcare sector has already shown signs of stability, with limited room for further growth.",
+      "key_drivers": [
+        "personalized medicine",
+        "digital health",
+        "stable demand for healthcare services",
+        "expansion into new markets"
+      ],
+      "risks": [
+        "regulatory risks",
+        "competition",
+        "competition from new entrants"
+      ],
+      "tickers_or_sectors": [
+        "XLV",
+        "JNJ",
+        "UNH",
+        "PFE"
       ],
       "key_drivers_sourced": [],
       "risks_sourced": []
     },
     {
       "name": "Industrials",
-      "subtitle": "",
-      "thesis": "The near 52-week high of Industrials, with a 20-day return of +1.8% and underperforming the SPY by -0.6pp, suggests a continued recovery in the sector driven by a stable interest rate environment and improving economic conditions. The industrials sector will continue to recover due to its strong fundamentals and improving economic conditions.",
-      "stage": "mid_late",
-      "stage_label": "Mid-Late",
-      "consensus_score": 0.6666666666666666,
-      "investability_score": 0.7,
-      "agent_stages": {
-        "regime": "mid_late",
-        "markets": "mid_late"
-      },
-      "contributing_agents": [
-        "markets",
-        "regime"
-      ],
-      "primary_agent": "regime",
-      "synthesis": "The theme is widely recognized, with late-cycle macro positioning and crowding, and policy risk rising as interest rates stabilize. The industrials sector is currently near its 52-week high and has a trailing P/E of 30.7, which is relatively high compared to other sectors.",
-      "key_drivers": [
-        "interest rates",
-        "economic conditions",
-        "strong economic growth",
-        "infrastructure spending"
-      ],
-      "risks": [
-        "regulatory risks",
-        "economic downturn",
-        "trade risks",
-        "commodity price risks"
-      ],
-      "tickers_or_sectors": [
-        "XLI",
-        "GE",
-        "CAT"
-      ],
-      "key_drivers_sourced": [],
-      "risks_sourced": []
-    },
-    {
-      "name": "Energy",
-      "subtitle": "",
-      "thesis": "The outperformance of Energy stocks, with a 20-day return of +4.4% and outperforming the SPY by +2.0pp, suggests a continued growth trajectory driven by increasing demand for renewable energy sources and decreasing dependence on fossil fuels.",
-      "stage": "early_mid",
-      "stage_label": "Early-Mid",
-      "consensus_score": 0.3333333333333333,
-      "investability_score": 0.9,
-      "agent_stages": {
-        "regime": "early_mid"
-      },
-      "contributing_agents": [
-        "regime"
-      ],
-      "primary_agent": "regime",
-      "synthesis": "The theme is in early positioning, with the narrative spreading but not yet mainstream, and tailwinds visible from increasing investment in renewable energy.",
-      "key_drivers": [
-        "renewable energy",
-        "sustainability"
-      ],
-      "risks": [
-        "regulatory risks",
-        "technological disruption"
-      ],
-      "tickers_or_sectors": [
-        "XLE",
-        "VWDRY",
-        "NEE"
-      ],
-      "key_drivers_sourced": [],
-      "risks_sourced": []
-    },
-    {
-      "name": "Regulatory Developments",
-      "subtitle": "News and updates on regulatory developments",
-      "thesis": "Regulatory changes are impacting various sectors",
-      "stage": "mid_late",
-      "stage_label": "Mid-Late",
-      "consensus_score": 0.3333333333333333,
-      "investability_score": 0.8,
-      "agent_stages": {
-        "narrative": "mid_late"
-      },
-      "contributing_agents": [
-        "narrative"
-      ],
-      "primary_agent": "narrative",
-      "synthesis": "Regulatory news is ongoing, with various developments",
-      "key_drivers": [
-        "Regulatory changes",
-        "Compliance"
-      ],
-      "risks": [
-        "Non-compliance"
-      ],
-      "tickers_or_sectors": [
-        "Finance",
-        "Technology"
-      ],
-      "key_drivers_sourced": [],
-      "risks_sourced": []
-    },
-    {
-      "name": "Low Vol Regime",
-      "subtitle": "VIX proxy at 15.42",
-      "thesis": "The current low volatility regime will continue, with the VIX proxy remaining below 20.",
+      "subtitle": "Increasing demand for industrial products and services",
+      "thesis": "The industrials sector will continue to grow as demand for industrial products and services increases, driven by economic growth and infrastructure development.",
       "stage": "mid",
       "stage_label": "Mid",
       "consensus_score": 0.3333333333333333,
@@ -336,17 +328,47 @@
         "markets"
       ],
       "primary_agent": "markets",
-      "synthesis": "The VIX proxy is currently at 15.42 and has decreased by -6.5% over the past 20 days.",
+      "synthesis": "The industrials sector has already shown signs of growth, but there is still room for further expansion.",
       "key_drivers": [
-        "low interest rates",
-        "stable economic growth"
+        "increasing demand for industrial products",
+        "expansion into new markets"
       ],
       "risks": [
-        "black swan events",
-        "geopolitical risks"
+        "competition from established players",
+        "regulatory risks"
       ],
       "tickers_or_sectors": [
-        "^VIX"
+        "XLI",
+        "GE",
+        "CAT"
+      ],
+      "key_drivers_sourced": [],
+      "risks_sourced": []
+    },
+    {
+      "name": "Technological Advancements",
+      "subtitle": "AI in semiconductor packaging",
+      "thesis": "The use of AI in advanced semiconductor packaging is driving the industry's performance.",
+      "stage": "early_mid",
+      "stage_label": "Early-Mid",
+      "consensus_score": 0.3333333333333333,
+      "investability_score": 0.6,
+      "agent_stages": {
+        "narrative": "early_mid"
+      },
+      "contributing_agents": [
+        "narrative"
+      ],
+      "primary_agent": "narrative",
+      "synthesis": "The application of AI in semiconductor packaging is still in the early mid-stage, with growing demand for new skills.",
+      "key_drivers": [
+        "AI adoption"
+      ],
+      "risks": [
+        "Skills gap"
+      ],
+      "tickers_or_sectors": [
+        "Technology sector"
       ],
       "key_drivers_sourced": [],
       "risks_sourced": []
@@ -356,13 +378,13 @@
     {
       "name": "Cloud Computing",
       "subtitle": "",
-      "thesis": "The strong 20-day momentum of Cloud stocks, with a return of +11.7% and outperforming the SPY by +9.3pp, suggests a continued growth trajectory driven by increasing demand for cloud services and digital transformation.",
+      "thesis": "The strong 20-day momentum of +21.5% in Cloud, outperforming the SPY benchmark by +17.0pp, suggests a continued shift towards cloud-based technologies, driven by increasing demand for digital transformation and remote work.",
       "stage": "mid",
-      "stage_rationale": "The theme is in expansion, with earnings and policy confirming the growth narrative, and moderate crowding as evidenced by the near 52-week high.",
+      "stage_rationale": "The theme is in expansion, with earnings and policy confirming the narrative, and moderate crowding, as evidenced by the strong 20-day return and outperformance of the benchmark.",
       "confidence": 0.8,
       "key_drivers": [
         "digital transformation",
-        "cloud adoption"
+        "remote work"
       ],
       "risks": [
         "regulatory risks",
@@ -375,61 +397,19 @@
       ]
     },
     {
-      "name": "Financials",
+      "name": "Renewable Energy",
       "subtitle": "",
-      "thesis": "The near 52-week high of Financials, with a 20-day return of +3.4% and outperforming the SPY by +1.0pp, suggests a continued recovery in the sector driven by a stable interest rate environment and improving credit conditions.",
-      "stage": "mid_late",
-      "stage_rationale": "The theme is widely recognized, with late-cycle macro positioning and crowding, and policy risk rising as interest rates stabilize.",
+      "thesis": "The near 52-week high in Energy, with a 20-day return of +7.3%, and the strong momentum in related sectors, suggest a continued shift towards renewable energy sources, driven by increasing demand for sustainable energy and government policies supporting the transition.",
+      "stage": "early_mid",
+      "stage_rationale": "The theme is gaining traction, with early positioning and a spreading narrative, but not yet mainstream, as evidenced by the strong 20-day return and near 52-week high.",
       "confidence": 0.7,
       "key_drivers": [
-        "interest rates",
-        "credit conditions"
-      ],
-      "risks": [
-        "regulatory risks",
-        "economic downturn"
-      ],
-      "tickers_or_sectors": [
-        "XLF",
-        "JPM",
-        "GS"
-      ]
-    },
-    {
-      "name": "Healthcare",
-      "subtitle": "",
-      "thesis": "The near 52-week high of Healthcare, with a 20-day return of +3.0% and outperforming the SPY by +0.6pp, suggests a continued growth trajectory driven by an aging population and increasing demand for healthcare services.",
-      "stage": "mid",
-      "stage_rationale": "The theme is in expansion, with earnings and policy confirming the growth narrative, and moderate crowding as evidenced by the near 52-week high.",
-      "confidence": 0.8,
-      "key_drivers": [
-        "aging population",
-        "healthcare demand"
+        "sustainable energy",
+        "government policies"
       ],
       "risks": [
         "regulatory risks",
         "competition"
-      ],
-      "tickers_or_sectors": [
-        "XLV",
-        "JNJ",
-        "PFE"
-      ]
-    },
-    {
-      "name": "Energy Transition",
-      "subtitle": "",
-      "thesis": "The outperformance of Energy stocks, with a 20-day return of +4.4% and outperforming the SPY by +2.0pp, suggests a continued growth trajectory driven by increasing demand for renewable energy sources and decreasing dependence on fossil fuels.",
-      "stage": "early_mid",
-      "stage_rationale": "The theme is in early positioning, with the narrative spreading but not yet mainstream, and tailwinds visible from increasing investment in renewable energy.",
-      "confidence": 0.9,
-      "key_drivers": [
-        "renewable energy",
-        "sustainability"
-      ],
-      "risks": [
-        "regulatory risks",
-        "technological disruption"
       ],
       "tickers_or_sectors": [
         "XLE",
@@ -438,19 +418,239 @@
       ]
     },
     {
-      "name": "Industrials",
+      "name": "Artificial Intelligence",
       "subtitle": "",
-      "thesis": "The near 52-week high of Industrials, with a 20-day return of +1.8% and underperforming the SPY by -0.6pp, suggests a continued recovery in the sector driven by a stable interest rate environment and improving economic conditions.",
-      "stage": "mid_late",
-      "stage_rationale": "The theme is widely recognized, with late-cycle macro positioning and crowding, and policy risk rising as interest rates stabilize.",
-      "confidence": 0.7,
+      "thesis": "The strong 20-day momentum of +5.0% in AI, outperforming the SPY benchmark by +0.6pp, suggests a continued shift towards AI-driven technologies, driven by increasing demand for automation and digital transformation.",
+      "stage": "mid",
+      "stage_rationale": "The theme is in expansion, with earnings and policy confirming the narrative, and moderate crowding, as evidenced by the strong 20-day return and outperformance of the benchmark.",
+      "confidence": 0.8,
       "key_drivers": [
-        "interest rates",
-        "economic conditions"
+        "automation",
+        "digital transformation"
       ],
       "risks": [
         "regulatory risks",
-        "economic downturn"
+        "competition"
+      ],
+      "tickers_or_sectors": [
+        "AIQ",
+        "GOOGL",
+        "MSFT"
+      ]
+    },
+    {
+      "name": "Healthcare Innovation",
+      "subtitle": "",
+      "thesis": "The near 52-week high in Healthcare, with a 20-day return of +3.9%, and the strong momentum in related sectors, suggest a continued shift towards innovative healthcare solutions, driven by increasing demand for personalized medicine and digital health.",
+      "stage": "early_mid",
+      "stage_rationale": "The theme is gaining traction, with early positioning and a spreading narrative, but not yet mainstream, as evidenced by the strong 20-day return and near 52-week high.",
+      "confidence": 0.7,
+      "key_drivers": [
+        "personalized medicine",
+        "digital health"
+      ],
+      "risks": [
+        "regulatory risks",
+        "competition"
+      ],
+      "tickers_or_sectors": [
+        "XLV",
+        "JNJ",
+        "UNH"
+      ]
+    },
+    {
+      "name": "Tech Sector Growth",
+      "subtitle": "",
+      "thesis": "The strong 20-day momentum of +8.2% in Tech, outperforming the SPY benchmark by +3.8pp, suggests a continued shift towards tech-driven growth, driven by increasing demand for digital transformation and innovation.",
+      "stage": "mid",
+      "stage_rationale": "The theme is in expansion, with earnings and policy confirming the narrative, and moderate crowding, as evidenced by the strong 20-day return and outperformance of the benchmark.",
+      "confidence": 0.8,
+      "key_drivers": [
+        "digital transformation",
+        "innovation"
+      ],
+      "risks": [
+        "regulatory risks",
+        "competition"
+      ],
+      "tickers_or_sectors": [
+        "XLK",
+        "AAPL",
+        "GOOGL"
+      ]
+    },
+    {
+      "name": "Financials Sector Recovery",
+      "subtitle": "",
+      "thesis": "The near 52-week high in Financials, with a 20-day return of +3.4%, and the strong momentum in related sectors, suggest a continued recovery in the financials sector, driven by increasing demand for financial services and a supportive interest rate environment.",
+      "stage": "early_mid",
+      "stage_rationale": "The theme is gaining traction, with early positioning and a spreading narrative, but not yet mainstream, as evidenced by the strong 20-day return and near 52-week high.",
+      "confidence": 0.7,
+      "key_drivers": [
+        "financial services",
+        "interest rates"
+      ],
+      "risks": [
+        "regulatory risks",
+        "competition"
+      ],
+      "tickers_or_sectors": [
+        "XLF",
+        "JPM",
+        "BAC"
+      ]
+    }
+  ],
+  "narrative_themes": [
+    {
+      "name": "Global Financial Trends",
+      "subtitle": "Tightening wave and record bond sales",
+      "thesis": "Global financial markets are experiencing a tightening wave, with Indian lenders setting a record in dollar bond sales.",
+      "stage": "mid",
+      "stage_rationale": "The global tightening wave and record bond sales indicate a mid-stage in the financial market trends.",
+      "confidence": 0.7,
+      "key_drivers": [
+        "Global tightening wave",
+        "Record dollar bond sales"
+      ],
+      "risks": [
+        "Higher bank taxes"
+      ],
+      "tickers_or_sectors": [
+        "Financial sector"
+      ]
+    },
+    {
+      "name": "Technological Advancements",
+      "subtitle": "AI in semiconductor packaging",
+      "thesis": "The use of AI in advanced semiconductor packaging is driving the industry's performance.",
+      "stage": "early_mid",
+      "stage_rationale": "The application of AI in semiconductor packaging is still in the early mid-stage, with growing demand for new skills.",
+      "confidence": 0.6,
+      "key_drivers": [
+        "AI adoption"
+      ],
+      "risks": [
+        "Skills gap"
+      ],
+      "tickers_or_sectors": [
+        "Technology sector"
+      ]
+    },
+    {
+      "name": "Monetary Policy",
+      "subtitle": "Fed rate hike bets",
+      "thesis": "Traders are pushing back Fed rate hike bets, affecting currency markets.",
+      "stage": "mid_late",
+      "stage_rationale": "The Fed rate hike bets are in the mid-late stage, with traders adjusting their expectations.",
+      "confidence": 0.5,
+      "key_drivers": [
+        "Fed rate hike bets"
+      ],
+      "risks": [
+        "Interest rate volatility"
+      ],
+      "tickers_or_sectors": [
+        "Financial sector"
+      ]
+    },
+    {
+      "name": "Regulatory Environment",
+      "subtitle": "Bank tax warnings",
+      "thesis": "Dimon's warning against higher bank taxes in the UK may impact the financial sector.",
+      "stage": "early",
+      "stage_rationale": "The warning against higher bank taxes is in the early stage, with potential implications for the financial sector.",
+      "confidence": 0.4,
+      "key_drivers": [
+        "Bank tax warnings"
+      ],
+      "risks": [
+        "Regulatory uncertainty"
+      ],
+      "tickers_or_sectors": [
+        "Financial sector"
+      ]
+    }
+  ],
+  "markets_themes": [
+    {
+      "name": "Tech momentum",
+      "subtitle": "Strong 20-day momentum in tech sector",
+      "thesis": "The tech sector will continue to outperform the broader market driven by strong earnings growth and increasing demand for tech products and services.",
+      "stage": "mid",
+      "stage_rationale": "The tech sector has already shown strong momentum, but there is still room for further growth.",
+      "confidence": 0.8,
+      "key_drivers": [
+        "earnings growth",
+        "demand for tech products"
+      ],
+      "risks": [
+        "regulatory risks",
+        "competition from new entrants"
+      ],
+      "tickers_or_sectors": [
+        "XLK",
+        "AAPL",
+        "MSFT"
+      ]
+    },
+    {
+      "name": "Cloud growth",
+      "subtitle": "Increasing adoption of cloud services",
+      "thesis": "The cloud sector will continue to grow as more businesses adopt cloud services, driven by the need for flexibility, scalability, and cost savings.",
+      "stage": "early_mid",
+      "stage_rationale": "The cloud sector is still in the early stages of growth, with plenty of room for expansion.",
+      "confidence": 0.9,
+      "key_drivers": [
+        "increasing demand for cloud services",
+        "expansion into new markets"
+      ],
+      "risks": [
+        "competition from established players",
+        "security concerns"
+      ],
+      "tickers_or_sectors": [
+        "SKYY",
+        "AMZN",
+        "GOOGL"
+      ]
+    },
+    {
+      "name": "Energy rebound",
+      "subtitle": "Recovery in energy sector driven by improving demand",
+      "thesis": "The energy sector will continue to rebound as demand for energy increases, driven by economic growth and infrastructure development.",
+      "stage": "mid_late",
+      "stage_rationale": "The energy sector has already shown signs of recovery, but there is still room for further growth.",
+      "confidence": 0.7,
+      "key_drivers": [
+        "increasing demand for energy",
+        "improving economic conditions"
+      ],
+      "risks": [
+        "regulatory risks",
+        "competition from renewable energy sources"
+      ],
+      "tickers_or_sectors": [
+        "XLE",
+        "EXXON",
+        "CVX"
+      ]
+    },
+    {
+      "name": "Industrials growth",
+      "subtitle": "Increasing demand for industrial products and services",
+      "thesis": "The industrials sector will continue to grow as demand for industrial products and services increases, driven by economic growth and infrastructure development.",
+      "stage": "mid",
+      "stage_rationale": "The industrials sector has already shown signs of growth, but there is still room for further expansion.",
+      "confidence": 0.8,
+      "key_drivers": [
+        "increasing demand for industrial products",
+        "expansion into new markets"
+      ],
+      "risks": [
+        "competition from established players",
+        "regulatory risks"
       ],
       "tickers_or_sectors": [
         "XLI",
@@ -459,295 +659,129 @@
       ]
     },
     {
-      "name": "Technology",
-      "subtitle": "",
-      "thesis": "The underperformance of Tech stocks, with a 20-day return of +1.2% and underperforming the SPY by -1.2pp, suggests a potential reversal in the sector driven by increasing competition and regulatory scrutiny.",
+      "name": "Healthcare resilience",
+      "subtitle": "Stable demand for healthcare services",
+      "thesis": "The healthcare sector will continue to show resilience as demand for healthcare services remains stable, driven by an aging population and increasing healthcare needs.",
       "stage": "late",
-      "stage_rationale": "The theme is fully priced in macro terms, with reversal risk dominant as the sector faces increasing competition and regulatory scrutiny.",
+      "stage_rationale": "The healthcare sector has already shown signs of stability, with limited room for further growth.",
       "confidence": 0.6,
       "key_drivers": [
-        "competition",
-        "regulatory scrutiny"
+        "stable demand for healthcare services",
+        "expansion into new markets"
       ],
       "risks": [
         "regulatory risks",
-        "technological disruption"
+        "competition from new entrants"
       ],
       "tickers_or_sectors": [
-        "XLK",
+        "XLV",
+        "JNJ",
+        "PFE"
+      ]
+    },
+    {
+      "name": "Low-vol carry in large-cap tech",
+      "subtitle": "Attractive carry in low-vol large-cap tech stocks",
+      "thesis": "Investors can generate attractive returns from low-vol large-cap tech stocks, which offer a relatively stable source of income.",
+      "stage": "mid",
+      "stage_rationale": "The low-vol environment and stable earnings growth in large-cap tech stocks make them an attractive carry play.",
+      "confidence": 0.8,
+      "key_drivers": [
+        "low volatility",
+        "stable earnings growth"
+      ],
+      "risks": [
+        "regulatory risks",
+        "competition from new entrants"
+      ],
+      "tickers_or_sectors": [
         "AAPL",
+        "MSFT",
         "GOOGL"
       ]
-    }
-  ],
-  "narrative_themes": [
-    {
-      "name": "Investment and Finance",
-      "subtitle": "News and updates on investments and finance",
-      "thesis": "Investors are looking for opportunities in various sectors",
-      "stage": "mid",
-      "stage_rationale": "Investment news is ongoing, with various developments",
-      "confidence": 0.7,
-      "key_drivers": [
-        "Investment opportunities",
-        "Financial news"
-      ],
-      "risks": [
-        "Regulatory risks"
-      ],
-      "tickers_or_sectors": [
-        "Finance",
-        "Technology"
-      ]
     },
     {
-      "name": "Technology and AI",
-      "subtitle": "News and updates on technology and AI",
-      "thesis": "AI is becoming increasingly important in various sectors",
+      "name": "Volatility in cloud sector",
+      "subtitle": "High volatility in cloud sector driven by growth expectations",
+      "thesis": "The cloud sector will continue to exhibit high volatility as investors adjust their growth expectations and valuations.",
       "stage": "early_mid",
-      "stage_rationale": "AI news is emerging, with various developments",
-      "confidence": 0.6,
+      "stage_rationale": "The cloud sector is still in the early stages of growth, with high expectations and valuations leading to increased volatility.",
+      "confidence": 0.9,
       "key_drivers": [
-        "AI adoption",
-        "Technological advancements"
+        "growth expectations",
+        "valuation adjustments"
       ],
       "risks": [
-        "AI costs"
-      ],
-      "tickers_or_sectors": [
-        "Technology",
-        "AI"
-      ]
-    },
-    {
-      "name": "Regulatory Developments",
-      "subtitle": "News and updates on regulatory developments",
-      "thesis": "Regulatory changes are impacting various sectors",
-      "stage": "mid_late",
-      "stage_rationale": "Regulatory news is ongoing, with various developments",
-      "confidence": 0.8,
-      "key_drivers": [
-        "Regulatory changes",
-        "Compliance"
-      ],
-      "risks": [
-        "Non-compliance"
-      ],
-      "tickers_or_sectors": [
-        "Finance",
-        "Technology"
-      ]
-    },
-    {
-      "name": "Crypto and Blockchain",
-      "subtitle": "News and updates on crypto and blockchain",
-      "thesis": "Crypto regulation is becoming increasingly important",
-      "stage": "late",
-      "stage_rationale": "Crypto news is emerging, with various developments",
-      "confidence": 0.5,
-      "key_drivers": [
-        "Crypto adoption",
-        "Blockchain technology"
-      ],
-      "risks": [
-        "Regulatory uncertainty"
-      ],
-      "tickers_or_sectors": [
-        "Crypto",
-        "Blockchain"
-      ]
-    }
-  ],
-  "markets_themes": [
-    {
-      "name": "Cloud Computing Boom",
-      "subtitle": "Strong momentum in cloud sector",
-      "thesis": "The cloud sector will continue to outperform the broader market due to its strong momentum and growth prospects.",
-      "stage": "mid",
-      "stage_rationale": "The cloud sector is currently near its 52-week high and has outperformed the SPY by +9.3pp over the past 20 days.",
-      "confidence": 0.8,
-      "key_drivers": [
-        "strong demand for cloud services",
-        "innovation in cloud technology"
-      ],
-      "risks": [
-        "intensifying competition in the cloud market",
+        "competition from established players",
         "regulatory risks"
       ],
       "tickers_or_sectors": [
-        "SKYY"
+        "SKYY",
+        "AMZN",
+        "GOOGL"
       ]
     },
     {
-      "name": "Financials Rebound",
-      "subtitle": "Financials sector near 52-week high",
-      "thesis": "The financials sector will continue to perform well due to its strong fundamentals and attractive valuation.",
+      "name": "Energy sector volatility",
+      "subtitle": "Volatility in energy sector driven by demand and supply factors",
+      "thesis": "The energy sector will continue to exhibit volatility as demand and supply factors drive price movements.",
       "stage": "mid_late",
-      "stage_rationale": "The financials sector is currently near its 52-week high and has a trailing P/E of 16.9, which is relatively cheap compared to other sectors.",
+      "stage_rationale": "The energy sector is subject to various demand and supply factors, leading to increased volatility.",
       "confidence": 0.7,
       "key_drivers": [
-        "strong economic growth",
-        "low interest rates"
-      ],
-      "risks": [
-        "regulatory risks",
-        "credit risks"
-      ],
-      "tickers_or_sectors": [
-        "XLF"
-      ]
-    },
-    {
-      "name": "Healthcare Growth",
-      "subtitle": "Healthcare sector near 52-week high",
-      "thesis": "The healthcare sector will continue to grow due to its strong fundamentals and demographic trends.",
-      "stage": "mid_late",
-      "stage_rationale": "The healthcare sector is currently near its 52-week high and has a trailing P/E of 29.5, which is relatively high compared to other sectors.",
-      "confidence": 0.8,
-      "key_drivers": [
-        "aging population",
-        "innovation in healthcare technology"
-      ],
-      "risks": [
-        "regulatory risks",
-        "reimbursement risks"
-      ],
-      "tickers_or_sectors": [
-        "XLV"
-      ]
-    },
-    {
-      "name": "Industrials Recovery",
-      "subtitle": "Industrials sector near 52-week high",
-      "thesis": "The industrials sector will continue to recover due to its strong fundamentals and improving economic conditions.",
-      "stage": "mid_late",
-      "stage_rationale": "The industrials sector is currently near its 52-week high and has a trailing P/E of 30.7, which is relatively high compared to other sectors.",
-      "confidence": 0.7,
-      "key_drivers": [
-        "strong economic growth",
-        "infrastructure spending"
-      ],
-      "risks": [
-        "trade risks",
-        "commodity price risks"
-      ],
-      "tickers_or_sectors": [
-        "XLI"
-      ]
-    },
-    {
-      "name": "Tech Sector Volatility",
-      "subtitle": "High volatility in tech sector",
-      "thesis": "The tech sector will continue to experience high volatility due to its high growth rates and intense competition.",
-      "stage": "mid",
-      "stage_rationale": "The tech sector has a 20-day annualized volatility of 34.9%, which is relatively high compared to other sectors.",
-      "confidence": 0.8,
-      "key_drivers": [
-        "innovation in tech",
-        "competition in tech market"
-      ],
-      "risks": [
-        "regulatory risks",
-        "disruption risks"
-      ],
-      "tickers_or_sectors": [
-        "XLK"
-      ]
-    },
-    {
-      "name": "Low Vol Regime",
-      "subtitle": "VIX proxy at 15.42",
-      "thesis": "The current low volatility regime will continue, with the VIX proxy remaining below 20.",
-      "stage": "mid",
-      "stage_rationale": "The VIX proxy is currently at 15.42 and has decreased by -6.5% over the past 20 days.",
-      "confidence": 0.8,
-      "key_drivers": [
-        "low interest rates",
-        "stable economic growth"
-      ],
-      "risks": [
-        "black swan events",
+        "demand and supply factors",
         "geopolitical risks"
       ],
+      "risks": [
+        "regulatory risks",
+        "competition from renewable energy sources"
+      ],
       "tickers_or_sectors": [
-        "^VIX"
+        "XLE",
+        "EXXON",
+        "CVX"
       ]
     },
     {
-      "name": "Tech Volatility",
-      "subtitle": "High volatility in tech sector",
-      "thesis": "The tech sector will continue to experience high volatility due to its high growth rates and intense competition.",
-      "stage": "mid",
-      "stage_rationale": "The tech sector has a 20-day annualized volatility of 34.9%, which is relatively high compared to other sectors.",
-      "confidence": 0.8,
+      "name": "Defensive sector volatility",
+      "subtitle": "Low volatility in defensive sectors like utilities and consumer staples",
+      "thesis": "Defensive sectors like utilities and consumer staples will continue to exhibit low volatility as investors seek stable sources of income.",
+      "stage": "late",
+      "stage_rationale": "Defensive sectors have already shown signs of stability, with limited room for further growth.",
+      "confidence": 0.6,
       "key_drivers": [
-        "innovation in tech",
-        "competition in tech market"
+        "stable demand",
+        "low volatility"
       ],
       "risks": [
         "regulatory risks",
-        "disruption risks"
-      ],
-      "tickers_or_sectors": [
-        "XLK"
-      ]
-    },
-    {
-      "name": "Cloud Volatility",
-      "subtitle": "High volatility in cloud sector",
-      "thesis": "The cloud sector will continue to experience high volatility due to its high growth rates and intense competition.",
-      "stage": "mid",
-      "stage_rationale": "The cloud sector has a 20-day annualized volatility of 30.5%, which is relatively high compared to other sectors.",
-      "confidence": 0.8,
-      "key_drivers": [
-        "innovation in cloud technology",
-        "competition in cloud market"
-      ],
-      "risks": [
-        "regulatory risks",
-        "disruption risks"
-      ],
-      "tickers_or_sectors": [
-        "SKYY"
-      ]
-    },
-    {
-      "name": "AI Volatility",
-      "subtitle": "High volatility in AI sector",
-      "thesis": "The AI sector will continue to experience high volatility due to its high growth rates and intense competition.",
-      "stage": "mid",
-      "stage_rationale": "The AI sector has a 20-day annualized volatility of 36.8%, which is relatively high compared to other sectors.",
-      "confidence": 0.8,
-      "key_drivers": [
-        "innovation in AI technology",
-        "competition in AI market"
-      ],
-      "risks": [
-        "regulatory risks",
-        "disruption risks"
-      ],
-      "tickers_or_sectors": [
-        "AIQ"
-      ]
-    },
-    {
-      "name": "Defensive Strategy",
-      "subtitle": "Investing in low-volatility sectors",
-      "thesis": "Investors will continue to seek low-volatility sectors such as utilities and consumer staples as a defensive strategy.",
-      "stage": "mid_late",
-      "stage_rationale": "The utilities sector has a 20-day annualized volatility of 17.3%, which is relatively low compared to other sectors.",
-      "confidence": 0.7,
-      "key_drivers": [
-        "low interest rates",
-        "stable economic growth"
-      ],
-      "risks": [
-        "regulatory risks",
-        "commodity price risks"
+        "competition from new entrants"
       ],
       "tickers_or_sectors": [
         "XLU",
-        "XLP"
+        "PG",
+        "KO"
+      ]
+    },
+    {
+      "name": "AI sector volatility",
+      "subtitle": "High volatility in AI sector driven by growth expectations and regulatory risks",
+      "thesis": "The AI sector will continue to exhibit high volatility as investors adjust their growth expectations and valuations, and regulatory risks evolve.",
+      "stage": "early_mid",
+      "stage_rationale": "The AI sector is still in the early stages of growth, with high expectations and valuations leading to increased volatility.",
+      "confidence": 0.9,
+      "key_drivers": [
+        "growth expectations",
+        "regulatory risks"
+      ],
+      "risks": [
+        "competition from established players",
+        "regulatory risks"
+      ],
+      "tickers_or_sectors": [
+        "AIQ",
+        "GOOGL",
+        "MSFT"
       ]
     }
   ],
