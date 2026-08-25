@@ -1,4 +1,4 @@
-"""Persist InvestmentMemo under reports/stock_research/."""
+"""Persist InvestmentMemo under reports/stock_research/ (and published brief/)."""
 
 from __future__ import annotations
 
@@ -8,12 +8,19 @@ from pathlib import Path
 
 from investment_agent.stock_research.models import InvestmentMemo
 
-REPORT_DIR = Path(__file__).resolve().parents[3] / "reports" / "stock_research"
+_REPO_ROOT = Path(__file__).resolve().parents[3]
+REPORT_DIR = _REPO_ROOT / "reports" / "stock_research"
 RUNS_DIR = REPORT_DIR / "runs"
+BRIEF_DIR = _REPO_ROOT / "brief"
 
 
 def latest_path(ticker: str) -> Path:
     return REPORT_DIR / f"{ticker.strip().upper()}_latest.json"
+
+
+def published_path(ticker: str) -> Path:
+    """Tracked Cloud-readable path: brief/stock_{TICKER}_latest.json."""
+    return BRIEF_DIR / f"stock_{ticker.strip().upper()}_latest.json"
 
 
 def run_archive_path(ticker: str, *, now: datetime | None = None) -> Path:
@@ -39,18 +46,33 @@ def save_run_reports(memo: InvestmentMemo) -> tuple[Path, Path]:
 
 
 def load_memo(ticker: str | None = None, path: Path | None = None) -> InvestmentMemo | None:
+    """Load local reports/ memo; fall back to published brief/stock_* for Cloud."""
     if path is not None:
         target = path
     elif ticker:
-        target = latest_path(ticker)
+        local = latest_path(ticker)
+        if local.is_file():
+            target = local
+        else:
+            target = published_path(ticker)
     else:
-        # newest *_latest.json if any
-        if not REPORT_DIR.is_dir():
+        # newest local *_latest.json if any, else newest published
+        target = None
+        if REPORT_DIR.is_dir():
+            candidates = sorted(
+                REPORT_DIR.glob("*_latest.json"), key=lambda p: p.stat().st_mtime
+            )
+            if candidates:
+                target = candidates[-1]
+        if target is None and BRIEF_DIR.is_dir():
+            published = sorted(
+                BRIEF_DIR.glob("stock_*_latest.json"),
+                key=lambda p: p.stat().st_mtime,
+            )
+            if published:
+                target = published[-1]
+        if target is None:
             return None
-        candidates = sorted(REPORT_DIR.glob("*_latest.json"), key=lambda p: p.stat().st_mtime)
-        if not candidates:
-            return None
-        target = candidates[-1]
     if not target.is_file():
         return None
     try:
@@ -61,11 +83,17 @@ def load_memo(ticker: str | None = None, path: Path | None = None) -> Investment
 
 
 def list_latest_tickers() -> list[str]:
-    if not REPORT_DIR.is_dir():
-        return []
-    out: list[str] = []
-    for p in sorted(REPORT_DIR.glob("*_latest.json")):
-        name = p.name.removesuffix("_latest.json")
-        if name:
-            out.append(name)
-    return out
+    """Tickers with a local or published memo (local wins for duplicates)."""
+    found: set[str] = set()
+    if REPORT_DIR.is_dir():
+        for p in REPORT_DIR.glob("*_latest.json"):
+            name = p.name.removesuffix("_latest.json")
+            if name:
+                found.add(name)
+    if BRIEF_DIR.is_dir():
+        for p in BRIEF_DIR.glob("stock_*_latest.json"):
+            # stock_AAPL_latest.json → AAPL
+            mid = p.name.removeprefix("stock_").removesuffix("_latest.json")
+            if mid:
+                found.add(mid)
+    return sorted(found)

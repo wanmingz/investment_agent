@@ -9,10 +9,16 @@ import streamlit as st
 from investment_agent.llm import QuotaExhaustedError
 from investment_agent.stock_research import checkpoint as stock_checkpoint
 from investment_agent.stock_research.orchestrator import StockResearchOrchestrator
+from investment_agent.stock_research.publish import (
+    DEFAULT_EXAMPLE_TICKER,
+    load_published,
+    publish_memo,
+)
 from investment_agent.stock_research.storage import (
     latest_path,
     list_latest_tickers,
     load_memo,
+    published_path,
     save_run_reports,
 )
 from investment_agent.stock_research.views import render_agent_tabs, render_memo
@@ -26,8 +32,14 @@ class StockSidebarState:
 
 
 def ensure_memo_state() -> None:
+    """Initialize session memo; auto-load published AAPL example for Cloud friends."""
     if "memo" not in st.session_state:
         st.session_state.memo = None
+    if st.session_state.memo is None and not st.session_state.get("_stock_example_loaded"):
+        st.session_state._stock_example_loaded = True
+        example = load_memo(DEFAULT_EXAMPLE_TICKER)
+        if example is not None:
+            st.session_state.memo = example
 
 
 def render_stock_sidebar() -> StockSidebarState:
@@ -55,13 +67,31 @@ def render_stock_sidebar() -> StockSidebarState:
     )
     st.caption("Takes several minutes (~5 LLM calls).")
 
-    if ticker and latest_path(ticker).is_file():
+    has_local = bool(ticker and latest_path(ticker).is_file())
+    has_published = bool(ticker and published_path(ticker).is_file())
+    if has_local:
         st.success(f"Saved memo for {ticker}")
-        if st.button("📂 Load last memo", use_container_width=True, key="stock_load_last"):
-            loaded = load_memo(ticker)
-            if loaded is not None:
-                st.session_state.memo = loaded
-            st.rerun()
+    elif has_published:
+        st.info(f"Published example: {ticker}")
+    if (has_local or has_published) and st.button(
+        "📂 Load last memo", use_container_width=True, key="stock_load_last"
+    ):
+        loaded = load_memo(ticker)
+        if loaded is not None:
+            st.session_state.memo = loaded
+        st.rerun()
+
+    if has_local and st.button(
+        "Publish for friends (Cloud)",
+        use_container_width=True,
+        key="stock_publish_btn",
+        help=f"Writes brief/stock_{ticker}_latest.json (commit & push for Streamlit Cloud)",
+    ):
+        try:
+            out = publish_memo(ticker)
+            st.success(f"Published `{out}` — commit & push for friends.")
+        except ValueError as e:
+            st.error(str(e))
 
     others = [t for t in list_latest_tickers() if t != ticker]
     if others:
@@ -130,7 +160,20 @@ def render_stock_page_body() -> None:
             "Enter a ticker and click **Run stock research**, or load a saved memo. "
             "Friends: open **Your LLM API key** in the sidebar to use your own key."
         )
+        if load_published(DEFAULT_EXAMPLE_TICKER) is None:
+            st.caption(
+                f"Tip: publish an example with `invest-stock {DEFAULT_EXAMPLE_TICKER} --publish`."
+            )
         return
+    if (
+        memo.ticker.strip().upper() == DEFAULT_EXAMPLE_TICKER
+        and not latest_path(DEFAULT_EXAMPLE_TICKER).is_file()
+        and published_path(DEFAULT_EXAMPLE_TICKER).is_file()
+    ):
+        st.caption(
+            f"Showing published **{DEFAULT_EXAMPLE_TICKER}** example "
+            f"(read-only). Run research to refresh."
+        )
     render_memo(memo)
     st.divider()
     st.subheader("Domain agent reports")

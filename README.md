@@ -86,6 +86,7 @@ Same dashboard as themes (`streamlit run streamlit_app.py` → **View → Stock*
 ```bash
 invest-stock AAPL
 invest-stock AAPL --load          # reload last saved memo
+invest-stock AAPL --publish       # write brief/stock_AAPL_latest.json for Streamlit Cloud
 invest-dashboard                  # unified UI (use View → Stock)
 # optional standalone: streamlit run stock_research_app.py
 ```
@@ -135,6 +136,8 @@ invest-portfolio publish          # write brief/portfolio_latest.json for Stream
 Or use the **Portfolio** tab in `invest-dashboard` (**My portfolio** to record trades; **Publish portfolio snapshot** button when you have trades).
 
 **Friends on Streamlit Cloud:** `reports/portfolio.db` is not in git. After `invest-portfolio publish` and push, Cloud loads trades from `brief/portfolio_latest.json` and **mark-to-markets live** with yfinance (read-only; no trade form). Re-publish when you add/change trades.
+
+**Stock example for friends:** `reports/stock_research/` is gitignored. After `invest-stock AAPL --publish` and push, Cloud auto-loads `brief/stock_AAPL_latest.json` when opening **View → Stock**.
 
 Weighted average cost; sells exceeding holdings are rejected. Back up `reports/portfolio.db` before upgrades.
 

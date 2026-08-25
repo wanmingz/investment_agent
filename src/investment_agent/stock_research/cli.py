@@ -62,8 +62,34 @@ def main(argv: list[str] | None = None) -> None:
         action="store_true",
         help="Load last saved memo for ticker without re-running",
     )
+    parser.add_argument(
+        "--publish",
+        action="store_true",
+        help="Write brief/stock_{TICKER}_latest.json for Streamlit Cloud (from local memo)",
+    )
     args = parser.parse_args(argv)
     ticker = args.ticker.strip().upper()
+
+    if args.publish and not args.load:
+        # Publish-only: copy local reports memo → brief/ (no LLM)
+        from investment_agent.stock_research.publish import publish_memo
+        from investment_agent.stock_research.storage import latest_path
+
+        if not latest_path(ticker).is_file():
+            console.print(f"[red]No local memo for {ticker}. Run: invest-stock {ticker}[/red]")
+            sys.exit(1)
+        try:
+            out = publish_memo(ticker)
+        except ValueError as e:
+            console.print(f"[red]{e}[/red]")
+            sys.exit(1)
+        memo = load_memo(path=out)
+        if args.json and memo is not None:
+            console.print_json(memo.model_dump_json())
+        elif memo is not None:
+            _print_memo(memo)
+        console.print(f"[green]Published {out}[/green] [dim](commit & push for Cloud)[/dim]")
+        return
 
     if args.load:
         memo = load_memo(ticker)
@@ -105,6 +131,12 @@ def main(argv: list[str] | None = None) -> None:
         from investment_agent.stock_research.storage import save_memo
 
         save_memo(memo, Path(args.output))
+
+    if args.publish:
+        from investment_agent.stock_research.publish import publish_memo
+
+        pub = publish_memo(ticker, memo=memo)
+        console.print(f"[green]Published {pub}[/green]")
 
     if args.json:
         console.print_json(memo.model_dump_json())
