@@ -1,46 +1,46 @@
 {
-  "report_date": "2026-08-25",
-  "as_of_context": "As of August 25, 2026 (2026-08-25)",
-  "executive_summary": "Global markets are in a low‑volatility environment (VIX 15.47, down 25.1% over the last 20 days) and equities are modestly higher (SPY +3.3% 20‑day). Momentum is concentrated in AI (+10% 20‑day, outpacing SPY by 6.6pp), cloud (+14.5%, outpacing SPY by 11.2pp) and energy (+8.4%, outpacing SPY by 5.0pp), while financials and healthcare sit near 52‑week highs, suggesting a risk‑on bias with sector‑specific catalysts. Headline tone: neutral. U.S. equities have surged to record highs on the back of strong earnings, but rising Treasury yields and emerging regulatory initiatives are introducing new headwinds. At the same time, marquee tech earnings and biotech momentum are fueling short‑term market lifts, while a Treasury‑led post‑quantum task force signals longer‑term infrastructure shifts for financial firms. Top themes: AI, Cloud.",
-  "regime_view": "Global markets are in a low‑volatility environment (VIX 15.47, down 25.1% over the last 20 days) and equities are modestly higher (SPY +3.3% 20‑day). Momentum is concentrated in AI (+10% 20‑day, outpacing SPY by 6.6pp), cloud (+14.5%, outpacing SPY by 11.2pp) and energy (+8.4%, outpacing SPY by 5.0pp), while financials and healthcare sit near 52‑week highs, suggesting a risk‑on bias with sector‑specific catalysts. Dominant regime: low‑volatility risk‑on with selective sector momentum. VIX at 15.5 (low) indicating strong risk appetite AI and Cloud ETFs showing >10% 20‑day momentum and outperformance vs SPY Energy ETF outperformance of +5pp over SPY",
-  "narrative_view": "U.S. equities have surged to record highs on the back of strong earnings, but rising Treasury yields and emerging regulatory initiatives are introducing new headwinds. At the same time, marquee tech earnings and biotech momentum are fueling short‑term market lifts, while a Treasury‑led post‑quantum task force signals longer‑term infrastructure shifts for financial firms.",
-  "markets_fundamentals_view": "AI and Cloud equities are leading the market with strong short‑term momentum and growth‑oriented valuations, while Energy provides a value‑driven upside and Financials sit at a valuation peak with limited upside. The mix points to a growth‑biased, large‑cap environment where AI and cloud sectors are the primary drivers of returns, complemented by a modest energy rally and a mature financials segment.",
-  "markets_vol_view": "Overall market volatility has compressed, as reflected by the VIX at 15.47 and a 25% 20‑day decline, placing the market in a low‑vol regime. However, sector‑specific volatility diverges: AI and Cloud retain elevated implied vol above 30%, Energy shows moderate stable vol, and Tech exhibits the highest vol amid recent pullback, highlighting pockets of risk within the broader calm.",
+  "report_date": "2026-09-07",
+  "as_of_context": "As of September 07, 2026 (2026-09-07)",
+  "executive_summary": "Global equity markets are trading in a low‑volatility environment (VIX 15.22) with modest drift, as the S&P 500 posted a flat 20‑day return. Sector rotation is evident: energy has delivered +11.4% and outperformed the index by 11.8pp, while cloud, healthcare and financials have also posted relative gains. The macro backdrop reflects a late‑cycle disinflationary setting where policy rates have peaked, inflation is easing and growth is modest. Headline tone: risk-off. Global markets are navigating heightened geopolitical tensions, divergent central bank signals, and rapid innovation in both luxury automotive and healthcare sectors. China’s strategic reorientation, Ukraine’s renewed strikes on Russian oil infrastructure, and mixed Fed messaging create uncertainty for energy and financial markets, while premium EV launches and advances in proton therapy highlight sector‑specific growth opportunities. Top themes: Energy, Healthcare.",
+  "regime_view": "Global equity markets are trading in a low‑volatility environment (VIX 15.22) with modest drift, as the S&P 500 posted a flat 20‑day return. Sector rotation is evident: energy has delivered +11.4% and outperformed the index by 11.8pp, while cloud, healthcare and financials have also posted relative gains. The macro backdrop reflects a late‑cycle disinflationary setting where policy rates have peaked, inflation is easing and growth is modest. Dominant regime: late‑cycle disinflation with soft‑landing bias.",
+  "narrative_view": "Global markets are navigating heightened geopolitical tensions, divergent central bank signals, and rapid innovation in both luxury automotive and healthcare sectors. China’s strategic reorientation, Ukraine’s renewed strikes on Russian oil infrastructure, and mixed Fed messaging create uncertainty for energy and financial markets, while premium EV launches and advances in proton therapy highlight sector‑specific growth opportunities.",
+  "markets_fundamentals_view": "Energy leads the market with double‑digit short‑term returns and a low trailing P/E, while cloud services enjoy spectacular momentum despite a valuation premium. Healthcare continues its earnings‑driven rally but at a stretched multiple, and financials appear undervalued near a 52‑week high, offering a low‑cost earnings tailwind. The mix suggests a growth‑oriented portfolio anchored by cheap energy and financials, with selective exposure to premium sectors.",
+  "markets_vol_view": "The VIX at 15.22 and a modest 0.4% decline indicate a low‑volatility regime, supporting carry strategies in low‑vol sectors like financials. However, cloud stocks exhibit markedly elevated volatility, creating a premium but also heightened risk. Energy’s price surge amid moderate volatility points to compression that could reverse on shocks, while the overall market remains in an early‑stage low‑vol environment.",
   "narrative_citations": [
     {
-      "id": "tt-6868829041718881683",
-      "title": "This chart shows exactly why investors should worry about rising yields — even if they don’t own any bonds",
-      "source": "marketwatch.com",
-      "url": "https://example.com/article/tt-6868829041718881683",
-      "published_at": ""
+      "id": "tt-4370478537259498314",
+      "title": "China’s Global Strategy Under Xi Jinping — the plan to shift power from the west",
+      "source": "ft.com",
+      "url": "https://example.com/article/tt-4370478537259498314",
+      "published_at": "1788778811000"
     },
     {
-      "id": "tt-3187674624616667322",
-      "title": "Treasury Unveils Post-Quantum Readiness Task Force",
-      "source": "pymnts.com",
-      "url": "https://example.com/article/tt-3187674624616667322",
-      "published_at": ""
+      "id": "tt--6890422588760599746",
+      "title": "Ukraine Resumes Attacks on Oil Refineries Deep Inside Russia",
+      "source": "bloomberg.com",
+      "url": "https://example.com/article/tt--6890422588760599746",
+      "published_at": "1788779275000"
     },
     {
-      "id": "tt--1983930174293638828",
-      "title": "Nasdaq leads stocks higher in final hour as Nvidia earnings, inflation data loom",
-      "source": "marketwatch.com",
-      "url": "https://example.com/article/tt--1983930174293638828",
-      "published_at": ""
+      "id": "tt--3194563742705726360",
+      "title": "Fed Latest: Warsh’s speech contrasts with New York Fed president’s take",
+      "source": "bloomberg.com",
+      "url": "https://example.com/article/tt--3194563742705726360",
+      "published_at": "1788778801000"
     },
     {
-      "id": "tt-6861617533219400712",
-      "title": "Salesforce Q2 earnings preview: AI and valuation in focus",
-      "source": "seekingalpha.com",
-      "url": "https://example.com/article/tt-6861617533219400712",
-      "published_at": ""
+      "id": "tt--7963052220777950432",
+      "title": "Bentley’s Torcal EV tries to balance authenticity with fake V8 sounds",
+      "source": "theverge.com",
+      "url": "https://example.com/article/tt--7963052220777950432",
+      "published_at": "1788778800000"
     },
     {
-      "id": "tt-5487701712666127834",
-      "title": "Vir Biotechnology climbs 9% amid post-earnings uptrend | $VIR",
-      "source": "seekingalpha.com",
-      "url": "https://example.com/article/tt-5487701712666127834",
-      "published_at": ""
+      "id": "tt-6489629018856518308",
+      "title": "Proton therapy sustains quality of life in meningioma patients over five years",
+      "source": "bioengineer.org",
+      "url": "https://example.com/article/tt-6489629018856518308",
+      "published_at": "1788777954000"
     }
   ],
   "data_sources": [
@@ -53,197 +53,149 @@
     "Data plane: fundamentals:10 symbols; finnhub: skipped (no FINNHUB_API_KEY); tickertick:25 articles (q=T:curated)"
   ],
   "fundamentals_notes": [
-    "AI (AIQ) 20d +10.0%",
-    "Benchmark (SPY) 20d +3.3%",
-    "Cloud (SKYY) 20d +14.5%",
-    "Consumer (XLY) 20d +4.9%",
-    "Energy (XLE) 20d +8.4%",
-    "Financials (XLF) 20d +1.2%",
-    "AI: strong 20d momentum (+10.0%)",
-    "AI: outperforming SPY 20d by +6.6pp",
-    "Cloud: strong 20d momentum (+14.5%)",
-    "Cloud: outperforming SPY 20d by +11.2pp"
+    "AI (AIQ) 20d +1.5%",
+    "Benchmark (SPY) 20d -0.4%",
+    "Cloud (SKYY) 20d +3.5%",
+    "Consumer (XLY) 20d -4.1%",
+    "Energy (XLE) 20d +11.4%",
+    "Financials (XLF) 20d +0.9%",
+    "Cloud: outperforming SPY 20d by +3.8pp",
+    "Energy: strong 20d momentum (+11.4%)",
+    "Energy: near 52-week high (-1.6% vs high)",
+    "Energy: outperforming SPY 20d by +11.8pp"
   ],
   "themes": [
     {
-      "name": "AI",
-      "subtitle": "AI‑driven productivity",
-      "thesis": "Corporate spending on generative AI, expanding data‑center capacity and supportive policy frameworks are accelerating AI integration, creating a clear earnings tailwind as volatility remains low. AIQ's 10% 20‑day gain and 6.6pp outperformance versus SPY signal a re‑acceleration in AI exposure, supported by a 27.4 trailing P/E that reflects growth expectations.",
-      "stage": "early_mid",
-      "stage_label": "Early-Mid",
-      "consensus_score": 0.6666666666666666,
-      "investability_score": 0.78,
+      "name": "Energy",
+      "subtitle": "Oil rebound and clean‑energy investment",
+      "thesis": "Energy sector has delivered +11.4% over the past 20 days, outpacing the market by 11.8pp, while still near its 52‑week high, reflecting tight supply, geopolitical risk and renewed demand as global growth steadies. Ukraine’s renewed strikes on Russian refineries are likely to tighten global oil supplies, supporting higher prices and prompting risk‑off sentiment in energy‑linked assets.",
+      "stage": "mid_late",
+      "stage_label": "Mid-Late",
+      "consensus_score": 1.0,
+      "investability_score": 0.77,
       "agent_stages": {
-        "regime": "early_mid",
-        "markets": "early_mid"
-      },
-      "contributing_agents": [
-        "markets",
-        "regime"
-      ],
-      "primary_agent": "regime",
-      "synthesis": "20‑day AI ETF (AIQ) outperformed the market by 6.6pp and posted +10% returns, indicating visible macro tailwinds and growing narrative, but the broader market has not fully priced the upside yet. Strong short‑term momentum but a -6.5% 60‑day return indicates the rally is just beginning.",
-      "key_drivers": [
-        "Corporate AI spend",
-        "Data‑center capex",
-        "Regulatory clarity on AI models",
-        "Talent pipeline expansion",
-        "10% 20d price gain",
-        "6.6pp SPY outperformance"
-      ],
-      "risks": [
-        "AI hype correction",
-        "Regulatory clampdown",
-        "Chip supply constraints",
-        "Recent 60‑day pullback",
-        "Potential valuation compression"
-      ],
-      "tickers_or_sectors": [
-        "AIQ",
-        "NVDA",
-        "AMD"
-      ],
-      "key_drivers_sourced": [],
-      "risks_sourced": []
-    },
-    {
-      "name": "Cloud",
-      "subtitle": "Sustained rally in cloud infrastructure ETFs",
-      "thesis": "SKYY posted a 14.5% 20‑day rise and 9.3% 60‑day gain, beating SPY by 11.2pp, while trading at a 35.3 P/E, indicating continued demand for cloud services. Enterprises are accelerating hybrid‑cloud and AI‑enabled workloads, supported by low rates and 5G rollout, driving robust earnings growth for cloud providers.",
-      "stage": "mid",
-      "stage_label": "Mid",
-      "consensus_score": 0.6666666666666666,
-      "investability_score": 0.78,
-      "agent_stages": {
-        "regime": "mid",
+        "regime": "mid_late",
+        "narrative": "mid",
         "markets": "mid"
       },
       "contributing_agents": [
         "markets",
-        "regime"
-      ],
-      "primary_agent": "markets",
-      "synthesis": "Cloud ETF (SKYY) delivered +14.5% over 20 days, outpacing SPY by 11.2pp, reflecting earnings confirmation and moderate crowding as the narrative moves mainstream. Momentum is both short‑term and medium‑term, suggesting the rally is in full swing.",
-      "key_drivers": [
-        "AI‑driven workload demand",
-        "Data‑sovereignty regulations",
-        "SaaS adoption",
-        "5G network expansion",
-        "14.5% 20d return",
-        "9.3% 60d return"
-      ],
-      "risks": [
-        "Corporate capex slowdown",
-        "Oversupply of data‑center capacity",
-        "Regulatory data‑localization rules",
-        "Elevated valuation may attract profit‑taking",
-        "Sector competition"
-      ],
-      "tickers_or_sectors": [
-        "SKYY",
-        "WCLD",
-        "CLOUD"
-      ],
-      "key_drivers_sourced": [],
-      "risks_sourced": []
-    },
-    {
-      "name": "Energy",
-      "subtitle": "Energy sector benefits from commodity price strength",
-      "thesis": "XLE delivered an 8.4% 20‑day gain and an 11.6% 60‑day gain, outpacing SPY by 5.0pp, with a modest 21.0 P/E, indicating a value‑driven upside near its 52‑week high. Geopolitical supply constraints, rebounding demand in emerging markets and continued capital spending on both fossil and renewable infrastructure are supporting energy earnings, while low volatility fuels risk‑on positioning.",
-      "stage": "mid_late",
-      "stage_label": "Mid-Late",
-      "consensus_score": 0.6666666666666666,
-      "investability_score": 0.705,
-      "agent_stages": {
-        "regime": "mid_late",
-        "markets": "mid_late"
-      },
-      "contributing_agents": [
-        "markets",
-        "regime"
-      ],
-      "primary_agent": "markets",
-      "synthesis": "Energy ETF (XLE) up 8.4% versus SPY +5.0pp, indicating broad market recognition; crowding is rising and climate‑policy risk is becoming a material factor. Sustained multi‑week gains and proximity to 52‑week high suggest the rally is approaching its peak.",
-      "key_drivers": [
-        "OPEC+ production discipline",
-        "China’s industrial demand",
-        "Renewable‑integration investments",
-        "Infrastructure spending",
-        "8.4% 20d return",
-        "11.6% 60d return"
-      ],
-      "risks": [
-        "Accelerated green‑policy shifts",
-        "Demand slowdown",
-        "Sharp price volatility spikes",
-        "Commodity price reversal",
-        "Potential over‑extension near 52‑week high"
-      ],
-      "tickers_or_sectors": [
-        "XLE",
-        "USO",
-        "OIH"
-      ],
-      "key_drivers_sourced": [],
-      "risks_sourced": []
-    },
-    {
-      "name": "Financials",
-      "subtitle": "Banking resilience",
-      "thesis": "With rates near their peak, credit quality stable and volatility low, banks are generating solid net‑interest margins and benefitting from fintech synergies, offering attractive yield in a risk‑on backdrop. The new initiative signals growing regulatory focus on quantum‑resistant security, creating both opportunities and implementation risks for financial firms.",
-      "stage": "mid",
-      "stage_label": "Mid",
-      "consensus_score": 0.6666666666666666,
-      "investability_score": 0.64,
-      "agent_stages": {
-        "regime": "mid",
-        "narrative": "early_mid"
-      },
-      "contributing_agents": [
         "narrative",
         "regime"
       ],
       "primary_agent": "regime",
-      "synthesis": "Financials volatility is the lowest among sectors (12% annualized), and the sector is near its 52‑week high with a modest 20‑day outperformance (+1.2% vs SPY -2.1pp), suggesting earnings confirmation without excessive crowding yet. Policy announcement is fresh, with industry impact unfolding over months.",
+      "synthesis": "Broad market recognition of the rally, strong price momentum and near‑term technical highs indicate crowding; macro tailwinds (supply constraints, higher freight rates) are evident, but policy focus on decarbonisation introduces reversal risk. Recent attacks have already impacted output, and further operations are expected as the conflict persists.",
       "key_drivers": [
-        "Stable net‑interest margins",
-        "Modest rate‑cut expectations",
-        "Loan‑growth recovery",
-        "Fintech integration",
-        "Regulatory push for quantum‑ready systems"
+        "Tight global oil supply",
+        "Geopolitical risk in key producing regions",
+        "Higher freight and energy demand",
+        "Policy incentives for clean‑energy projects",
+        "Ukraine’s renewed attacks on Russian oil infrastructure",
+        "Global reliance on Russian oil"
       ],
       "risks": [
-        "Unexpected rate cuts",
-        "Credit deterioration",
-        "Regulatory fines",
-        "Implementation challenges could disrupt operations"
+        "Accelerated decarbonisation policy",
+        "Rapid rate cuts hurting commodity demand",
+        "Supply shock reversal",
+        "Potential escalation of the conflict",
+        "Counter‑attacks disrupting supply further"
       ],
       "tickers_or_sectors": [
-        "XLF",
-        "KBE",
-        "JPM",
-        "FinTech",
-        "Cybersecurity"
+        "XLE",
+        "XOP",
+        "ICLN",
+        "CL=F"
       ],
-      "key_drivers_sourced": [],
+      "key_drivers_sourced": [
+        {
+          "text": "China's global strategic shift under Xi aims to reduce reliance on Western systems and reshape geopolitical influence",
+          "citation_ids": [
+            "tt-4370478537259498314"
+          ]
+        },
+        {
+          "text": "Ukraine's renewed attacks on Russian oil refineries threaten energy supply and could push global oil prices higher",
+          "citation_ids": [
+            "tt--6890422588760599746"
+          ]
+        },
+        {
+          "text": "Contrasting remarks from Fed Chair Warsh and the New York Fed president signal uncertainty about the future path of U.S. monetary policy",
+          "citation_ids": [
+            "tt--3194563742705726360"
+          ]
+        },
+        {
+          "text": "Proton therapy shows sustained quality‑of‑life benefits for meningioma patients, supporting growth in advanced oncology treatments",
+          "citation_ids": [
+            "tt-6489629018856518308"
+          ]
+        }
+      ],
       "risks_sourced": [
         {
-          "text": "Implementation challenges of post‑quantum cryptography may disrupt financial systems",
+          "text": "Escalation of the Ukraine‑Russia conflict could further disrupt oil markets and heighten geopolitical risk",
           "citation_ids": [
-            "tt-3187674624616667322"
+            "tt--6890422588760599746"
+          ]
+        },
+        {
+          "text": "China's assertive global strategy may trigger trade frictions and increase geopolitical volatility",
+          "citation_ids": [
+            "tt-4370478537259498314"
+          ]
+        },
+        {
+          "text": "Divergent Fed messaging could cause market volatility if policy expectations shift unexpectedly",
+          "citation_ids": [
+            "tt--3194563742705726360"
           ]
         }
       ]
     },
     {
-      "name": "Tech",
-      "subtitle": "Nvidia, Salesforce, and biotech drive market direction",
-      "thesis": "Strong earnings from leading tech and biotech firms are propelling market gains, but reliance on a few heavyweights adds concentration risk.",
+      "name": "Healthcare",
+      "subtitle": "Demographic tailwinds and innovation",
+      "thesis": "XLV posted +3.5% versus a -0.4% SPY return, beating the market by 3.9pp, as aging populations and breakthrough therapeutics sustain earnings growth despite modest macro headwinds.",
       "stage": "mid",
       "stage_label": "Mid",
       "consensus_score": 0.3333333333333333,
-      "investability_score": 0.75,
+      "investability_score": 0.83,
+      "agent_stages": {
+        "regime": "mid"
+      },
+      "contributing_agents": [
+        "regime"
+      ],
+      "primary_agent": "regime",
+      "synthesis": "Earnings growth is confirming the macro tailwinds, the sector is moderately crowded, and volatility (18.2% annualized) is below the broader tech and AI levels, suggesting a stable expansion phase.",
+      "key_drivers": [
+        "Aging global demographics",
+        "Biotech innovation pipelines",
+        "Stable reimbursement policies",
+        "Growth in telehealth"
+      ],
+      "risks": [
+        "Pricing pressure from insurers",
+        "Regulatory delays for new drugs",
+        "Potential slowdown in elective procedures"
+      ],
+      "tickers_or_sectors": [
+        "XLV",
+        "IHF",
+        "XBI"
+      ],
+      "key_drivers_sourced": [],
+      "risks_sourced": []
+    },
+    {
+      "name": "Advances in Proton Therapy for Oncology",
+      "subtitle": "Long‑term quality of life gains",
+      "thesis": "Five‑year data confirming sustained quality‑of‑life benefits for meningioma patients bolster confidence in proton therapy, supporting investment in advanced cancer treatment infrastructure.",
+      "stage": "mid",
+      "stage_label": "Mid",
+      "consensus_score": 0.3333333333333333,
+      "investability_score": 0.73,
       "agent_stages": {
         "narrative": "mid"
       },
@@ -251,123 +203,130 @@
         "narrative"
       ],
       "primary_agent": "narrative",
-      "synthesis": "Earnings season is underway, and the market is reacting in real time.",
+      "synthesis": "Clinical evidence is accumulating, positioning proton therapy for broader adoption in specialized oncology centers.",
       "key_drivers": [
-        "Nvidia earnings and inflation data lift Nasdaq",
-        "Salesforce AI focus",
-        "Vir Biotechnology post‑earnings rally"
+        "Proven patient outcomes",
+        "Technological precision of proton beams"
       ],
       "risks": [
-        "Earnings miss could reverse gains",
-        "Sector concentration risk"
+        "High capital costs",
+        "Limited treatment center availability"
       ],
       "tickers_or_sectors": [
-        "NVDA",
-        "CRM",
-        "VIR",
-        "Technology",
-        "Biotechnology"
+        "IART",
+        "SRPT"
       ],
       "key_drivers_sourced": [
         {
-          "text": "Strong earnings have propelled U.S. equities to record highs",
+          "text": "Proton therapy shows sustained quality‑of‑life benefits for meningioma patients, supporting growth in advanced oncology treatments",
           "citation_ids": [
-            "tt-6868829041718881683"
-          ]
-        },
-        {
-          "text": "Nvidia earnings and inflation data are lifting the Nasdaq in the final trading hour",
-          "citation_ids": [
-            "tt--1983930174293638828"
-          ]
-        },
-        {
-          "text": "Vir Biotechnology's post‑earnings rally reflects investor optimism in biotech",
-          "citation_ids": [
-            "tt-5487701712666127834"
+            "tt-6489629018856518308"
           ]
         }
       ],
       "risks_sourced": [
         {
-          "text": "Higher Treasury yields could derail the equity rally despite strong earnings",
+          "text": "High cost and limited infrastructure for proton therapy could constrain broader adoption despite clinical benefits",
           "citation_ids": [
-            "tt-6868829041718881683"
-          ]
-        },
-        {
-          "text": "Tech earnings volatility could trigger broader market swings",
-          "citation_ids": [
-            "tt--1983930174293638828"
+            "tt-6489629018856518308"
           ]
         }
       ]
     },
     {
-      "name": "Yield‑Driven Market Headwinds",
-      "subtitle": "Rising Treasury yields threaten equity momentum",
-      "thesis": "Despite robust earnings, higher yields are likely to temper the recent rally in U.S. equities.",
-      "stage": "early",
-      "stage_label": "Early",
+      "name": "Cloud",
+      "subtitle": "Enterprise migration and AI‑fuelled demand",
+      "thesis": "SKYY has outperformed the S&P 500 by 3.8pp over the last 20 days, delivering +3.5% while the broader market fell, indicating accelerating corporate migration to the cloud and AI‑driven workloads.",
+      "stage": "early_mid",
+      "stage_label": "Early-Mid",
       "consensus_score": 0.3333333333333333,
-      "investability_score": 0.7,
+      "investability_score": 0.71,
       "agent_stages": {
-        "narrative": "early"
+        "regime": "early_mid"
+      },
+      "contributing_agents": [
+        "regime"
+      ],
+      "primary_agent": "regime",
+      "synthesis": "Tailwinds are visible (AI adoption, digital transformation) and early positioning is evident, but the narrative has not yet become mainstream; crowding remains limited.",
+      "key_drivers": [
+        "AI model training workloads",
+        "Enterprise digital transformation budgets",
+        "Hybrid‑cloud adoption",
+        "Favorable data‑center financing"
+      ],
+      "risks": [
+        "Higher capex cycles",
+        "Regulatory scrutiny on data sovereignty",
+        "Macroeconomic slowdown curbing IT spend"
+      ],
+      "tickers_or_sectors": [
+        "SKYY",
+        "CLOU",
+        "WCLD"
+      ],
+      "key_drivers_sourced": [],
+      "risks_sourced": []
+    },
+    {
+      "name": "Monetary Policy Uncertainty in the United States",
+      "subtitle": "Fed Chair and NY Fed diverge on outlook",
+      "thesis": "Contrasting statements from Fed Chair Warsh and the New York Fed president create ambiguity around rate trajectory, increasing market volatility and influencing risk‑on assets.",
+      "stage": "early_mid",
+      "stage_label": "Early-Mid",
+      "consensus_score": 0.3333333333333333,
+      "investability_score": 0.71,
+      "agent_stages": {
+        "narrative": "early_mid"
       },
       "contributing_agents": [
         "narrative"
       ],
       "primary_agent": "narrative",
-      "synthesis": "Yield concerns have just emerged in the latest market commentary.",
+      "synthesis": "The divergent messaging is fresh, and markets are adjusting expectations ahead of upcoming policy meetings.",
       "key_drivers": [
-        "Strong earnings have propelled U.S. equities to record highs",
-        "Investors are monitoring Treasury yield trajectory"
+        "Fed Chair Warsh’s dovish tone",
+        "NY Fed president’s hawkish remarks"
       ],
       "risks": [
-        "Higher Treasury yields could derail the equity rally despite strong earnings"
+        "Unexpected policy shift leading to rapid rate changes",
+        "Investor over‑reaction to mixed signals"
       ],
       "tickers_or_sectors": [
-        "S&P 500",
-        "Technology",
-        "Financials"
+        "SPY",
+        "TLT"
       ],
       "key_drivers_sourced": [
         {
-          "text": "Strong earnings have propelled U.S. equities to record highs",
+          "text": "Contrasting remarks from Fed Chair Warsh and the New York Fed president signal uncertainty about the future path of U.S. monetary policy",
           "citation_ids": [
-            "tt-6868829041718881683"
-          ]
-        },
-        {
-          "text": "Vir Biotechnology's post‑earnings rally reflects investor optimism in biotech",
-          "citation_ids": [
-            "tt-5487701712666127834"
+            "tt--3194563742705726360"
           ]
         }
       ],
       "risks_sourced": [
         {
-          "text": "Higher Treasury yields could derail the equity rally despite strong earnings",
+          "text": "China's assertive global strategy may trigger trade frictions and increase geopolitical volatility",
           "citation_ids": [
-            "tt-6868829041718881683"
+            "tt-4370478537259498314"
           ]
         },
         {
-          "text": "Tech earnings volatility could trigger broader market swings",
+          "text": "Divergent Fed messaging could cause market volatility if policy expectations shift unexpectedly",
           "citation_ids": [
-            "tt--1983930174293638828"
+            "tt--3194563742705726360"
           ]
         }
       ]
     },
     {
-      "name": "Emerging Markets Re‑acceleration",
-      "subtitle": "China stimulus & USD easing",
-      "thesis": "A weakening USD, renewed Chinese fiscal stimulus and infrastructure spending, and supportive commodity demand are forming a macro tailwind for EM equities, which have yet to fully benefit from the low‑volatility environment.",
+      "name": "AI",
+      "subtitle": "AI‑centric revenue growth",
+      "thesis": "AIQ outperformed the market by 1.9pp over 20 days, reflecting early investor exposure to firms capturing AI‑related revenue streams, while AI volatility remains elevated at 19.8%.",
       "stage": "early",
       "stage_label": "Early",
       "consensus_score": 0.3333333333333333,
-      "investability_score": 0.62,
+      "investability_score": 0.66,
       "agent_stages": {
         "regime": "early"
       },
@@ -375,269 +334,297 @@
         "regime"
       ],
       "primary_agent": "regime",
-      "synthesis": "EM ETFs remain flat relative to the broader market despite low VIX and rising risk appetite, indicating the macro tailwind is still forming and not yet priced in.",
+      "synthesis": "Macro tailwinds (AI adoption, supportive policy) are forming, but consensus is still limited; early positioning is evident with modest outperformance.",
       "key_drivers": [
-        "Chinese infrastructure stimulus",
-        "Easing of zero‑COVID restrictions",
-        "Commodity demand rebound",
-        "US fiscal deficits easing USD pressure"
+        "AI model deployment across industries",
+        "Government AI research funding",
+        "Corporate AI software spend"
       ],
       "risks": [
-        "Geopolitical escalation",
-        "Policy missteps in China",
-        "Sudden USD strength"
+        "AI hype cycle reversal",
+        "Talent shortage",
+        "Regulatory clampdowns on AI usage"
       ],
       "tickers_or_sectors": [
-        "EEM",
-        "IEMG",
-        "VWO"
+        "AIQ",
+        "ARKQ",
+        "SOXX"
       ],
       "key_drivers_sourced": [],
       "risks_sourced": []
+    },
+    {
+      "name": "Luxury EV Market Evolution",
+      "subtitle": "Bentley blends heritage with electric power",
+      "thesis": "Bentley’s introduction of the Torcal EV, featuring synthetic V8 sounds, aims to capture traditional luxury buyers and could accelerate premium EV adoption if consumer acceptance is strong.",
+      "stage": "early",
+      "stage_label": "Early",
+      "consensus_score": 0.3333333333333333,
+      "investability_score": 0.65,
+      "agent_stages": {
+        "narrative": "early"
+      },
+      "contributing_agents": [
+        "narrative"
+      ],
+      "primary_agent": "narrative",
+      "synthesis": "The model is newly launched; market response will determine the pace of luxury EV growth.",
+      "key_drivers": [
+        "Bentley’s brand equity",
+        "Synthetic sound technology"
+      ],
+      "risks": [
+        "Consumer rejection of artificial engine sounds",
+        "High price limiting market size"
+      ],
+      "tickers_or_sectors": [
+        "TSLA",
+        "LCID"
+      ],
+      "key_drivers_sourced": [
+        {
+          "text": "China's global strategic shift under Xi aims to reduce reliance on Western systems and reshape geopolitical influence",
+          "citation_ids": [
+            "tt-4370478537259498314"
+          ]
+        },
+        {
+          "text": "Ukraine's renewed attacks on Russian oil refineries threaten energy supply and could push global oil prices higher",
+          "citation_ids": [
+            "tt--6890422588760599746"
+          ]
+        },
+        {
+          "text": "Bentley’s Torcal EV uses synthetic V8 sounds to attract traditional luxury buyers, signaling a push for premium EV adoption",
+          "citation_ids": [
+            "tt--7963052220777950432"
+          ]
+        }
+      ],
+      "risks_sourced": [
+        {
+          "text": "Escalation of the Ukraine‑Russia conflict could further disrupt oil markets and heighten geopolitical risk",
+          "citation_ids": [
+            "tt--6890422588760599746"
+          ]
+        },
+        {
+          "text": "Divergent Fed messaging could cause market volatility if policy expectations shift unexpectedly",
+          "citation_ids": [
+            "tt--3194563742705726360"
+          ]
+        },
+        {
+          "text": "Consumer perception of synthetic EV sounds may limit acceptance of luxury electric models",
+          "citation_ids": [
+            "tt--7963052220777950432"
+          ]
+        },
+        {
+          "text": "High cost and limited infrastructure for proton therapy could constrain broader adoption despite clinical benefits",
+          "citation_ids": [
+            "tt-6489629018856518308"
+          ]
+        }
+      ]
     }
   ],
   "regime_themes": [
     {
-      "name": "Artificial Intelligence Adoption",
-      "subtitle": "AI‑driven productivity",
-      "thesis": "Corporate spending on generative AI, expanding data‑center capacity and supportive policy frameworks are accelerating AI integration, creating a clear earnings tailwind as volatility remains low.",
-      "stage": "early_mid",
-      "stage_rationale": "20‑day AI ETF (AIQ) outperformed the market by 6.6pp and posted +10% returns, indicating visible macro tailwinds and growing narrative, but the broader market has not fully priced the upside yet.",
+      "name": "Energy Momentum & Transition",
+      "subtitle": "Oil rebound and clean‑energy investment",
+      "thesis": "Energy sector has delivered +11.4% over the past 20 days, outpacing the market by 11.8pp, while still near its 52‑week high, reflecting tight supply, geopolitical risk and renewed demand as global growth steadies.",
+      "stage": "mid_late",
+      "stage_rationale": "Broad market recognition of the rally, strong price momentum and near‑term technical highs indicate crowding; macro tailwinds (supply constraints, higher freight rates) are evident, but policy focus on decarbonisation introduces reversal risk.",
       "confidence": 0.78,
       "key_drivers": [
-        "Corporate AI spend",
-        "Data‑center capex",
-        "Regulatory clarity on AI models",
-        "Talent pipeline expansion"
+        "Tight global oil supply",
+        "Geopolitical risk in key producing regions",
+        "Higher freight and energy demand",
+        "Policy incentives for clean‑energy projects"
       ],
       "risks": [
-        "AI hype correction",
-        "Regulatory clampdown",
-        "Chip supply constraints"
-      ],
-      "tickers_or_sectors": [
-        "AIQ",
-        "NVDA",
-        "AMD"
-      ]
-    },
-    {
-      "name": "Cloud Infrastructure Expansion",
-      "subtitle": "Hybrid & multi‑cloud shift",
-      "thesis": "Enterprises are accelerating hybrid‑cloud and AI‑enabled workloads, supported by low rates and 5G rollout, driving robust earnings growth for cloud providers.",
-      "stage": "mid",
-      "stage_rationale": "Cloud ETF (SKYY) delivered +14.5% over 20 days, outpacing SPY by 11.2pp, reflecting earnings confirmation and moderate crowding as the narrative moves mainstream.",
-      "confidence": 0.74,
-      "key_drivers": [
-        "AI‑driven workload demand",
-        "Data‑sovereignty regulations",
-        "SaaS adoption",
-        "5G network expansion"
-      ],
-      "risks": [
-        "Corporate capex slowdown",
-        "Oversupply of data‑center capacity",
-        "Regulatory data‑localization rules"
-      ],
-      "tickers_or_sectors": [
-        "SKYY",
-        "WCLD",
-        "CLOUD"
-      ]
-    },
-    {
-      "name": "Energy Price Recovery & Transition",
-      "subtitle": "Oil‑gas dividend play",
-      "thesis": "Geopolitical supply constraints, rebounding demand in emerging markets and continued capital spending on both fossil and renewable infrastructure are supporting energy earnings, while low volatility fuels risk‑on positioning.",
-      "stage": "mid_late",
-      "stage_rationale": "Energy ETF (XLE) up 8.4% versus SPY +5.0pp, indicating broad market recognition; crowding is rising and climate‑policy risk is becoming a material factor.",
-      "confidence": 0.7,
-      "key_drivers": [
-        "OPEC+ production discipline",
-        "China’s industrial demand",
-        "Renewable‑integration investments",
-        "Infrastructure spending"
-      ],
-      "risks": [
-        "Accelerated green‑policy shifts",
-        "Demand slowdown",
-        "Sharp price volatility spikes"
+        "Accelerated decarbonisation policy",
+        "Rapid rate cuts hurting commodity demand",
+        "Supply shock reversal"
       ],
       "tickers_or_sectors": [
         "XLE",
-        "USO",
-        "OIH"
+        "XOP",
+        "ICLN"
       ]
     },
     {
-      "name": "Financial Sector Stability & Rate‑Cycle Play",
-      "subtitle": "Banking resilience",
-      "thesis": "With rates near their peak, credit quality stable and volatility low, banks are generating solid net‑interest margins and benefitting from fintech synergies, offering attractive yield in a risk‑on backdrop.",
+      "name": "Cloud Computing Upswing",
+      "subtitle": "Enterprise migration and AI‑fuelled demand",
+      "thesis": "SKYY has outperformed the S&P 500 by 3.8pp over the last 20 days, delivering +3.5% while the broader market fell, indicating accelerating corporate migration to the cloud and AI‑driven workloads.",
+      "stage": "early_mid",
+      "stage_rationale": "Tailwinds are visible (AI adoption, digital transformation) and early positioning is evident, but the narrative has not yet become mainstream; crowding remains limited.",
+      "confidence": 0.71,
+      "key_drivers": [
+        "AI model training workloads",
+        "Enterprise digital transformation budgets",
+        "Hybrid‑cloud adoption",
+        "Favorable data‑center financing"
+      ],
+      "risks": [
+        "Higher capex cycles",
+        "Regulatory scrutiny on data sovereignty",
+        "Macroeconomic slowdown curbing IT spend"
+      ],
+      "tickers_or_sectors": [
+        "SKYY",
+        "CLOU",
+        "WCLD"
+      ]
+    },
+    {
+      "name": "Healthcare Resilience",
+      "subtitle": "Demographic tailwinds and innovation",
+      "thesis": "XLV posted +3.5% versus a -0.4% SPY return, beating the market by 3.9pp, as aging populations and breakthrough therapeutics sustain earnings growth despite modest macro headwinds.",
       "stage": "mid",
-      "stage_rationale": "Financials volatility is the lowest among sectors (12% annualized), and the sector is near its 52‑week high with a modest 20‑day outperformance (+1.2% vs SPY -2.1pp), suggesting earnings confirmation without excessive crowding yet.",
-      "confidence": 0.68,
+      "stage_rationale": "Earnings growth is confirming the macro tailwinds, the sector is moderately crowded, and volatility (18.2% annualized) is below the broader tech and AI levels, suggesting a stable expansion phase.",
+      "confidence": 0.83,
       "key_drivers": [
-        "Stable net‑interest margins",
-        "Modest rate‑cut expectations",
-        "Loan‑growth recovery",
-        "Fintech integration"
+        "Aging global demographics",
+        "Biotech innovation pipelines",
+        "Stable reimbursement policies",
+        "Growth in telehealth"
       ],
       "risks": [
-        "Unexpected rate cuts",
-        "Credit deterioration",
-        "Regulatory fines"
+        "Pricing pressure from insurers",
+        "Regulatory delays for new drugs",
+        "Potential slowdown in elective procedures"
       ],
       "tickers_or_sectors": [
-        "XLF",
-        "KBE",
-        "JPM"
+        "XLV",
+        "IHF",
+        "XBI"
       ]
     },
     {
-      "name": "Emerging Markets Re‑acceleration",
-      "subtitle": "China stimulus & USD easing",
-      "thesis": "A weakening USD, renewed Chinese fiscal stimulus and infrastructure spending, and supportive commodity demand are forming a macro tailwind for EM equities, which have yet to fully benefit from the low‑volatility environment.",
+      "name": "Artificial Intelligence Equity Play",
+      "subtitle": "AI‑centric revenue growth",
+      "thesis": "AIQ outperformed the market by 1.9pp over 20 days, reflecting early investor exposure to firms capturing AI‑related revenue streams, while AI volatility remains elevated at 19.8%.",
       "stage": "early",
-      "stage_rationale": "EM ETFs remain flat relative to the broader market despite low VIX and rising risk appetite, indicating the macro tailwind is still forming and not yet priced in.",
-      "confidence": 0.62,
+      "stage_rationale": "Macro tailwinds (AI adoption, supportive policy) are forming, but consensus is still limited; early positioning is evident with modest outperformance.",
+      "confidence": 0.66,
       "key_drivers": [
-        "Chinese infrastructure stimulus",
-        "Easing of zero‑COVID restrictions",
-        "Commodity demand rebound",
-        "US fiscal deficits easing USD pressure"
+        "AI model deployment across industries",
+        "Government AI research funding",
+        "Corporate AI software spend"
       ],
       "risks": [
-        "Geopolitical escalation",
-        "Policy missteps in China",
-        "Sudden USD strength"
+        "AI hype cycle reversal",
+        "Talent shortage",
+        "Regulatory clampdowns on AI usage"
       ],
       "tickers_or_sectors": [
-        "EEM",
-        "IEMG",
-        "VWO"
+        "AIQ",
+        "ARKQ",
+        "SOXX"
       ]
     }
   ],
   "narrative_themes": [
     {
-      "name": "Yield‑Driven Market Headwinds",
-      "subtitle": "Rising Treasury yields threaten equity momentum",
-      "thesis": "Despite robust earnings, higher yields are likely to temper the recent rally in U.S. equities.",
-      "stage": "early",
-      "stage_rationale": "Yield concerns have just emerged in the latest market commentary.",
-      "confidence": 0.7,
-      "key_drivers": [
-        "Strong earnings have propelled U.S. equities to record highs",
-        "Investors are monitoring Treasury yield trajectory"
-      ],
-      "risks": [
-        "Higher Treasury yields could derail the equity rally despite strong earnings"
-      ],
-      "tickers_or_sectors": [
-        "S&P 500",
-        "Technology",
-        "Financials"
-      ]
-    },
-    {
-      "name": "Quantum Readiness and Financial Infrastructure",
-      "subtitle": "U.S. Treasury launches post‑quantum task force",
-      "thesis": "The new initiative signals growing regulatory focus on quantum‑resistant security, creating both opportunities and implementation risks for financial firms.",
-      "stage": "early_mid",
-      "stage_rationale": "Policy announcement is fresh, with industry impact unfolding over months.",
-      "confidence": 0.6,
-      "key_drivers": [
-        "Regulatory push for quantum‑ready systems"
-      ],
-      "risks": [
-        "Implementation challenges could disrupt operations"
-      ],
-      "tickers_or_sectors": [
-        "FinTech",
-        "Cybersecurity"
-      ]
-    },
-    {
-      "name": "Tech Earnings Momentum",
-      "subtitle": "Nvidia, Salesforce, and biotech drive market direction",
-      "thesis": "Strong earnings from leading tech and biotech firms are propelling market gains, but reliance on a few heavyweights adds concentration risk.",
+      "name": "Energy Market Volatility from Ukraine‑Russia Conflict",
+      "subtitle": "Oil refinery attacks raise supply‑side concerns",
+      "thesis": "Ukraine’s renewed strikes on Russian refineries are likely to tighten global oil supplies, supporting higher prices and prompting risk‑off sentiment in energy‑linked assets.",
       "stage": "mid",
-      "stage_rationale": "Earnings season is underway, and the market is reacting in real time.",
-      "confidence": 0.75,
+      "stage_rationale": "Recent attacks have already impacted output, and further operations are expected as the conflict persists.",
+      "confidence": 0.78,
       "key_drivers": [
-        "Nvidia earnings and inflation data lift Nasdaq",
-        "Salesforce AI focus",
-        "Vir Biotechnology post‑earnings rally"
+        "Ukraine’s renewed attacks on Russian oil infrastructure",
+        "Global reliance on Russian oil"
       ],
       "risks": [
-        "Earnings miss could reverse gains",
-        "Sector concentration risk"
+        "Potential escalation of the conflict",
+        "Counter‑attacks disrupting supply further"
       ],
       "tickers_or_sectors": [
-        "NVDA",
-        "CRM",
-        "VIR",
-        "Technology",
-        "Biotechnology"
+        "XLE",
+        "CL=F"
+      ]
+    },
+    {
+      "name": "Monetary Policy Uncertainty in the United States",
+      "subtitle": "Fed Chair and NY Fed diverge on outlook",
+      "thesis": "Contrasting statements from Fed Chair Warsh and the New York Fed president create ambiguity around rate trajectory, increasing market volatility and influencing risk‑on assets.",
+      "stage": "early_mid",
+      "stage_rationale": "The divergent messaging is fresh, and markets are adjusting expectations ahead of upcoming policy meetings.",
+      "confidence": 0.71,
+      "key_drivers": [
+        "Fed Chair Warsh’s dovish tone",
+        "NY Fed president’s hawkish remarks"
+      ],
+      "risks": [
+        "Unexpected policy shift leading to rapid rate changes",
+        "Investor over‑reaction to mixed signals"
+      ],
+      "tickers_or_sectors": [
+        "SPY",
+        "TLT"
+      ]
+    },
+    {
+      "name": "Luxury EV Market Evolution",
+      "subtitle": "Bentley blends heritage with electric power",
+      "thesis": "Bentley’s introduction of the Torcal EV, featuring synthetic V8 sounds, aims to capture traditional luxury buyers and could accelerate premium EV adoption if consumer acceptance is strong.",
+      "stage": "early",
+      "stage_rationale": "The model is newly launched; market response will determine the pace of luxury EV growth.",
+      "confidence": 0.65,
+      "key_drivers": [
+        "Bentley’s brand equity",
+        "Synthetic sound technology"
+      ],
+      "risks": [
+        "Consumer rejection of artificial engine sounds",
+        "High price limiting market size"
+      ],
+      "tickers_or_sectors": [
+        "TSLA",
+        "LCID"
+      ]
+    },
+    {
+      "name": "Advances in Proton Therapy for Oncology",
+      "subtitle": "Long‑term quality of life gains",
+      "thesis": "Five‑year data confirming sustained quality‑of‑life benefits for meningioma patients bolster confidence in proton therapy, supporting investment in advanced cancer treatment infrastructure.",
+      "stage": "mid",
+      "stage_rationale": "Clinical evidence is accumulating, positioning proton therapy for broader adoption in specialized oncology centers.",
+      "confidence": 0.73,
+      "key_drivers": [
+        "Proven patient outcomes",
+        "Technological precision of proton beams"
+      ],
+      "risks": [
+        "High capital costs",
+        "Limited treatment center availability"
+      ],
+      "tickers_or_sectors": [
+        "IART",
+        "SRPT"
       ]
     }
   ],
   "markets_themes": [
     {
-      "name": "AI Momentum Surge",
-      "subtitle": "Rapid 20d rally in artificial intelligence equities",
-      "thesis": "AIQ's 10% 20‑day gain and 6.6pp outperformance versus SPY signal a re‑acceleration in AI exposure, supported by a 27.4 trailing P/E that reflects growth expectations.",
-      "stage": "early_mid",
-      "stage_rationale": "Strong short‑term momentum but a -6.5% 60‑day return indicates the rally is just beginning.",
-      "confidence": 0.78,
-      "key_drivers": [
-        "10% 20d price gain",
-        "6.6pp SPY outperformance",
-        "Growth‑oriented valuation (P/E 27.4)"
-      ],
-      "risks": [
-        "Recent 60‑day pullback",
-        "Potential valuation compression"
-      ],
-      "tickers_or_sectors": [
-        "AIQ"
-      ]
-    },
-    {
-      "name": "Cloud Growth Acceleration",
-      "subtitle": "Sustained rally in cloud infrastructure ETFs",
-      "thesis": "SKYY posted a 14.5% 20‑day rise and 9.3% 60‑day gain, beating SPY by 11.2pp, while trading at a 35.3 P/E, indicating continued demand for cloud services.",
+      "name": "Energy price rally",
+      "subtitle": "Low valuation, strong momentum",
+      "thesis": "Energy sector (XLE) is delivering double‑digit 20‑day returns (+11.4%) and outperforms the market (+11.8pp) while trading at a low trailing P/E of 17.8, suggesting upside if commodity prices stay firm.",
       "stage": "mid",
-      "stage_rationale": "Momentum is both short‑term and medium‑term, suggesting the rally is in full swing.",
-      "confidence": 0.82,
+      "stage_rationale": "Valuation is attractive and momentum is high, but near‑52‑week high (-1.6%) indicates some crowding.",
+      "confidence": 0.75,
       "key_drivers": [
-        "14.5% 20d return",
-        "9.3% 60d return",
-        "High P/E 35.3"
+        "Commodity price support",
+        "Low P/E relative to market",
+        "Strong 20‑day momentum"
       ],
       "risks": [
-        "Elevated valuation may attract profit‑taking",
-        "Sector competition"
-      ],
-      "tickers_or_sectors": [
-        "SKYY"
-      ]
-    },
-    {
-      "name": "Energy Price Rally",
-      "subtitle": "Energy sector benefits from commodity price strength",
-      "thesis": "XLE delivered an 8.4% 20‑day gain and an 11.6% 60‑day gain, outpacing SPY by 5.0pp, with a modest 21.0 P/E, indicating a value‑driven upside near its 52‑week high.",
-      "stage": "mid_late",
-      "stage_rationale": "Sustained multi‑week gains and proximity to 52‑week high suggest the rally is approaching its peak.",
-      "confidence": 0.71,
-      "key_drivers": [
-        "8.4% 20d return",
-        "11.6% 60d return",
-        "Low P/E 21.0"
-      ],
-      "risks": [
-        "Commodity price reversal",
-        "Potential over‑extension near 52‑week high"
+        "Oil price reversal",
+        "Geopolitical supply shocks",
+        "Potential crowding as price rises"
       ],
       "tickers_or_sectors": [
         "XLE"
