@@ -1,45 +1,45 @@
 {
-  "report_date": "2026-09-14",
-  "as_of_context": "As of September 14, 2026 (2026-09-14)",
-  "executive_summary": "Global markets are navigating a modest risk environment as the VIX has risen 11.4% over the past 20 days to 17.65, signalling a return of volatility after a low‑vol period. Energy equities have posted the strongest relative performance (+6.7% vs SPY‑1.7%, outpacing the index by 8.4pp) while AI and Cloud ETFs lagged the benchmark, reflecting a sector rotation away from high‑growth tech. Central banks appear to be at the tail‑end of the tightening cycle, leaving policy rates near peak and setting the stage for sector‑driven re‑allocation. Headline tone: risk-off. Global markets are navigating a confluence of monetary policy anticipation, supply‑side shocks in the oil sector, and emerging concerns about the pace of AI investment, while energy companies continue to secure financing for operations. Top themes: Energy, Financials.",
-  "regime_view": "Global markets are navigating a modest risk environment as the VIX has risen 11.4% over the past 20 days to 17.65, signalling a return of volatility after a low‑vol period. Energy equities have posted the strongest relative performance (+6.7% vs SPY‑1.7%, outpacing the index by 8.4pp) while AI and Cloud ETFs lagged the benchmark, reflecting a sector rotation away from high‑growth tech. Central banks appear to be at the tail‑end of the tightening cycle, leaving policy rates near peak and setting the stage for sector‑driven re‑allocation. Dominant regime: late‑cycle rate‑plateau with commodity‑driven rotation. Energy sector outperformance (+8.4pp vs SPY) Rising VIX (+11.4% 20‑day) indicating increased risk appetite volatility AI and Cloud underperformance relative to benchmark",
-  "narrative_view": "Global markets are navigating a confluence of monetary policy anticipation, supply‑side shocks in the oil sector, and emerging concerns about the pace of AI investment, while energy companies continue to secure financing for operations.",
-  "markets_fundamentals_view": "Energy leads the market with strong 20‑day momentum (+6.7%), near‑52‑week‑high pricing and a low trailing P/E of 18.1 versus the broader SPY at 24.7, delivering an 8.4‑point outperformance over the index. AI‑focused equities trade at a relatively cheap 24.2 P/E compared with the tech average of 33.2, offering a valuation edge despite modest short‑term weakness. Cloud stocks have rebounded sharply over the past 60 days (+17.1%) after a 6.2% 20‑day pullback, but their high volatility and 28.2 P/E signal a growth‑risk trade. Financials remain earnings‑stable with a 16.2 P/E and modest 5.7% 60‑day gain, positioning them as a defensive value play.",
-  "markets_vol_view": "The VIX has risen 11.4% over the last 20 days to 17.65, signalling a shift from a compressed to an elevated volatility regime. Energy’s 20‑day annualized volatility (15.1%) remains the lowest among the major sectors, offering low‑vol carry, while Cloud’s 29.8% marks the highest risk premium in the market. Tech and AI volatilities sit in the mid‑20s, supporting moderate‑vol carry strategies but also indicating that a broader volatility expansion may be underway.",
+  "report_date": "2026-09-22",
+  "as_of_context": "As of September 22, 2026 (2026-09-22)",
+  "executive_summary": "Global equity markets are trading in a low‑volatility environment (VIX 14.2, down 6.6% over 20 days) with modest broad‑market gains (SPY +1.6%). Growth‑oriented sectors—AI, cloud and technology—are delivering strong short‑term momentum and are near 52‑week highs, indicating a risk‑on tilt toward high‑beta, innovation‑driven assets. Headline tone: neutral. Global markets are navigating a mix of policy shifts, talent movements, high‑stakes environmental litigation, and rapid clean‑tech innovation, as reflected in recent headlines. Top themes: Energy, AI.",
+  "regime_view": "Global equity markets are trading in a low‑volatility environment (VIX 14.2, down 6.6% over 20 days) with modest broad‑market gains (SPY +1.6%). Growth‑oriented sectors—AI, cloud and technology—are delivering strong short‑term momentum and are near 52‑week highs, indicating a risk‑on tilt toward high‑beta, innovation‑driven assets. Dominant regime: disinflationary soft landing with a growth bias. AI 20‑day momentum +7% outperformance vs SPY Cloud 20‑day momentum +5.2% outperformance vs SPY Tech 20‑day momentum +9% outperformance vs SPY",
+  "narrative_view": "Global markets are navigating a mix of policy shifts, talent movements, high‑stakes environmental litigation, and rapid clean‑tech innovation, as reflected in recent headlines.",
+  "markets_fundamentals_view": "AI and cloud sectors are driving the market rally with strong short‑term momentum, while technology remains expensive and energy benefits from a valuation discount. AIQ shows a modest P/E premium to the market and outperforms SPY, supporting continued upside. Cloud (SKYY) has posted a spectacular 60‑day gain but trades at a high trailing P/E, suggesting limited further upside without earnings acceleration. Technology (XLK) is leading returns but its P/E is well above the market, indicating a late‑stage valuation. Energy (XLE) offers a low‑cost entry point after a solid 60‑day rally, positioning it early in a potential up‑cycle.",
+  "markets_vol_view": "Overall market volatility is low, with the VIX at 14.2 and down 6.6% over 20 days, creating carry opportunities in stable large‑cap equities. However, sector‑specific volatility diverges: cloud exposure remains elevated at 30% annualized, while AI volatility is modest, and energy volatility has normalized around 21%. This mix points to a low‑vol regime with pockets of elevated risk that can be targeted by sector‑focused volatility strategies.",
   "narrative_citations": [
     {
-      "id": "tt--7680070834445429149",
-      "title": "Economic calendar: This week's highlight is the Fed's interest-rate decision",
-      "source": "marketwatch.com",
-      "url": "https://example.com/article/tt--7680070834445429149",
+      "id": "tt--4621842819551436977",
+      "title": "Trump backs ban on diesel exports",
+      "source": "axios.com",
+      "url": "https://example.com/article/tt--4621842819551436977",
       "published_at": ""
     },
     {
-      "id": "tt--2717232703761835029",
-      "title": "The Oil Market Needs a Quick Saudi Pipeline Restart",
-      "source": "bloomberg.com",
-      "url": "https://example.com/article/tt--2717232703761835029",
+      "id": "tt-5051518788206599957",
+      "title": "Monzo’s EU Chief Leaves Neobank to Launch Robotics Startup",
+      "source": "pymnts.com",
+      "url": "https://example.com/article/tt-5051518788206599957",
       "published_at": ""
     },
     {
-      "id": "tt-3199242826185330653",
-      "title": "RBC's Amy Wu Silverman on AI Slowdown, Fed Expectations",
-      "source": "bloomberg.com",
-      "url": "https://example.com/article/tt-3199242826185330653",
+      "id": "tt--849590160278040053",
+      "title": "$345 Million Verdict Against Greenpeace Should Be Overturned, Lawyers Say",
+      "source": "nytimes.com",
+      "url": "https://example.com/article/tt--849590160278040053",
       "published_at": ""
     },
     {
-      "id": "tt-876401309318297247",
-      "title": "Oil Jumps on Shutdown of Saudi Pipeline, AI Concerns, More",
-      "source": "bloomberg.com",
-      "url": "https://example.com/article/tt-876401309318297247",
+      "id": "tt--8999353321303117520",
+      "title": "Physics-Enhanced AI Sharpens Lithium-Ion Battery Health Estimates Using Impedance Fingerprints",
+      "source": "bioengineer.org",
+      "url": "https://example.com/article/tt--8999353321303117520",
       "published_at": ""
     },
     {
-      "id": "tt-2879858459992416013",
-      "title": "PBF Energy announces $500M exchangeable notes deal",
-      "source": "seekingalpha.com",
-      "url": "https://example.com/article/tt-2879858459992416013",
+      "id": "tt-8348640890650942666",
+      "title": "Microbes May Hold the Key to Feeding a Warming World",
+      "source": "bioengineer.org",
+      "url": "https://example.com/article/tt-8348640890650942666",
       "published_at": ""
     }
   ],
@@ -53,29 +53,30 @@
     "Data plane: fundamentals:10 symbols; finnhub: skipped (no FINNHUB_API_KEY); tickertick:25 articles (q=T:curated)"
   ],
   "fundamentals_notes": [
-    "AI (AIQ) 20d -1.0%",
-    "Benchmark (SPY) 20d -1.7%",
-    "Cloud (SKYY) 20d -6.2%",
-    "Consumer (XLY) 20d -4.6%",
-    "Energy (XLE) 20d +6.7%",
-    "Financials (XLF) 20d -1.7%",
-    "Energy: strong 20d momentum (+6.7%)",
-    "Energy: near 52-week high (-0.3% vs high)",
-    "Energy: outperforming SPY 20d by +8.4pp"
+    "AI (AIQ) 20d +7.0%",
+    "Benchmark (SPY) 20d +1.6%",
+    "Cloud (SKYY) 20d +5.2%",
+    "Consumer (XLY) 20d -4.9%",
+    "Energy (XLE) 20d -1.1%",
+    "Financials (XLF) 20d -5.3%",
+    "AI: strong 20d momentum (+7.0%)",
+    "AI: outperforming SPY 20d by +5.4pp",
+    "Cloud: strong 20d momentum (+5.2%)",
+    "Cloud: near 52-week high (-0.9% vs high)"
   ],
   "themes": [
     {
       "name": "Energy",
-      "subtitle": "Strong price action and cheap earnings",
-      "thesis": "Energy’s 20‑day gain of +6.7% and near‑52‑week‑high price, combined with a trailing P/E of 18.1, give it a clear earnings‑multiple edge and outperformance of +8.4pp versus SPY. Strong 20‑day price gains and near‑52‑week highs in energy stocks, combined with OPEC+ output discipline and rising Asian demand, create a macro tailwind for upstream and downstream energy exposure.",
-      "stage": "early_mid",
-      "stage_label": "Early-Mid",
+      "subtitle": "XLE gains on low valuation",
+      "thesis": "Energy ETF has delivered a 15.9% 60‑day gain while trading at a low P/E of 17.2, offering potential upside if commodity prices stay supportive. Policy momentum from global carbon‑pricing initiatives and extensions of the US Inflation Reduction Act are translating into rising renewable capacity additions and storage projects, even as the energy sector shows modest short‑term underperformance.",
+      "stage": "early",
+      "stage_label": "Early",
       "consensus_score": 1.0,
-      "investability_score": 0.726,
+      "investability_score": 0.6766666666666667,
       "agent_stages": {
-        "regime": "early_mid",
+        "regime": "mid",
         "narrative": "early_mid",
-        "markets": "early_mid"
+        "markets": "early"
       },
       "contributing_agents": [
         "markets",
@@ -83,149 +84,115 @@
         "regime"
       ],
       "primary_agent": "markets",
-      "synthesis": "Momentum is evident (XLE +6.7% vs SPY -1.7%) and earnings are beginning to reflect higher oil prices, but the narrative of a sustained commodity rally is not yet fully priced in across the broader market. Immediate price reaction observed, but full impact will unfold over the next few days.",
+      "synthesis": "Earnings from renewable developers are confirming growth, moderate crowding is present, and policy support remains strong, placing the theme in an expansion phase. Policy discussion is public but implementation details remain unclear.",
       "key_drivers": [
-        "OPEC+ production cuts",
-        "Geopolitical supply risks",
-        "Robust demand from China and India",
-        "Saudi pipeline shutdown supply shock",
-        "Energy financing activity",
-        "20‑day price momentum"
+        "Renewable capacity installations",
+        "Energy‑storage demand",
+        "Green hydrogen investment",
+        "Policy shift toward export restriction",
+        "Global diesel demand pressure",
+        "60d return +15.9%"
       ],
       "risks": [
-        "Accelerated demand slowdown if global growth weakens",
-        "Policy shift toward faster energy transition reducing fossil‑fuel demand",
-        "Prolonged pipeline outage could tighten supply further",
-        "Rising financing costs could limit effectiveness of note issuances",
-        "Potential commodity price reversal"
+        "Commodity price volatility",
+        "Potential policy rollbacks",
+        "Supply‑chain bottlenecks for turbine components",
+        "Retaliatory tariffs",
+        "Supply chain disruptions"
       ],
       "tickers_or_sectors": [
+        "ICLN",
+        "TAN",
         "XLE",
-        "USO",
-        "VDE",
-        "CL=F",
-        "OXY",
-        "PBF"
+        "Energy",
+        "Oil & Gas"
       ],
       "key_drivers_sourced": [
         {
-          "text": "A shutdown of a key Saudi export pipeline is tightening global oil supplies, supporting higher crude prices.",
+          "text": "Potential US policy shift to restrict diesel exports could tighten global supply and raise prices.",
           "citation_ids": [
-            "tt--2717232703761835029",
-            "tt-876401309318297247"
+            "tt--4621842819551436977"
           ]
         },
         {
-          "text": "Slowing momentum in AI investment is dampening tech sector sentiment and could curb capital allocation.",
+          "text": "Microbial innovations could boost crop yields under heat stress, addressing food security in a warming climate.",
           "citation_ids": [
-            "tt-3199242826185330653",
-            "tt-876401309318297247"
-          ]
-        },
-        {
-          "text": "PBF Energy's $500 million exchangeable notes issuance provides financing for refining operations and signals continued capital raising in the sector.",
-          "citation_ids": [
-            "tt-2879858459992416013"
+            "tt-8348640890650942666"
           ]
         }
       ],
       "risks_sourced": [
         {
-          "text": "Prolonged Saudi pipeline outage could further tighten global oil supply, spurring price spikes and inflationary pressure.",
+          "text": "Retaliatory trade measures and supply‑chain disruptions could follow a diesel export ban.",
           "citation_ids": [
-            "tt--2717232703761835029",
-            "tt-876401309318297247"
+            "tt--4621842819551436977"
           ]
         },
         {
-          "text": "Deteriorating market conditions could raise financing costs for energy companies, limiting the effectiveness of note issuances.",
+          "text": "Potential overturn of the Greenpeace verdict could reignite legal battles and reputational risk for corporations.",
           "citation_ids": [
-            "tt-2879858459992416013"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Financials",
-      "subtitle": "",
-      "thesis": "Financials have been flat relative to the benchmark (XLF 0.0pp vs SPY) while the VIX climbs, suggesting that banks are feeling pressure from a near‑peak rate environment and a slowdown in loan growth. The Federal Reserve's upcoming interest‑rate decision will be a primary driver of equity and bond market direction, with expectations of a hold or modest hike.",
-      "stage": "mid_late",
-      "stage_label": "Mid-Late",
-      "consensus_score": 1.0,
-      "investability_score": 0.6966666666666667,
-      "agent_stages": {
-        "regime": "mid_late",
-        "narrative": "early",
-        "markets": "mid"
-      },
-      "contributing_agents": [
-        "markets",
-        "narrative",
-        "regime"
-      ],
-      "primary_agent": "regime",
-      "synthesis": "The sector is widely recognized as under pressure; credit spreads are widening and profit growth is moderating, placing the theme in a mid‑late stage where crowding and policy risk are rising. The decision is imminent, making it an early‑stage catalyst.",
-      "key_drivers": [
-        "Rate plateau limiting net‑interest margins",
-        "Higher loan‑loss provisions",
-        "Regulatory capital tightening",
-        "Fed rate decision anticipation",
-        "Low P/E",
-        "Positive 60‑day return"
-      ],
-      "risks": [
-        "Unexpected rate cuts reviving margin expansion",
-        "M&A activity boosting fee income",
-        "Unexpected Fed policy shift could increase volatility",
-        "Interest‑rate volatility",
-        "Credit quality concerns"
-      ],
-      "tickers_or_sectors": [
-        "XLF",
-        "KBE",
-        "IYF",
-        "SPY",
-        "TLT"
-      ],
-      "key_drivers_sourced": [
-        {
-          "text": "The Federal Reserve's upcoming interest‑rate decision will set the tone for monetary policy and market risk appetite.",
-          "citation_ids": [
-            "tt--7680070834445429149"
-          ]
-        }
-      ],
-      "risks_sourced": [
-        {
-          "text": "An unexpected Fed policy shift (e.g., a larger hike) could increase market volatility and pressure risk assets.",
-          "citation_ids": [
-            "tt--7680070834445429149"
+            "tt--849590160278040053"
           ]
         },
         {
-          "text": "A deeper AI slowdown may lead to reduced earnings growth expectations for high‑growth tech firms.",
+          "text": "Commercialization hurdles and ecosystem acceptance could slow microbial agriculture solutions.",
           "citation_ids": [
-            "tt-3199242826185330653"
-          ]
-        },
-        {
-          "text": "Deteriorating market conditions could raise financing costs for energy companies, limiting the effectiveness of note issuances.",
-          "citation_ids": [
-            "tt-2879858459992416013"
+            "tt-8348640890650942666"
           ]
         }
       ]
     },
     {
       "name": "AI",
-      "subtitle": "",
-      "thesis": "AI equities have underperformed the market (AIQ -1.0% vs SPY +0.8pp) and exhibit elevated volatility (19.8% annualized), indicating a macro‑driven re‑pricing as corporate capex slows and regulatory scrutiny intensifies. AIQ trades at a trailing P/E of 24.2, well below the broader tech average of 33.2, while delivering a modest 20‑day return of -1% and flat 60‑day performance, suggesting upside potential if sentiment improves.",
-      "stage": "early",
-      "stage_label": "Early",
+      "subtitle": "Enterprise AI adoption",
+      "thesis": "AI-focused ETFs are posting robust 20‑day momentum (+7% for AIQ) and outpacing the market, reflecting accelerating corporate spend, expanding data‑center capacity and supportive government AI funding. AI sector continues to capture earnings growth, trading at a slight P/E premium to the market while delivering strong 20‑day returns, supporting further upside.",
+      "stage": "early_mid",
+      "stage_label": "Early-Mid",
       "consensus_score": 0.6666666666666666,
-      "investability_score": 0.705,
+      "investability_score": 0.7433333333333333,
       "agent_stages": {
-        "regime": "early",
+        "regime": "early_mid",
+        "markets": "early_mid"
+      },
+      "contributing_agents": [
+        "markets",
+        "regime"
+      ],
+      "primary_agent": "regime",
+      "synthesis": "Tailwinds are visible in policy and corporate budgets, early positioning is evident, and the narrative is spreading beyond the tech core but has not yet become mainstream across all regions. Momentum is robust and valuation gap is limited, but crowding is beginning.",
+      "key_drivers": [
+        "Corporate AI spend growth",
+        "Government AI research funding",
+        "Expansion of data‑center capacity",
+        "20d return +7%",
+        "vs SPY +5.4pp",
+        "Trailing P/E 25.2 vs 25.0"
+      ],
+      "risks": [
+        "Regulatory clampdown on AI models",
+        "Potential hype‑driven valuation correction",
+        "Potential valuation creep",
+        "Regulatory scrutiny",
+        "Unexpected macro shock"
+      ],
+      "tickers_or_sectors": [
+        "AIQ",
+        "ARK Autonomous Technology & Robotics ETF (ARKQ)",
+        "Global X Artificial Intelligence & Technology ETF (AIQ)"
+      ],
+      "key_drivers_sourced": [],
+      "risks_sourced": []
+    },
+    {
+      "name": "Cloud",
+      "subtitle": "Hybrid cloud demand",
+      "thesis": "The cloud sector (SKYY) posted a 5.2% 20‑day gain versus SPY and sits near its 52‑week high, underscoring continued enterprise migration to hybrid and multi‑cloud architectures driven by AI workloads and edge computing needs. Cloud sector exhibits elevated volatility despite price rally, indicating risk‑premium and potential for volatility‑related strategies.",
+      "stage": "early_mid",
+      "stage_label": "Early-Mid",
+      "consensus_score": 0.6666666666666666,
+      "investability_score": 0.66,
+      "agent_stages": {
+        "regime": "early_mid",
         "markets": "mid"
       },
       "contributing_agents": [
@@ -233,147 +200,104 @@
         "regime"
       ],
       "primary_agent": "regime",
-      "synthesis": "The sector is still in the early phase of a correction; macro tailwinds that initially fueled AI growth (high‑speed data, low rates) are receding, and the narrative has not yet reached consensus. Valuation advantage is clear, but short‑term price pressure remains; the theme is poised for a re‑rating.",
+      "synthesis": "Macro tailwinds such as digital transformation, ESG data processing and remote‑work persistence are evident, early investors are positioning, but the sector is not yet fully crowded. Price is near highs and valuation is elevated, indicating a mid‑stage cycle.",
       "key_drivers": [
-        "Corporate spending slowdown",
-        "Regulatory reviews of AI models",
-        "Higher financing costs relative to 2023‑24",
-        "Lower P/E vs sector",
-        "Growing AI adoption"
+        "Enterprise hybrid‑cloud migration",
+        "AI‑driven compute demand",
+        "Edge‑computing rollout",
+        "20d return +5.2%",
+        "60d return +29.1%",
+        "Trailing P/E 29.8"
       ],
       "risks": [
-        "Breakthrough AI breakthroughs reigniting demand",
-        "Policy support for AI research",
-        "AI hype cycle bust",
-        "Regulatory constraints"
+        "Data‑center oversupply",
+        "Corporate cap‑ex slowdown",
+        "Earnings slowdown",
+        "Higher discount rates",
+        "Volatility mean‑reversion"
       ],
       "tickers_or_sectors": [
-        "AIQ",
-        "ARKQ",
-        "Global X Robotics & AI ETF"
+        "SKYY",
+        "WCLD",
+        "CLOU"
       ],
       "key_drivers_sourced": [],
       "risks_sourced": []
     },
     {
       "name": "Tech",
-      "subtitle": "Tech valuations face headwinds",
-      "thesis": "Concerns over a slowdown in AI investment are dampening enthusiasm for high‑growth tech stocks, adding a risk‑off bias to market sentiment. Tech (20.7%) and AI (19.8%) volatilities sit in the mid‑20s, providing a balanced risk‑adjusted carry environment as the market transitions to higher volatility.",
-      "stage": "mid",
-      "stage_label": "Mid",
+      "subtitle": "AI‑driven battery health & microbial agriculture",
+      "thesis": "Advances in physics‑enhanced AI for battery health and microbial solutions for climate‑resilient crops are poised to accelerate clean‑technology adoption, though scaling and regulatory hurdles remain. Technology sector outperforms with 9% 20‑day return, yet its trailing P/E of 34.7 is significantly above market, pointing to a late‑stage valuation.",
+      "stage": "early_mid",
+      "stage_label": "Early-Mid",
       "consensus_score": 0.6666666666666666,
-      "investability_score": 0.65,
+      "investability_score": 0.615,
       "agent_stages": {
-        "narrative": "mid",
-        "markets": "mid"
+        "narrative": "early_mid",
+        "markets": "late"
       },
       "contributing_agents": [
         "markets",
         "narrative"
       ],
       "primary_agent": "narrative",
-      "synthesis": "Discussions on AI slowdown are mid‑cycle, influencing investor sentiment across the week. Vol levels are moderate and stable, suitable for carry strategies pending further volatility rise.",
+      "synthesis": "Breakthrough research published; commercial rollout still early. High P/E and strong price rally suggest limited further upside without earnings boost.",
       "key_drivers": [
-        "AI sector slowdown concerns",
-        "Tech vol 20.7%",
-        "AI vol 19.8%"
+        "AI improvements in battery diagnostics",
+        "Microbial innovations for agriculture",
+        "20d return +9%",
+        "vs SPY +7.4pp",
+        "Trailing P/E 34.7"
       ],
       "risks": [
-        "Deeper AI slowdown may reduce earnings growth expectations",
-        "Sector‑specific earnings surprises"
+        "Scaling and regulatory challenges",
+        "Adoption uncertainty",
+        "Earnings miss",
+        "Interest rate rise"
       ],
       "tickers_or_sectors": [
-        "NASDAQ",
-        "MSFT",
-        "NVDA",
-        "XLK",
-        "AIQ"
+        "Electric Vehicles",
+        "Battery Manufacturers",
+        "AgriTech",
+        "XLK"
       ],
       "key_drivers_sourced": [
         {
-          "text": "The Federal Reserve's upcoming interest‑rate decision will set the tone for monetary policy and market risk appetite.",
+          "text": "Physics‑enhanced AI improves lithium‑ion battery health forecasts, supporting EV adoption and grid storage.",
           "citation_ids": [
-            "tt--7680070834445429149"
+            "tt--8999353321303117520"
           ]
         },
         {
-          "text": "Slowing momentum in AI investment is dampening tech sector sentiment and could curb capital allocation.",
+          "text": "Microbial innovations could boost crop yields under heat stress, addressing food security in a warming climate.",
           "citation_ids": [
-            "tt-3199242826185330653",
-            "tt-876401309318297247"
+            "tt-8348640890650942666"
           ]
         }
       ],
       "risks_sourced": [
         {
-          "text": "An unexpected Fed policy shift (e.g., a larger hike) could increase market volatility and pressure risk assets.",
+          "text": "Scaling challenges, regulatory approval, and adoption uncertainty may limit impact of AI battery health tools.",
           "citation_ids": [
-            "tt--7680070834445429149"
+            "tt--8999353321303117520"
           ]
         },
         {
-          "text": "A deeper AI slowdown may lead to reduced earnings growth expectations for high‑growth tech firms.",
+          "text": "Commercialization hurdles and ecosystem acceptance could slow microbial agriculture solutions.",
           "citation_ids": [
-            "tt-3199242826185330653"
-          ]
-        },
-        {
-          "text": "Deteriorating market conditions could raise financing costs for energy companies, limiting the effectiveness of note issuances.",
-          "citation_ids": [
-            "tt-2879858459992416013"
+            "tt-8348640890650942666"
           ]
         }
       ]
     },
     {
-      "name": "Cloud",
-      "subtitle": "",
-      "thesis": "Cloud-focused ETFs have lagged the market sharply (SKYY -6.2% vs SPY -1.7%) with the highest 20‑day volatility among sectors (29.8% annualized), reflecting a macro shift as enterprises defer large‑scale migrations amid tighter budgets. SKYY’s 60‑day gain of +17.1% follows a 6.2% 20‑day decline, and its trailing P/E of 28.2 sits above the market average, while its 20‑day annualized volatility spikes to 29.8%, indicating a growth trade priced with a premium volatility risk.",
-      "stage": "early_mid",
-      "stage_label": "Early-Mid",
-      "consensus_score": 0.6666666666666666,
-      "investability_score": 0.63,
-      "agent_stages": {
-        "regime": "early_mid",
-        "markets": "early"
-      },
-      "contributing_agents": [
-        "markets",
-        "regime"
-      ],
-      "primary_agent": "regime",
-      "synthesis": "The sector’s underperformance and volatility signal the early‑mid stage of a consolidation cycle; pricing pressure is emerging but the full impact on earnings is still unfolding. Recent rebound suggests a turning point, but elevated volatility implies the upside is not yet fully priced.",
-      "key_drivers": [
-        "Enterprise capex restraint",
-        "Pricing competition among hyperscalers",
-        "Shift to hybrid/multi‑cloud models",
-        "60‑day price rebound",
-        "High 20‑day vol",
-        "Cloud vol 29.8%"
-      ],
-      "risks": [
-        "Accelerated digital transformation post‑cyber incidents",
-        "New AI‑driven cloud services boosting demand",
-        "Volatility‑driven drawdowns",
-        "Cloud spending slowdown",
-        "Volatility spikes"
-      ],
-      "tickers_or_sectors": [
-        "SKYY",
-        "CLOU",
-        "WCLD"
-      ],
-      "key_drivers_sourced": [],
-      "risks_sourced": []
-    },
-    {
-      "name": "Elevated VIX and rising risk appetite",
-      "subtitle": "Volatility regime shift",
-      "thesis": "The VIX has climbed 11.4% over the past 20 days to 17.65, moving the market into an elevated volatility regime and suggesting higher risk premia across assets.",
+      "name": "Low‑Vol Carry in Core Large‑Cap",
+      "subtitle": "VIX at 14.2 and broad market vol compressed",
+      "thesis": "Overall market volatility is low, offering carry opportunities in stable large‑cap equities as VIX declines 6.6%.",
       "stage": "early_mid",
       "stage_label": "Early-Mid",
       "consensus_score": 0.3333333333333333,
-      "investability_score": 0.75,
+      "investability_score": 0.8,
       "agent_stages": {
         "markets": "early_mid"
       },
@@ -381,48 +305,165 @@
         "markets"
       ],
       "primary_agent": "markets",
-      "synthesis": "VIX surge indicates the end of a low‑vol compression phase and the start of broader volatility expansion.",
+      "synthesis": "Vol compression evident with VIX down and broad sector vols near historic lows.",
       "key_drivers": [
-        "VIX 20‑day +11.4%"
+        "VIX 14.21",
+        "VIX 20d change -6.6%"
       ],
       "risks": [
-        "Potential over‑reaction to market news"
+        "Sudden shock to rates or geopolitics"
       ],
       "tickers_or_sectors": [
-        "^VIX"
+        "SPY"
       ],
       "key_drivers_sourced": [],
       "risks_sourced": []
     },
     {
-      "name": "Emerging Market Commodity Exposure",
-      "subtitle": "",
-      "thesis": "Global commodity demand, especially for copper and lithium, remains robust as the green transition accelerates, while emerging market exporters benefit from relatively stronger terms of trade despite a firm USD.",
-      "stage": "mid",
-      "stage_label": "Mid",
+      "name": "Financials",
+      "subtitle": "FinTech & Payments",
+      "thesis": "Financials exhibit low volatility (13% annualized) and fintech adoption is accelerating, driven by AI‑enabled risk tools, open‑banking frameworks and growing digital‑payment volumes, creating a growth niche within a broadly defensive sector.",
+      "stage": "early_mid",
+      "stage_label": "Early-Mid",
       "consensus_score": 0.3333333333333333,
-      "investability_score": 0.73,
+      "investability_score": 0.7,
       "agent_stages": {
-        "regime": "mid"
+        "regime": "early_mid"
       },
       "contributing_agents": [
         "regime"
       ],
       "primary_agent": "regime",
-      "synthesis": "Commodity price support is evident, earnings are confirming the macro tailwind, and positioning is moderate; the theme is in expansion but not yet overcrowded.",
+      "synthesis": "Visible tailwinds from technology integration and early investor positioning exist, but the broader financial sector remains underweight, keeping crowding modest.",
       "key_drivers": [
-        "Green energy infrastructure spending",
-        "Supply constraints in key minerals",
-        "China’s gradual industrial rebound"
+        "Digital payments volume growth",
+        "Open‑banking regulations",
+        "AI‑enhanced credit underwriting"
       ],
       "risks": [
-        "Sharp USD appreciation eroding export margins",
-        "Policy shifts toward domestic resource nationalism"
+        "Regulatory tightening on fintech",
+        "Deterioration in credit cycles"
       ],
       "tickers_or_sectors": [
-        "XME",
-        "LIT",
-        "GDX"
+        "FINX",
+        "PYPL",
+        "XLF"
+      ],
+      "key_drivers_sourced": [],
+      "risks_sourced": []
+    },
+    {
+      "name": "Environmental Litigation Impact",
+      "subtitle": "$345M Greenpeace verdict",
+      "thesis": "The sizable verdict against Greenpeace could deter aggressive activist lawsuits, influencing corporate ESG strategies and litigation risk assessments.",
+      "stage": "mid",
+      "stage_label": "Mid",
+      "consensus_score": 0.3333333333333333,
+      "investability_score": 0.7,
+      "agent_stages": {
+        "narrative": "mid"
+      },
+      "contributing_agents": [
+        "narrative"
+      ],
+      "primary_agent": "narrative",
+      "synthesis": "Verdict issued and appeals pending, creating immediate market relevance.",
+      "key_drivers": [
+        "Large financial penalty",
+        "Legal precedent for activist groups"
+      ],
+      "risks": [
+        "Potential overturn and renewed litigation",
+        "Reputational fallout for involved firms"
+      ],
+      "tickers_or_sectors": [
+        "Energy",
+        "Infrastructure",
+        "ESG"
+      ],
+      "key_drivers_sourced": [
+        {
+          "text": "Potential US policy shift to restrict diesel exports could tighten global supply and raise prices.",
+          "citation_ids": [
+            "tt--4621842819551436977"
+          ]
+        },
+        {
+          "text": "The $345 million verdict against Greenpeace may deter activist litigation and reshape ESG risk assessments.",
+          "citation_ids": [
+            "tt--849590160278040053"
+          ]
+        },
+        {
+          "text": "Microbial innovations could boost crop yields under heat stress, addressing food security in a warming climate.",
+          "citation_ids": [
+            "tt-8348640890650942666"
+          ]
+        }
+      ],
+      "risks_sourced": [
+        {
+          "text": "Retaliatory trade measures and supply‑chain disruptions could follow a diesel export ban.",
+          "citation_ids": [
+            "tt--4621842819551436977"
+          ]
+        },
+        {
+          "text": "Operational continuity and market momentum risk for Monzo amid leadership turnover.",
+          "citation_ids": [
+            "tt-5051518788206599957"
+          ]
+        },
+        {
+          "text": "Potential overturn of the Greenpeace verdict could reignite legal battles and reputational risk for corporations.",
+          "citation_ids": [
+            "tt--849590160278040053"
+          ]
+        },
+        {
+          "text": "Scaling challenges, regulatory approval, and adoption uncertainty may limit impact of AI battery health tools.",
+          "citation_ids": [
+            "tt--8999353321303117520"
+          ]
+        },
+        {
+          "text": "Commercialization hurdles and ecosystem acceptance could slow microbial agriculture solutions.",
+          "citation_ids": [
+            "tt-8348640890650942666"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Consumer",
+      "subtitle": "Middle‑income growth",
+      "thesis": "Fiscal stimulus in India, China’s dual‑circulation reforms and stable commodity prices are reviving consumer spending in emerging markets, creating a nascent upside not yet priced into broad EM indices.",
+      "stage": "early",
+      "stage_label": "Early",
+      "consensus_score": 0.3333333333333333,
+      "investability_score": 0.65,
+      "agent_stages": {
+        "regime": "early"
+      },
+      "contributing_agents": [
+        "regime"
+      ],
+      "primary_agent": "regime",
+      "synthesis": "Macro tailwinds are forming—policy support and demographic trends—while consensus remains limited, offering early‑stage positioning opportunities.",
+      "key_drivers": [
+        "Rising middle‑class wages",
+        "Urbanization acceleration",
+        "Digital payments penetration"
+      ],
+      "risks": [
+        "Geopolitical tensions",
+        "Currency depreciation pressures",
+        "Corporate debt stress"
+      ],
+      "tickers_or_sectors": [
+        "EEM",
+        "VWO",
+        "iShares MSCI Emerging Markets ETF (EEM)"
       ],
       "key_drivers_sourced": [],
       "risks_sourced": []
@@ -430,340 +471,334 @@
   ],
   "regime_themes": [
     {
-      "name": "Energy Momentum & Supply Constraints",
-      "subtitle": "",
-      "thesis": "Strong 20‑day price gains and near‑52‑week highs in energy stocks, combined with OPEC+ output discipline and rising Asian demand, create a macro tailwind for upstream and downstream energy exposure.",
+      "name": "Artificial Intelligence Integration",
+      "subtitle": "Enterprise AI adoption",
+      "thesis": "AI-focused ETFs are posting robust 20‑day momentum (+7% for AIQ) and outpacing the market, reflecting accelerating corporate spend, expanding data‑center capacity and supportive government AI funding.",
       "stage": "early_mid",
-      "stage_rationale": "Momentum is evident (XLE +6.7% vs SPY -1.7%) and earnings are beginning to reflect higher oil prices, but the narrative of a sustained commodity rally is not yet fully priced in across the broader market.",
+      "stage_rationale": "Tailwinds are visible in policy and corporate budgets, early positioning is evident, and the narrative is spreading beyond the tech core but has not yet become mainstream across all regions.",
       "confidence": 0.78,
       "key_drivers": [
-        "OPEC+ production cuts",
-        "Geopolitical supply risks",
-        "Robust demand from China and India"
+        "Corporate AI spend growth",
+        "Government AI research funding",
+        "Expansion of data‑center capacity"
       ],
       "risks": [
-        "Accelerated demand slowdown if global growth weakens",
-        "Policy shift toward faster energy transition reducing fossil‑fuel demand"
-      ],
-      "tickers_or_sectors": [
-        "XLE",
-        "USO",
-        "VDE"
-      ]
-    },
-    {
-      "name": "AI Valuation Reset",
-      "subtitle": "",
-      "thesis": "AI equities have underperformed the market (AIQ -1.0% vs SPY +0.8pp) and exhibit elevated volatility (19.8% annualized), indicating a macro‑driven re‑pricing as corporate capex slows and regulatory scrutiny intensifies.",
-      "stage": "early",
-      "stage_rationale": "The sector is still in the early phase of a correction; macro tailwinds that initially fueled AI growth (high‑speed data, low rates) are receding, and the narrative has not yet reached consensus.",
-      "confidence": 0.71,
-      "key_drivers": [
-        "Corporate spending slowdown",
-        "Regulatory reviews of AI models",
-        "Higher financing costs relative to 2023‑24"
-      ],
-      "risks": [
-        "Breakthrough AI breakthroughs reigniting demand",
-        "Policy support for AI research"
+        "Regulatory clampdown on AI models",
+        "Potential hype‑driven valuation correction"
       ],
       "tickers_or_sectors": [
         "AIQ",
-        "ARKQ",
-        "Global X Robotics & AI ETF"
+        "ARK Autonomous Technology & Robotics ETF (ARKQ)",
+        "Global X Artificial Intelligence & Technology ETF (AIQ)"
       ]
     },
     {
-      "name": "Cloud Computing Consolidation",
-      "subtitle": "",
-      "thesis": "Cloud-focused ETFs have lagged the market sharply (SKYY -6.2% vs SPY -1.7%) with the highest 20‑day volatility among sectors (29.8% annualized), reflecting a macro shift as enterprises defer large‑scale migrations amid tighter budgets.",
+      "name": "Cloud Computing Expansion",
+      "subtitle": "Hybrid cloud demand",
+      "thesis": "The cloud sector (SKYY) posted a 5.2% 20‑day gain versus SPY and sits near its 52‑week high, underscoring continued enterprise migration to hybrid and multi‑cloud architectures driven by AI workloads and edge computing needs.",
       "stage": "early_mid",
-      "stage_rationale": "The sector’s underperformance and volatility signal the early‑mid stage of a consolidation cycle; pricing pressure is emerging but the full impact on earnings is still unfolding.",
-      "confidence": 0.69,
+      "stage_rationale": "Macro tailwinds such as digital transformation, ESG data processing and remote‑work persistence are evident, early investors are positioning, but the sector is not yet fully crowded.",
+      "confidence": 0.73,
       "key_drivers": [
-        "Enterprise capex restraint",
-        "Pricing competition among hyperscalers",
-        "Shift to hybrid/multi‑cloud models"
+        "Enterprise hybrid‑cloud migration",
+        "AI‑driven compute demand",
+        "Edge‑computing rollout"
       ],
       "risks": [
-        "Accelerated digital transformation post‑cyber incidents",
-        "New AI‑driven cloud services boosting demand"
+        "Data‑center oversupply",
+        "Corporate cap‑ex slowdown"
       ],
       "tickers_or_sectors": [
         "SKYY",
-        "CLOU",
-        "WCLD"
+        "WCLD",
+        "CLOU"
       ]
     },
     {
-      "name": "Financial Sector Stress Under Rate Plateau",
-      "subtitle": "",
-      "thesis": "Financials have been flat relative to the benchmark (XLF 0.0pp vs SPY) while the VIX climbs, suggesting that banks are feeling pressure from a near‑peak rate environment and a slowdown in loan growth.",
-      "stage": "mid_late",
-      "stage_rationale": "The sector is widely recognized as under pressure; credit spreads are widening and profit growth is moderating, placing the theme in a mid‑late stage where crowding and policy risk are rising.",
-      "confidence": 0.74,
-      "key_drivers": [
-        "Rate plateau limiting net‑interest margins",
-        "Higher loan‑loss provisions",
-        "Regulatory capital tightening"
-      ],
-      "risks": [
-        "Unexpected rate cuts reviving margin expansion",
-        "M&A activity boosting fee income"
-      ],
-      "tickers_or_sectors": [
-        "XLF",
-        "KBE",
-        "IYF"
-      ]
-    },
-    {
-      "name": "Emerging Market Commodity Exposure",
-      "subtitle": "",
-      "thesis": "Global commodity demand, especially for copper and lithium, remains robust as the green transition accelerates, while emerging market exporters benefit from relatively stronger terms of trade despite a firm USD.",
+      "name": "Renewable Energy & Grid Modernization",
+      "subtitle": "Clean power transition",
+      "thesis": "Policy momentum from global carbon‑pricing initiatives and extensions of the US Inflation Reduction Act are translating into rising renewable capacity additions and storage projects, even as the energy sector shows modest short‑term underperformance.",
       "stage": "mid",
-      "stage_rationale": "Commodity price support is evident, earnings are confirming the macro tailwind, and positioning is moderate; the theme is in expansion but not yet overcrowded.",
-      "confidence": 0.73,
+      "stage_rationale": "Earnings from renewable developers are confirming growth, moderate crowding is present, and policy support remains strong, placing the theme in an expansion phase.",
+      "confidence": 0.68,
       "key_drivers": [
-        "Green energy infrastructure spending",
-        "Supply constraints in key minerals",
-        "China’s gradual industrial rebound"
+        "Renewable capacity installations",
+        "Energy‑storage demand",
+        "Green hydrogen investment"
       ],
       "risks": [
-        "Sharp USD appreciation eroding export margins",
-        "Policy shifts toward domestic resource nationalism"
+        "Commodity price volatility",
+        "Potential policy rollbacks",
+        "Supply‑chain bottlenecks for turbine components"
       ],
       "tickers_or_sectors": [
-        "XME",
-        "LIT",
-        "GDX"
+        "ICLN",
+        "TAN",
+        "XLE"
+      ]
+    },
+    {
+      "name": "Emerging Market Consumer Resilience",
+      "subtitle": "Middle‑income growth",
+      "thesis": "Fiscal stimulus in India, China’s dual‑circulation reforms and stable commodity prices are reviving consumer spending in emerging markets, creating a nascent upside not yet priced into broad EM indices.",
+      "stage": "early",
+      "stage_rationale": "Macro tailwinds are forming—policy support and demographic trends—while consensus remains limited, offering early‑stage positioning opportunities.",
+      "confidence": 0.65,
+      "key_drivers": [
+        "Rising middle‑class wages",
+        "Urbanization acceleration",
+        "Digital payments penetration"
+      ],
+      "risks": [
+        "Geopolitical tensions",
+        "Currency depreciation pressures",
+        "Corporate debt stress"
+      ],
+      "tickers_or_sectors": [
+        "EEM",
+        "VWO",
+        "iShares MSCI Emerging Markets ETF (EEM)"
+      ]
+    },
+    {
+      "name": "Financial Sector Digitalization",
+      "subtitle": "FinTech & Payments",
+      "thesis": "Financials exhibit low volatility (13% annualized) and fintech adoption is accelerating, driven by AI‑enabled risk tools, open‑banking frameworks and growing digital‑payment volumes, creating a growth niche within a broadly defensive sector.",
+      "stage": "early_mid",
+      "stage_rationale": "Visible tailwinds from technology integration and early investor positioning exist, but the broader financial sector remains underweight, keeping crowding modest.",
+      "confidence": 0.7,
+      "key_drivers": [
+        "Digital payments volume growth",
+        "Open‑banking regulations",
+        "AI‑enhanced credit underwriting"
+      ],
+      "risks": [
+        "Regulatory tightening on fintech",
+        "Deterioration in credit cycles"
+      ],
+      "tickers_or_sectors": [
+        "FINX",
+        "PYPL",
+        "XLF"
       ]
     }
   ],
   "narrative_themes": [
     {
-      "name": "Fed Rate Decision Outlook",
-      "subtitle": "Markets brace for policy signal",
-      "thesis": "The Federal Reserve's upcoming interest‑rate decision will be a primary driver of equity and bond market direction, with expectations of a hold or modest hike.",
-      "stage": "early",
-      "stage_rationale": "The decision is imminent, making it an early‑stage catalyst.",
-      "confidence": 0.7,
-      "key_drivers": [
-        "Fed rate decision anticipation"
-      ],
-      "risks": [
-        "Unexpected Fed policy shift could increase volatility"
-      ],
-      "tickers_or_sectors": [
-        "SPY",
-        "TLT",
-        "XLF"
-      ]
-    },
-    {
-      "name": "Saudi Pipeline Shutdown Impact on Oil",
-      "subtitle": "Supply bottleneck fuels price spikes",
-      "thesis": "The shutdown of a key Saudi export pipeline is tightening global oil supply, pushing crude prices higher and benefiting upstream equities.",
+      "name": "Energy Trade Policy",
+      "subtitle": "U.S. diesel export ban considerations",
+      "thesis": "A potential U.S. ban on diesel exports could tighten global fuel markets, prompting price spikes and prompting retaliatory trade actions.",
       "stage": "early_mid",
-      "stage_rationale": "Immediate price reaction observed, but full impact will unfold over the next few days.",
-      "confidence": 0.75,
-      "key_drivers": [
-        "Saudi pipeline shutdown supply shock"
-      ],
-      "risks": [
-        "Prolonged pipeline outage could tighten supply further"
-      ],
-      "tickers_or_sectors": [
-        "XLE",
-        "CL=F",
-        "OXY"
-      ]
-    },
-    {
-      "name": "AI Slowdown and Tech Sentiment",
-      "subtitle": "Tech valuations face headwinds",
-      "thesis": "Concerns over a slowdown in AI investment are dampening enthusiasm for high‑growth tech stocks, adding a risk‑off bias to market sentiment.",
-      "stage": "mid",
-      "stage_rationale": "Discussions on AI slowdown are mid‑cycle, influencing investor sentiment across the week.",
+      "stage_rationale": "Policy discussion is public but implementation details remain unclear.",
       "confidence": 0.65,
       "key_drivers": [
-        "AI sector slowdown concerns"
+        "Policy shift toward export restriction",
+        "Global diesel demand pressure"
       ],
       "risks": [
-        "Deeper AI slowdown may reduce earnings growth expectations"
+        "Retaliatory tariffs",
+        "Supply chain disruptions"
       ],
       "tickers_or_sectors": [
-        "NASDAQ",
-        "MSFT",
-        "NVDA"
+        "Energy",
+        "Oil & Gas"
       ]
     },
     {
-      "name": "Energy Financing Activity",
-      "subtitle": "PBF Energy raises capital via exchangeable notes",
-      "thesis": "PBF Energy's $500 million exchangeable notes issuance signals continued capital raising in the refining sector, supporting operational expansion and sector liquidity.",
-      "stage": "mid_late",
-      "stage_rationale": "Financing news is recent; its impact on the sector will be priced in over the coming weeks.",
+      "name": "Fintech Talent Mobility",
+      "subtitle": "Monzo EU chief departure",
+      "thesis": "The exit of Monzo's European CEO to start a robotics venture may signal talent reallocation and strategic pivots within the European fintech landscape.",
+      "stage": "early",
+      "stage_rationale": "Leadership change announced; impact on operations yet to materialize.",
       "confidence": 0.6,
       "key_drivers": [
-        "Energy financing activity"
+        "Leadership turnover",
+        "Emergence of robotics startups"
       ],
       "risks": [
-        "Rising financing costs could limit effectiveness of note issuances"
+        "Operational continuity challenges",
+        "Loss of market momentum"
       ],
       "tickers_or_sectors": [
-        "PBF",
-        "XLE"
+        "FinTech",
+        "Neobanks"
+      ]
+    },
+    {
+      "name": "Environmental Litigation Impact",
+      "subtitle": "$345M Greenpeace verdict",
+      "thesis": "The sizable verdict against Greenpeace could deter aggressive activist lawsuits, influencing corporate ESG strategies and litigation risk assessments.",
+      "stage": "mid",
+      "stage_rationale": "Verdict issued and appeals pending, creating immediate market relevance.",
+      "confidence": 0.7,
+      "key_drivers": [
+        "Large financial penalty",
+        "Legal precedent for activist groups"
+      ],
+      "risks": [
+        "Potential overturn and renewed litigation",
+        "Reputational fallout for involved firms"
+      ],
+      "tickers_or_sectors": [
+        "Energy",
+        "Infrastructure",
+        "ESG"
+      ]
+    },
+    {
+      "name": "Next‑Gen Clean Tech",
+      "subtitle": "AI‑driven battery health & microbial agriculture",
+      "thesis": "Advances in physics‑enhanced AI for battery health and microbial solutions for climate‑resilient crops are poised to accelerate clean‑technology adoption, though scaling and regulatory hurdles remain.",
+      "stage": "early_mid",
+      "stage_rationale": "Breakthrough research published; commercial rollout still early.",
+      "confidence": 0.68,
+      "key_drivers": [
+        "AI improvements in battery diagnostics",
+        "Microbial innovations for agriculture"
+      ],
+      "risks": [
+        "Scaling and regulatory challenges",
+        "Adoption uncertainty"
+      ],
+      "tickers_or_sectors": [
+        "Electric Vehicles",
+        "Battery Manufacturers",
+        "AgriTech"
       ]
     }
   ],
   "markets_themes": [
     {
-      "name": "Energy momentum and valuation advantage",
-      "subtitle": "Strong price action and cheap earnings",
-      "thesis": "Energy’s 20‑day gain of +6.7% and near‑52‑week‑high price, combined with a trailing P/E of 18.1, give it a clear earnings‑multiple edge and outperformance of +8.4pp versus SPY.",
+      "name": "AI Momentum Expansion",
+      "subtitle": "AIQ outperformance with modest valuation premium",
+      "thesis": "AI sector continues to capture earnings growth, trading at a slight P/E premium to the market while delivering strong 20‑day returns, supporting further upside.",
       "stage": "early_mid",
-      "stage_rationale": "Momentum is building and valuation advantage is evident, but the sector is still a few weeks from a sustained breakout.",
-      "confidence": 0.8,
-      "key_drivers": [
-        "20‑day price momentum",
-        "Low trailing P/E",
-        "Outperformance vs SPY"
-      ],
-      "risks": [
-        "Potential commodity price reversal",
-        "Geopolitical supply shocks"
-      ],
-      "tickers_or_sectors": [
-        "XLE"
-      ]
-    },
-    {
-      "name": "AI exposure at attractive valuation",
-      "subtitle": "Relative cheapness in a high‑growth theme",
-      "thesis": "AIQ trades at a trailing P/E of 24.2, well below the broader tech average of 33.2, while delivering a modest 20‑day return of -1% and flat 60‑day performance, suggesting upside potential if sentiment improves.",
-      "stage": "mid",
-      "stage_rationale": "Valuation advantage is clear, but short‑term price pressure remains; the theme is poised for a re‑rating.",
-      "confidence": 0.7,
-      "key_drivers": [
-        "Lower P/E vs sector",
-        "Growing AI adoption"
-      ],
-      "risks": [
-        "AI hype cycle bust",
-        "Regulatory constraints"
-      ],
-      "tickers_or_sectors": [
-        "AIQ"
-      ]
-    },
-    {
-      "name": "Cloud sector volatility and growth divergence",
-      "subtitle": "High growth, high risk",
-      "thesis": "SKYY’s 60‑day gain of +17.1% follows a 6.2% 20‑day decline, and its trailing P/E of 28.2 sits above the market average, while its 20‑day annualized volatility spikes to 29.8%, indicating a growth trade priced with a premium volatility risk.",
-      "stage": "early",
-      "stage_rationale": "Recent rebound suggests a turning point, but elevated volatility implies the upside is not yet fully priced.",
-      "confidence": 0.6,
-      "key_drivers": [
-        "60‑day price rebound",
-        "High 20‑day vol"
-      ],
-      "risks": [
-        "Volatility‑driven drawdowns",
-        "Cloud spending slowdown"
-      ],
-      "tickers_or_sectors": [
-        "SKYY"
-      ]
-    },
-    {
-      "name": "Financials stable earnings, modest valuation",
-      "subtitle": "Defensive value play",
-      "thesis": "Financials (XLF) show a trailing P/E of 16.2 and P/B of 1.68, with a 5.7% 60‑day gain despite flat 20‑day performance, positioning them as a stable, undervalued sector relative to the broader market.",
-      "stage": "mid",
-      "stage_rationale": "Valuation and earnings stability are established; the sector awaits macro‑driven catalysts.",
-      "confidence": 0.65,
-      "key_drivers": [
-        "Low P/E",
-        "Positive 60‑day return"
-      ],
-      "risks": [
-        "Interest‑rate volatility",
-        "Credit quality concerns"
-      ],
-      "tickers_or_sectors": [
-        "XLF"
-      ]
-    },
-    {
-      "name": "Elevated VIX and rising risk appetite",
-      "subtitle": "Volatility regime shift",
-      "thesis": "The VIX has climbed 11.4% over the past 20 days to 17.65, moving the market into an elevated volatility regime and suggesting higher risk premia across assets.",
-      "stage": "early_mid",
-      "stage_rationale": "VIX surge indicates the end of a low‑vol compression phase and the start of broader volatility expansion.",
+      "stage_rationale": "Momentum is robust and valuation gap is limited, but crowding is beginning.",
       "confidence": 0.75,
       "key_drivers": [
-        "VIX 20‑day +11.4%"
+        "20d return +7%",
+        "vs SPY +5.4pp",
+        "Trailing P/E 25.2 vs 25.0"
       ],
       "risks": [
-        "Potential over‑reaction to market news"
+        "Potential valuation creep",
+        "Regulatory scrutiny"
       ],
       "tickers_or_sectors": [
-        "^VIX"
+        "AIQ"
       ]
     },
     {
-      "name": "Energy low‑volatility relative to market",
-      "subtitle": "Defensive carry opportunity",
-      "thesis": "Energy’s 20‑day annualized volatility of 15.1% is the lowest among major sectors, offering a low‑vol carry trade while the sector enjoys strong price momentum.",
+      "name": "Cloud Valuation Stretch",
+      "subtitle": "SKYY near 52‑week high with high P/E",
+      "thesis": "Cloud ETFs have posted strong 60‑day gains but trade at a high trailing P/E of 29.8, suggesting limited upside unless earnings accelerate.",
       "stage": "mid",
-      "stage_rationale": "Volatility is stable and below peers, supporting continued low‑vol positioning.",
-      "confidence": 0.7,
+      "stage_rationale": "Price is near highs and valuation is elevated, indicating a mid‑stage cycle.",
+      "confidence": 0.6,
       "key_drivers": [
-        "Energy vol 15.1% vs Tech 20.7%"
+        "20d return +5.2%",
+        "60d return +29.1%",
+        "Trailing P/E 29.8"
       ],
       "risks": [
-        "Commodity price shock"
+        "Earnings slowdown",
+        "Higher discount rates"
+      ],
+      "tickers_or_sectors": [
+        "SKYY"
+      ]
+    },
+    {
+      "name": "Tech Valuation Premium",
+      "subtitle": "XLK leading gains but expensive",
+      "thesis": "Technology sector outperforms with 9% 20‑day return, yet its trailing P/E of 34.7 is significantly above market, pointing to a late‑stage valuation.",
+      "stage": "late",
+      "stage_rationale": "High P/E and strong price rally suggest limited further upside without earnings boost.",
+      "confidence": 0.55,
+      "key_drivers": [
+        "20d return +9%",
+        "vs SPY +7.4pp",
+        "Trailing P/E 34.7"
+      ],
+      "risks": [
+        "Earnings miss",
+        "Interest rate rise"
+      ],
+      "tickers_or_sectors": [
+        "XLK"
+      ]
+    },
+    {
+      "name": "Energy Rebound at Discount",
+      "subtitle": "XLE gains on low valuation",
+      "thesis": "Energy ETF has delivered a 15.9% 60‑day gain while trading at a low P/E of 17.2, offering potential upside if commodity prices stay supportive.",
+      "stage": "early",
+      "stage_rationale": "Low valuation and recent price rally place it early in a potential up‑cycle.",
+      "confidence": 0.7,
+      "key_drivers": [
+        "60d return +15.9%",
+        "Trailing P/E 17.2",
+        "20d return -1.1%"
+      ],
+      "risks": [
+        "Oil price volatility",
+        "Geopolitical shocks"
       ],
       "tickers_or_sectors": [
         "XLE"
       ]
     },
     {
-      "name": "Tech and AI moderate volatility carry",
-      "subtitle": "Mid‑vol risk‑adjusted play",
-      "thesis": "Tech (20.7%) and AI (19.8%) volatilities sit in the mid‑20s, providing a balanced risk‑adjusted carry environment as the market transitions to higher volatility.",
-      "stage": "mid",
-      "stage_rationale": "Vol levels are moderate and stable, suitable for carry strategies pending further volatility rise.",
-      "confidence": 0.65,
+      "name": "Low‑Vol Carry in Core Large‑Cap",
+      "subtitle": "VIX at 14.2 and broad market vol compressed",
+      "thesis": "Overall market volatility is low, offering carry opportunities in stable large‑cap equities as VIX declines 6.6%.",
+      "stage": "early_mid",
+      "stage_rationale": "Vol compression evident with VIX down and broad sector vols near historic lows.",
+      "confidence": 0.8,
       "key_drivers": [
-        "Tech vol 20.7%",
-        "AI vol 19.8%"
+        "VIX 14.21",
+        "VIX 20d change -6.6%"
       ],
       "risks": [
-        "Sector‑specific earnings surprises"
+        "Sudden shock to rates or geopolitics"
       ],
       "tickers_or_sectors": [
-        "XLK",
-        "AIQ"
+        "SPY"
       ]
     },
     {
-      "name": "Cloud sector high volatility risk premium",
-      "subtitle": "Caution on high‑vol play",
-      "thesis": "Cloud’s 20‑day annualized volatility of 29.8% is the highest among the surveyed sectors, indicating a sizable risk premium that warrants careful positioning.",
-      "stage": "early",
-      "stage_rationale": "Volatility is expanding rapidly, suggesting the premium may be priced in but could also spike further.",
-      "confidence": 0.6,
+      "name": "Cloud Volatility Spike",
+      "subtitle": "SKYY 30.1% annualized 20d vol",
+      "thesis": "Cloud sector exhibits elevated volatility despite price rally, indicating risk‑premium and potential for volatility‑related strategies.",
+      "stage": "mid",
+      "stage_rationale": "Sector vol is markedly higher than market average, suggesting a mid‑stage risk environment.",
+      "confidence": 0.65,
       "key_drivers": [
-        "Cloud vol 29.8%"
+        "Cloud 20d ann vol 30.1%"
       ],
       "risks": [
-        "Volatility spikes",
-        "Growth slowdown"
+        "Volatility mean‑reversion",
+        "Earnings disappointment"
       ],
       "tickers_or_sectors": [
         "SKYY"
+      ]
+    },
+    {
+      "name": "AI Volatility Compression",
+      "subtitle": "AI 21.5% vol with strong momentum",
+      "thesis": "AI sector shows modest volatility relative to its price gains, implying a low‑vol environment that could sustain momentum.",
+      "stage": "early",
+      "stage_rationale": "Vol is below cloud sector and VIX is low, indicating early compression.",
+      "confidence": 0.7,
+      "key_drivers": [
+        "AI 20d ann vol 21.5%"
+      ],
+      "risks": [
+        "Unexpected macro shock"
+      ],
+      "tickers_or_sectors": [
+        "AIQ"
       ]
     }
   ],
