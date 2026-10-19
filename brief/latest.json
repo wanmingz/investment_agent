@@ -1,46 +1,46 @@
 {
-  "report_date": "2026-09-28",
-  "as_of_context": "As of September 28, 2026 (2026-09-28)",
-  "executive_summary": "Global markets are trading in a low‑volatility environment, with the VIX at 16.04 and down 1.8% over the past 20 days. Macro data point to a disinflationary soft‑landing: inflation easing, rates near peak and modest growth expectations, while sector rotation shows selective outperformance in AI and tech. Headline tone: neutral. Global markets are balancing income‑seeking ETF activity, strategic pivots toward critical minerals, accelerated corporate AI deployments, and continued energy infrastructure utilization in Saudi Arabia, creating a mixed but stable backdrop for investors. Top themes: Tech, Healthcare.",
-  "regime_view": "Global markets are trading in a low‑volatility environment, with the VIX at 16.04 and down 1.8% over the past 20 days. Macro data point to a disinflationary soft‑landing: inflation easing, rates near peak and modest growth expectations, while sector rotation shows selective outperformance in AI and tech. Dominant regime: disinflationary soft landing. Low VIX (16.04) indicates risk appetite for growth‑oriented themes AI sector outperformance and tech near 52‑week high signal momentum in technology Energy modest outperformance points to commodity tailwinds",
-  "narrative_view": "Global markets are balancing income‑seeking ETF activity, strategic pivots toward critical minerals, accelerated corporate AI deployments, and continued energy infrastructure utilization in Saudi Arabia, creating a mixed but stable backdrop for investors.",
-  "markets_fundamentals_view": "Tech remains the market's engine, with XLK trading just 0.7% below its 52‑week high, a trailing P/E of 34.7 and outpacing the S&P 500 by 3.9 percentage points over the past 20 days. Energy has staged a strong rebound, posting an 18.2% 60‑day gain while trading at a modest P/E of 17.2, offering a valuation cushion. Consumer discretionary is lagging, down 4.4% over 20 days and 6.2% over 60 days, sitting 10.7% below its 52‑week high, suggesting a potential value entry point. AI and Cloud exposure (AIQ, SKYY) continue to post solid multi‑month gains but carry higher multiples and volatility, positioning them as growth catalysts amid a still‑elevated risk environment.",
-  "markets_vol_view": "The VIX has slipped 1.8% over the last 20 days to 16.04, indicating a low‑volatility regime. Tech's 20‑day annualized volatility has compressed to 21.7%, supporting the recent price momentum. Energy volatility remains elevated at 20.4% despite price gains, while Healthcare enjoys the lowest vol at 13.6%, reflecting defensive stability. AI and Cloud sectors exhibit the highest volatility (21.3% and 29.8% respectively), highlighting a premium for growth exposure in a low‑vol backdrop.",
+  "report_date": "2026-10-19",
+  "as_of_context": "As of October 19, 2026 (2026-10-19)",
+  "executive_summary": "Global markets are in a flat‑to‑slightly positive stance (SPY +0.2% 20d) as volatility spikes 31% in 20 days to a VIX of 18.6, indicating a cautious risk‑off mood. Momentum is concentrated in energy (+6.7% vs SPY +6.5pp), healthcare (+5.3% vs SPY +5.1pp) and utilities (+3.5% vs SPY +3.3pp), while AI and cloud lag the benchmark. The backdrop reflects a late‑cycle environment where growth is modest, inflationary pressures persist, and investors gravitate toward defensive and commodity‑linked assets. Headline tone: risk-on. Global markets are showing renewed optimism driven by a wave of capital into AI‑chip and cloud‑compute providers, a rebound in semiconductor equities, strategic M&A in the nuclear‑energy supply chain, and bullish analyst coverage of cross‑border e‑commerce platforms. The confluence of funding, demand for AI compute, and sector‑specific consolidations is lifting risk‑on sentiment while still exposing valuations to macro‑risk. Top themes: Energy, Healthcare.",
+  "regime_view": "Global markets are in a flat‑to‑slightly positive stance (SPY +0.2% 20d) as volatility spikes 31% in 20 days to a VIX of 18.6, indicating a cautious risk‑off mood. Momentum is concentrated in energy (+6.7% vs SPY +6.5pp), healthcare (+5.3% vs SPY +5.1pp) and utilities (+3.5% vs SPY +3.3pp), while AI and cloud lag the benchmark. The backdrop reflects a late‑cycle environment where growth is modest, inflationary pressures persist, and investors gravitate toward defensive and commodity‑linked assets. Dominant regime: late‑cycle risk‑off with commodity strength and defensive sector tilt. Energy momentum (+6.7% 20d) Healthcare outperformance (+5.3% 20d) Utilities relative strength (+3.5% 20d)",
+  "narrative_view": "Global markets are showing renewed optimism driven by a wave of capital into AI‑chip and cloud‑compute providers, a rebound in semiconductor equities, strategic M&A in the nuclear‑energy supply chain, and bullish analyst coverage of cross‑border e‑commerce platforms. The confluence of funding, demand for AI compute, and sector‑specific consolidations is lifting risk‑on sentiment while still exposing valuations to macro‑risk.",
+  "markets_fundamentals_view": "Energy leads the market with a 6.7% 20‑day rally, near‑52‑week highs and a P/E of 19.4 that is well below the SPY average, while Healthcare is powering ahead on earnings momentum despite a premium P/E of 31.5. Utilities offer a defensive, deep‑value play at a P/E of 19.1 and P/B of 0.66, though recent 60‑day weakness suggests a re‑entry point. Tech shows valuation pressure with a 30× P/E and negative short‑term performance, whereas Cloud has rebounded strongly after a sharp pull‑back, still trading below its 52‑week peak.",
+  "markets_vol_view": "The VIX has jumped 31% over the past 20 days to 18.6, signalling a shift from a compressed to an elevated volatility regime. Tech and AI sectors now exhibit annualized volatilities above 21%, with Cloud spiking to 32%, while Financials and Utilities remain comparatively low, positioning them as safe‑haven assets in the current environment. Energy volatility is also rising alongside its price rally, reflecting commodity‑driven risk.",
   "narrative_citations": [
     {
-      "id": "tt-257416054466147704",
-      "title": "Altrius Global Dividend ETF declares $0.0674 dividend",
+      "id": "tt-8311156869061470999",
+      "title": "Global‑E Online rallies after Morgan Stanley turns bullish | $GLBE",
       "source": "seekingalpha.com",
-      "url": "https://example.com/articles/tt-257416054466147704",
-      "published_at": "1790599391000"
+      "url": "https://example.com/article1",
+      "published_at": ""
     },
     {
-      "id": "tt--4105964844996766341",
-      "title": "King Global to rebrand as critical minerals company",
+      "id": "tt-4275701286110134137",
+      "title": "Centrus Energy to buy Westerman in $116M deal, adding key centrifuge supplier",
       "source": "seekingalpha.com",
-      "url": "https://example.com/articles/tt--4105964844996766341",
-      "published_at": "1790599572000"
+      "url": "https://example.com/article2",
+      "published_at": ""
     },
     {
-      "id": "tt-6887913698557329194",
-      "title": "Exports at Key Saudi Pipeline, Nvidia’s AI Security System, More",
+      "id": "tt--4067160560471040396",
+      "title": "US Futures Climb With Semiconductor Stocks Rebounding After Rout",
       "source": "bloomberg.com",
-      "url": "https://example.com/articles/tt-6887913698557329194",
-      "published_at": "1790599515000"
+      "url": "https://example.com/article3",
+      "published_at": ""
     },
     {
-      "id": "tt--5055513180009513018",
-      "title": "Mark Zuckerberg unveils Meta Enterprise Platform, its \"next major pillar of our business\" to deploy AI tools, and appoints MongoDB CEO Chirantan Desai to run it",
+      "id": "tt--1089143834499887635",
+      "title": "AI chip startup Tenstorrent raised a $1.5B Series E led by Trace Capital and Innovation X at a $6.2B valuation, up from $2.6B after raising $700M in 2024 (Bloomberg)",
       "source": "techmeme.com",
-      "url": "https://example.com/articles/tt--5055513180009513018",
-      "published_at": "1790599500000"
+      "url": "https://example.com/article4",
+      "published_at": ""
     },
     {
-      "id": "tt-1240463940675547616",
-      "title": "ETC Cabana Target Drawdown 10 ETF declares $0.1065 dividend",
+      "id": "tt-135431087910635710",
+      "title": "CoreWeave jumps as Goldman Sachs upgrades, seeing strong contract economics",
       "source": "seekingalpha.com",
-      "url": "https://example.com/articles/tt-1240463940675547616",
-      "published_at": "1790599536000"
+      "url": "https://example.com/article5",
+      "published_at": ""
     }
   ],
   "data_sources": [
@@ -53,299 +53,276 @@
     "Data plane: fundamentals:10 symbols; finnhub: skipped (no FINNHUB_API_KEY); tickertick:25 articles (q=T:curated)"
   ],
   "fundamentals_notes": [
-    "AI (AIQ) 20d +2.2%",
-    "Benchmark (SPY) 20d +0.3%",
-    "Cloud (SKYY) 20d -1.2%",
-    "Consumer (XLY) 20d -4.4%",
-    "Energy (XLE) 20d +0.2%",
-    "Financials (XLF) 20d -4.9%",
-    "Tech: near 52-week high (-0.7% vs high)",
-    "Tech: outperforming SPY 20d by +3.9pp"
+    "AI (AIQ) 20d -3.3%",
+    "Benchmark (SPY) 20d +0.2%",
+    "Cloud (SKYY) 20d -2.2%",
+    "Consumer (XLY) 20d +1.5%",
+    "Energy (XLE) 20d +6.7%",
+    "Financials (XLF) 20d -0.3%",
+    "Energy: strong 20d momentum (+6.7%)",
+    "Energy: near 52-week high (+0.0% vs high)",
+    "Energy: outperforming SPY 20d by +6.5pp",
+    "Healthcare: strong 20d momentum (+5.3%)"
   ],
   "themes": [
     {
-      "name": "Tech",
-      "subtitle": "VIX at 16.04 and tech vol at 21.7% annualized",
-      "thesis": "The VIX has fallen 1.8% to 16.04, marking a low‑vol environment, while tech's 20‑day annualized volatility has compressed to 21.7%, supporting continued price gains. AI‑focused equities have outperformed the broader market (+2.2% vs SPY) and tech is trading just 0.7% below its 52‑week high, while AI volatility (21.3% annualised) remains modest relative to the market. Corporate spending on generative AI, supportive government R&D incentives and expanding data‑center capacity create a clear macro tailwind.",
-      "stage": "early",
-      "stage_label": "Early",
-      "consensus_score": 0.6666666666666666,
-      "investability_score": 0.7866666666666667,
-      "agent_stages": {
-        "regime": "early_mid",
-        "markets": "early"
-      },
-      "contributing_agents": [
-        "markets",
-        "regime"
-      ],
-      "primary_agent": "markets",
-      "synthesis": "Tailwinds are visible and early positioning is evident, but the narrative has not yet become mainstream across the entire economy. Outperformance is established but valuation remains elevated, suggesting a mid‑stage where upside may be limited.",
-      "key_drivers": [
-        "Corporate AI adoption",
-        "Government AI incentives",
-        "Data‑center capex",
-        "Near‑term earnings beat expectations",
-        "Continued AI adoption",
-        "Strong corporate cash flows"
-      ],
-      "risks": [
-        "Regulatory clampdown on AI models",
-        "Hype‑driven valuation correction",
-        "Valuation compression",
-        "Higher interest rates impacting growth multiples",
-        "Sudden macro shock"
-      ],
-      "tickers_or_sectors": [
-        "AIQ",
-        "XLK",
-        "ARKK"
-      ],
-      "key_drivers_sourced": [],
-      "risks_sourced": []
-    },
-    {
-      "name": "Healthcare",
-      "subtitle": "Healthcare vol at 13.6% annualized",
-      "thesis": "Healthcare exhibits the lowest 20‑day annualized volatility (13.6%) among major sectors, providing a defensive anchor in the current low‑vol regime. Healthcare has been relatively flat (-0.1% vs SPY) with low volatility (13.6%). Aging populations and a pipeline of biotech breakthroughs are generating demand for new therapies and med‑tech, while fiscal support for R&D sustains growth potential.",
-      "stage": "mid",
-      "stage_label": "Mid",
-      "consensus_score": 0.6666666666666666,
-      "investability_score": 0.7150000000000001,
-      "agent_stages": {
-        "regime": "early_mid",
-        "markets": "mid"
-      },
-      "contributing_agents": [
-        "markets",
-        "regime"
-      ],
-      "primary_agent": "markets",
-      "synthesis": "Macro tailwinds are evident and early investors are positioning, but the narrative is still spreading beyond core health‑care funds. Stable volatility and modest returns suggest a mid‑stage defensive positioning.",
-      "key_drivers": [
-        "Aging global populations",
-        "Biotech pipeline advancements",
-        "Med‑tech adoption",
-        "Predictable demand",
-        "Regulatory approvals",
-        "Aging demographics"
-      ],
-      "risks": [
-        "Regulatory pricing pressure",
-        "Patent‑expiry cliffs",
-        "Policy changes to drug pricing",
-        "Unexpected clinical trial failures"
-      ],
-      "tickers_or_sectors": [
-        "XLV",
-        "IBB",
-        "XBI"
-      ],
-      "key_drivers_sourced": [],
-      "risks_sourced": []
-    },
-    {
       "name": "Energy",
-      "subtitle": "Energy 20‑day vol at 20.4% annualized",
-      "thesis": "Energy's price surge coexists with elevated 20‑day annualized volatility of 20.4%, indicating a risk premium that could attract volatility‑seeking capital. Energy has rallied 18.2% over 60 days while trading at a trailing P/E of 17.2, offering a valuation edge as oil markets stabilize.",
-      "stage": "mid",
-      "stage_label": "Mid",
-      "consensus_score": 0.6666666666666666,
-      "investability_score": 0.6933333333333334,
+      "subtitle": "",
+      "thesis": "Energy ETFs have outperformed the market by +6.5pp over the past 20 days and sit near their 52‑week highs, driven by supply constraints, geopolitical tensions and a policy push for energy security, making the sector a near‑term rally candidate. Energy sector showing strong 20‑day momentum (+6.7%), near 52‑week high, outperforms SPY by +6.5pp and trades at a P/E of 19.4 versus SPY 24.2, indicating a value‑driven rally.",
+      "stage": "mid_late",
+      "stage_label": "Mid-Late",
+      "consensus_score": 1.0,
+      "investability_score": 0.7000000000000001,
       "agent_stages": {
-        "regime": "mid",
+        "regime": "mid_late",
+        "narrative": "early",
         "markets": "mid"
       },
       "contributing_agents": [
         "markets",
-        "regime"
-      ],
-      "primary_agent": "markets",
-      "synthesis": "Earnings are confirming the demand‑supply imbalance and moderate crowding is emerging, indicating the theme is in expansion. Recent price surge and low valuation indicate an early‑stage upside opportunity.",
-      "key_drivers": [
-        "Asia gas demand",
-        "Pipeline and LNG supply constraints",
-        "Carbon‑pricing mechanisms",
-        "Higher crude prices",
-        "Supply‑side tightening",
-        "Renewable transition investments"
-      ],
-      "risks": [
-        "Accelerated renewable‑energy deployment",
-        "Geopolitical supply shocks",
-        "Accelerated shift to renewables reducing demand",
-        "Rapid price correction",
-        "Policy shifts toward green energy"
-      ],
-      "tickers_or_sectors": [
-        "XLE",
-        "UNG",
-        "ICLN"
-      ],
-      "key_drivers_sourced": [],
-      "risks_sourced": []
-    },
-    {
-      "name": "Consumer",
-      "subtitle": "XLY underperforms with deep price weakness",
-      "thesis": "Consumer discretionary is down 4.4% over 20 days and 6.2% over 60 days, sitting 10.7% below its 52‑week high, indicating a potential value entry point. Consumer stocks lagged the market (-4.4% vs SPY) but a backdrop of easing US rates, a weakening dollar and strong demographic trends in emerging economies is forming a macro tailwind for consumer spending abroad.",
-      "stage": "mid_late",
-      "stage_label": "Mid-Late",
-      "consensus_score": 0.6666666666666666,
-      "investability_score": 0.625,
-      "agent_stages": {
-        "regime": "early",
-        "markets": "mid_late"
-      },
-      "contributing_agents": [
-        "markets",
-        "regime"
-      ],
-      "primary_agent": "markets",
-      "synthesis": "Policy and currency dynamics are beginning to support the theme, but consensus has not yet formed among investors. Prolonged underperformance suggests crowding at low valuations, moving the theme toward a later stage.",
-      "key_drivers": [
-        "US rate easing",
-        "USD depreciation",
-        "Demographic dividend in EM",
-        "Weaker discretionary spending",
-        "Higher inflation impact",
-        "Shift to value‑oriented consumer brands"
-      ],
-      "risks": [
-        "China growth slowdown",
-        "Capital outflows from EM",
-        "Unexpected consumer spending rebound",
-        "Policy stimulus boosting demand"
-      ],
-      "tickers_or_sectors": [
-        "EEM",
-        "VWO",
-        "XLY"
-      ],
-      "key_drivers_sourced": [],
-      "risks_sourced": []
-    },
-    {
-      "name": "Financials",
-      "subtitle": "Banking stabilization",
-      "thesis": "Financials fell slightly less than the market (-4.9% vs SPY -5.2%) with low volatility (13.3%). With policy rates at or near their peak, expected cuts should stabilize net‑interest margins and improve credit quality, supporting a re‑rating of banks.",
-      "stage": "mid_late",
-      "stage_label": "Mid-Late",
-      "consensus_score": 0.3333333333333333,
-      "investability_score": 0.7,
-      "agent_stages": {
-        "regime": "mid_late"
-      },
-      "contributing_agents": [
+        "narrative",
         "regime"
       ],
       "primary_agent": "regime",
-      "synthesis": "The theme is widely recognized; positioning is becoming crowded and policy‑rate trajectory introduces rising reversal risk.",
+      "synthesis": "The theme is widely recognized, crowding is rising as investors chase momentum, and policy risk (e.g., OPEC decisions, climate regulation) is becoming a key factor. Deal just announced; integration and market impact remain to be realized.",
       "key_drivers": [
-        "Anticipated rate cuts",
-        "Improving loan‑loss provisions",
-        "Regulatory capital relief"
+        "Geopolitical supply shocks",
+        "Infrastructure spending bills",
+        "Higher global demand from emerging markets",
+        "Centrus acquisition of Westerman",
+        "20‑day price surge",
+        "low relative P/E"
       ],
       "risks": [
-        "Unexpected rate hikes",
-        "Higher‑than‑expected loan defaults"
+        "Policy clamp‑down on fossil fuels",
+        "Rapid acceleration of renewable substitution",
+        "Sudden price correction after momentum peaks",
+        "Geopolitical/regulatory risk",
+        "Funding constraints"
       ],
       "tickers_or_sectors": [
-        "XLF",
-        "KBE",
-        "JPM"
-      ],
-      "key_drivers_sourced": [],
-      "risks_sourced": []
-    },
-    {
-      "name": "Dividend ETF Momentum",
-      "subtitle": "Steady payouts attract yield‑seeking investors",
-      "thesis": "Dividend‑focused ETFs are seeing renewed inflows as investors chase stable income amid a low‑interest‑rate environment.",
-      "stage": "early_mid",
-      "stage_label": "Early-Mid",
-      "consensus_score": 0.3333333333333333,
-      "investability_score": 0.7,
-      "agent_stages": {
-        "narrative": "early_mid"
-      },
-      "contributing_agents": [
-        "narrative"
-      ],
-      "primary_agent": "narrative",
-      "synthesis": "Recent dividend declarations from Altrius Global Dividend ETF and ETC Cabana Target Drawdown 10 signal growing investor interest before broader fund flows materialize.",
-      "key_drivers": [
-        "Rising investor appetite for dividend‑paying ETFs (Altrius, ETC Cabana)"
-      ],
-      "risks": [
-        "Regulatory changes affecting dividend ETF tax treatment"
-      ],
-      "tickers_or_sectors": [
-        "ETF",
-        "Dividend",
-        "Fixed Income"
+        "XLE",
+        "VDE",
+        "IEO",
+        "LEU",
+        "Nuclear‑energy sector",
+        "Energy"
       ],
       "key_drivers_sourced": [
         {
-          "text": "Investor appetite for dividend‑paying ETFs is rising, as shown by Altrius Global Dividend ETF's $0.0674 per share dividend and ETC Cabana Target Drawdown 10's $0.1065 dividend.",
+          "text": "Centrus Energy acquires Westerman for $116 M, adding a key centrifuge supplier",
           "citation_ids": [
-            "tt-257416054466147704",
-            "tt-1240463940675547616"
+            "tt-4275701286110134137"
           ]
         }
       ],
       "risks_sourced": [
         {
-          "text": "Potential regulatory changes could affect dividend ETF tax treatment, impacting investor returns.",
+          "text": "Potential regulatory scrutiny on advanced AI semiconductor technologies",
           "citation_ids": [
-            "tt-257416054466147704",
-            "tt-1240463940675547616"
+            "tt--4067160560471040396"
+          ]
+        },
+        {
+          "text": "Geopolitical and regulatory uncertainties affecting nuclear‑fuel supply chain",
+          "citation_ids": [
+            "tt-4275701286110134137"
           ]
         }
       ]
     },
     {
-      "name": "Cloud",
-      "subtitle": "AI vol 21.3%, Cloud vol 29.8% annualized",
-      "thesis": "AI and Cloud sectors retain the highest 20‑day annualized volatilities (21.3% and 29.8% respectively), offering a risk premium for growth‑oriented investors. AI (AIQ) and Cloud (SKYY) have posted 3.7% and 20.8% 60‑day returns respectively, but trade at trailing P/E of 24.9 and 29.3, reflecting premium valuations and higher volatility.",
+      "name": "Healthcare",
+      "subtitle": "",
+      "thesis": "Healthcare has delivered +5.3% over 20 days, outperforming SPY, and remains near its 52‑week high, reflecting aging demographics, steady fiscal support and the sector's resilience amid higher volatility. Healthcare delivers +5.3% 20‑day return, near 52‑week high, outperforms SPY by +5.1pp, but trades at a high P/E of 31.5, reflecting earnings‑driven optimism at a premium valuation.",
       "stage": "early_mid",
       "stage_label": "Early-Mid",
-      "consensus_score": 0.3333333333333333,
-      "investability_score": 0.685,
+      "consensus_score": 0.6666666666666666,
+      "investability_score": 0.675,
       "agent_stages": {
+        "regime": "early_mid",
         "markets": "early_mid"
       },
       "contributing_agents": [
-        "markets"
+        "markets",
+        "regime"
       ],
-      "primary_agent": "markets",
-      "synthesis": "Strong momentum exists but elevated multiples and volatility place the theme in an early‑mid stage. Elevated volatility persists despite strong price performance, indicating an early‑mid stage risk‑return trade.",
+      "primary_agent": "regime",
+      "synthesis": "Tailwinds are visible and early positioning is evident, but the narrative has not yet become mainstream across all asset classes. Strong momentum despite elevated multiples points to an early‑mid earnings‑driven rally, yet valuation risk remains significant.",
       "key_drivers": [
-        "Enterprise AI adoption",
-        "Cloud migration acceleration",
-        "Robust capital spending",
-        "Rapid technology cycles",
-        "Investor appetite for growth",
-        "Capital inflows into AI/Cloud funds"
+        "Aging global population",
+        "Continued drug pipeline approvals",
+        "Stable cash‑flow models attracting risk‑averse capital",
+        "Earnings beat expectations",
+        "Aging demographics",
+        "Biotech pipeline"
       ],
       "risks": [
-        "Regulatory scrutiny on AI",
-        "Cloud pricing pressure",
-        "Macro slowdown reducing IT spend",
-        "Tech valuation pull‑back",
-        "Regulatory constraints on AI data usage"
+        "Regulatory pricing pressure",
+        "Higher interest rates eroding valuation multiples",
+        "Potential slowdown in innovation funding",
+        "Regulatory headwinds",
+        "Valuation compression"
       ],
       "tickers_or_sectors": [
-        "AIQ",
-        "SKYY"
+        "XLV",
+        "VHT",
+        "IHF",
+        "Healthcare"
       ],
       "key_drivers_sourced": [],
       "risks_sourced": []
     },
     {
-      "name": "AI Enterprise Platforms Expansion",
-      "subtitle": "Meta launches enterprise AI suite",
-      "thesis": "Meta's new enterprise platform aims to monetize its AI capabilities, targeting corporate customers and diversifying revenue beyond advertising.",
+      "name": "Cloud",
+      "subtitle": "CoreWeave upgrade and strong contract economics",
+      "thesis": "Analyst upgrades and robust contract pipelines are boosting cloud‑GPU provider CoreWeave, reflecting heightened demand for AI compute capacity. AI (AIQ) and Cloud (SKYY) are lagging the market (-3.3% and -2.2% vs SPY -0.2%) while exhibiting elevated annualized volatilities (AI 23.6%, Cloud 32.0%), suggesting a nascent re‑allocation opportunity as policy and corporate spending on digital transformation regain momentum.",
+      "stage": "early_mid",
+      "stage_label": "Early-Mid",
+      "consensus_score": 0.6666666666666666,
+      "investability_score": 0.675,
+      "agent_stages": {
+        "regime": "early",
+        "narrative": "early_mid"
+      },
+      "contributing_agents": [
+        "narrative",
+        "regime"
+      ],
+      "primary_agent": "narrative",
+      "synthesis": "Macro tailwinds such as government AI initiatives and enterprise cloud adoption are forming, but the narrative is not yet consensus and pricing remains depressed. Upgrade follows a clear earnings beat, suggesting early‑stage acceleration but broader market confirmation is pending.",
+      "key_drivers": [
+        "Government AI funding programs",
+        "Enterprise digitalization push",
+        "Long‑term data‑center capacity expansion",
+        "Goldman Sachs upgrade of CoreWeave",
+        "Strong contract economics"
+      ],
+      "risks": [
+        "Valuation compression",
+        "Regulatory scrutiny on AI ethics",
+        "Potential slowdown in corporate capex",
+        "Competitive pressure from hyperscalers",
+        "Capital intensity"
+      ],
+      "tickers_or_sectors": [
+        "AIQ",
+        "SKYY",
+        "CLOU",
+        "CORE",
+        "Cloud‑compute sector"
+      ],
+      "key_drivers_sourced": [
+        {
+          "text": "Goldman Sachs upgrades CoreWeave, citing strong contract economics",
+          "citation_ids": [
+            "tt-135431087910635710"
+          ]
+        }
+      ],
+      "risks_sourced": []
+    },
+    {
+      "name": "AI Chip Funding Surge",
+      "subtitle": "Tenstorrent Series E and semiconductor rebound",
+      "thesis": "Large‑scale financing for AI‑chip makers and a rebound in semiconductor equities signal the start of a new growth phase for the AI hardware ecosystem.",
+      "stage": "mid",
+      "stage_label": "Mid",
+      "consensus_score": 0.3333333333333333,
+      "investability_score": 0.7,
+      "agent_stages": {
+        "narrative": "mid"
+      },
+      "contributing_agents": [
+        "narrative"
+      ],
+      "primary_agent": "narrative",
+      "synthesis": "Recent $1.5 B raise and futures rally indicate momentum but the sector is still early in the cycle.",
+      "key_drivers": [
+        "Tenstorrent $1.5 B Series E funding",
+        "Semiconductor futures rebound"
+      ],
+      "risks": [
+        "Valuation compression",
+        "Regulatory scrutiny on AI chips"
+      ],
+      "tickers_or_sectors": [
+        "TSN",
+        "Semiconductor sector"
+      ],
+      "key_drivers_sourced": [
+        {
+          "text": "US futures climb as semiconductor stocks rebound after a sharp rout",
+          "citation_ids": [
+            "tt--4067160560471040396"
+          ]
+        },
+        {
+          "text": "Tenstorrent raises $1.5 B in a Series E round, valuing the AI‑chip startup at $6.2 B",
+          "citation_ids": [
+            "tt--1089143834499887635"
+          ]
+        }
+      ],
+      "risks_sourced": [
+        {
+          "text": "Valuation compression risk for AI‑chip firms after rapid funding inflows",
+          "citation_ids": [
+            "tt--1089143834499887635"
+          ]
+        },
+        {
+          "text": "Potential regulatory scrutiny on advanced AI semiconductor technologies",
+          "citation_ids": [
+            "tt--4067160560471040396"
+          ]
+        },
+        {
+          "text": "Consumer‑spending slowdown could curb cross‑border e‑commerce growth",
+          "citation_ids": [
+            "tt-8311156869061470999"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Utilities",
+      "subtitle": "",
+      "thesis": "Utilities have outperformed SPY by +3.3pp in the last 20 days, benefitting from safe‑haven demand and ongoing policy incentives for clean‑energy assets, positioning the sector for continued relative strength.",
+      "stage": "mid",
+      "stage_label": "Mid",
+      "consensus_score": 0.3333333333333333,
+      "investability_score": 0.65,
+      "agent_stages": {
+        "regime": "mid"
+      },
+      "contributing_agents": [
+        "regime"
+      ],
+      "primary_agent": "regime",
+      "synthesis": "The theme is in expansion with earnings confirming demand, moderate crowding is present, and policy support for renewables is solidifying.",
+      "key_drivers": [
+        "Policy subsidies for green power",
+        "Stable dividend yields",
+        "Low‑interest‑rate environment supporting capital projects"
+      ],
+      "risks": [
+        "Rate hikes reducing utility yields",
+        "Regulatory delays in renewable approvals",
+        "Technological disruption from storage solutions"
+      ],
+      "tickers_or_sectors": [
+        "XLU",
+        "UTSL",
+        "PUI"
+      ],
+      "key_drivers_sourced": [],
+      "risks_sourced": []
+    },
+    {
+      "name": "E‑commerce Momentum",
+      "subtitle": "Global‑E bullish after Morgan Stanley upgrade",
+      "thesis": "Morgan Stanley’s bullish stance lifts Global‑E Online, indicating renewed optimism for cross‑border e‑commerce growth amid improving consumer sentiment.",
       "stage": "early",
       "stage_label": "Early",
       "consensus_score": 0.3333333333333333,
@@ -357,369 +334,308 @@
         "narrative"
       ],
       "primary_agent": "narrative",
-      "synthesis": "Platform unveiled and leadership appointed, yet adoption and monetization timelines are uncertain.",
+      "synthesis": "Analyst upgrade is a catalyst, but broader consumer spending trends will dictate sustainability.",
       "key_drivers": [
-        "Enterprise demand for AI tools (Meta)"
+        "Morgan Stanley bullish upgrade"
       ],
       "risks": [
-        "Execution and adoption risk for Meta's AI platform"
+        "Consumer‑spending slowdown"
       ],
       "tickers_or_sectors": [
-        "Technology",
-        "AI",
-        "Enterprise Software"
+        "GLBE",
+        "E‑commerce sector"
       ],
       "key_drivers_sourced": [
         {
-          "text": "Enterprises are seeking AI tools, leading Meta to launch its Enterprise Platform and appoint MongoDB CEO Chirantan Desai to run it.",
+          "text": "Morgan Stanley turns bullish on Global‑E Online, sparking a rally",
           "citation_ids": [
-            "tt--5055513180009513018"
+            "tt-8311156869061470999"
           ]
         }
       ],
       "risks_sourced": [
         {
-          "text": "Meta's platform may face execution and adoption risks, given competition and integration challenges.",
+          "text": "Consumer‑spending slowdown could curb cross‑border e‑commerce growth",
           "citation_ids": [
-            "tt--5055513180009513018"
+            "tt-8311156869061470999"
           ]
         }
       ]
+    },
+    {
+      "name": "Emerging Market Debt Diversification",
+      "subtitle": "",
+      "thesis": "With the VIX rising and risk‑off sentiment, investors are seeking yield outside the US; emerging market sovereign and corporate bonds offer higher spreads and benefit from a plateauing US rate path and a modest USD weakening trend.",
+      "stage": "early_mid",
+      "stage_label": "Early-Mid",
+      "consensus_score": 0.3333333333333333,
+      "investability_score": 0.55,
+      "agent_stages": {
+        "regime": "early_mid"
+      },
+      "contributing_agents": [
+        "regime"
+      ],
+      "primary_agent": "regime",
+      "synthesis": "Early positioning is evident as fund flows shift to EM debt, but the broader market narrative remains focused on domestic defensive assets.",
+      "key_drivers": [
+        "Stabilizing US monetary policy",
+        "Higher EM fiscal spending",
+        "Currency diversification benefits"
+      ],
+      "risks": [
+        "Sudden USD strength",
+        "Geopolitical escalation in key EM regions",
+        "Credit deterioration in vulnerable economies"
+      ],
+      "tickers_or_sectors": [
+        "EMB",
+        "VWOB",
+        "JNK"
+      ],
+      "key_drivers_sourced": [],
+      "risks_sourced": []
     }
   ],
   "regime_themes": [
     {
-      "name": "AI & Generative Tech Momentum",
-      "subtitle": "AI‑driven productivity",
-      "thesis": "AI‑focused equities have outperformed the broader market (+2.2% vs SPY) and tech is trading just 0.7% below its 52‑week high, while AI volatility (21.3% annualised) remains modest relative to the market. Corporate spending on generative AI, supportive government R&D incentives and expanding data‑center capacity create a clear macro tailwind.",
-      "stage": "early_mid",
-      "stage_rationale": "Tailwinds are visible and early positioning is evident, but the narrative has not yet become mainstream across the entire economy.",
-      "confidence": 0.78,
+      "name": "Energy Commodity Rally & Infrastructure Investment",
+      "subtitle": "",
+      "thesis": "Energy ETFs have outperformed the market by +6.5pp over the past 20 days and sit near their 52‑week highs, driven by supply constraints, geopolitical tensions and a policy push for energy security, making the sector a near‑term rally candidate.",
+      "stage": "mid_late",
+      "stage_rationale": "The theme is widely recognized, crowding is rising as investors chase momentum, and policy risk (e.g., OPEC decisions, climate regulation) is becoming a key factor.",
+      "confidence": 0.75,
       "key_drivers": [
-        "Corporate AI adoption",
-        "Government AI incentives",
-        "Data‑center capex"
+        "Geopolitical supply shocks",
+        "Infrastructure spending bills",
+        "Higher global demand from emerging markets"
       ],
       "risks": [
-        "Regulatory clampdown on AI models",
-        "Hype‑driven valuation correction"
-      ],
-      "tickers_or_sectors": [
-        "AIQ",
-        "XLK",
-        "ARKK"
-      ]
-    },
-    {
-      "name": "Energy Transition & Natural Gas Supply Tightness",
-      "subtitle": "Gas price upside",
-      "thesis": "Energy equities posted a modest outperformance (+0.2% vs SPY) with annualised volatility at 20.4%, reflecting tightening natural‑gas markets as Asian power demand stays high and supply bottlenecks persist, while the broader energy transition fuels demand for cleaner‑burn gas assets.",
-      "stage": "mid",
-      "stage_rationale": "Earnings are confirming the demand‑supply imbalance and moderate crowding is emerging, indicating the theme is in expansion.",
-      "confidence": 0.65,
-      "key_drivers": [
-        "Asia gas demand",
-        "Pipeline and LNG supply constraints",
-        "Carbon‑pricing mechanisms"
-      ],
-      "risks": [
-        "Accelerated renewable‑energy deployment",
-        "Geopolitical supply shocks"
+        "Policy clamp‑down on fossil fuels",
+        "Rapid acceleration of renewable substitution",
+        "Sudden price correction after momentum peaks"
       ],
       "tickers_or_sectors": [
         "XLE",
-        "UNG",
-        "ICLN"
+        "VDE",
+        "IEO"
       ]
     },
     {
-      "name": "Emerging Market Consumer Resilience",
-      "subtitle": "Middle‑income growth",
-      "thesis": "Consumer stocks lagged the market (-4.4% vs SPY) but a backdrop of easing US rates, a weakening dollar and strong demographic trends in emerging economies is forming a macro tailwind for consumer spending abroad.",
-      "stage": "early",
-      "stage_rationale": "Policy and currency dynamics are beginning to support the theme, but consensus has not yet formed among investors.",
-      "confidence": 0.6,
-      "key_drivers": [
-        "US rate easing",
-        "USD depreciation",
-        "Demographic dividend in EM"
-      ],
-      "risks": [
-        "China growth slowdown",
-        "Capital outflows from EM"
-      ],
-      "tickers_or_sectors": [
-        "EEM",
-        "VWO",
-        "XLY"
-      ]
-    },
-    {
-      "name": "Financial Sector Re‑pricing after Rate Peaks",
-      "subtitle": "Banking stabilization",
-      "thesis": "Financials fell slightly less than the market (-4.9% vs SPY -5.2%) with low volatility (13.3%). With policy rates at or near their peak, expected cuts should stabilize net‑interest margins and improve credit quality, supporting a re‑rating of banks.",
-      "stage": "mid_late",
-      "stage_rationale": "The theme is widely recognized; positioning is becoming crowded and policy‑rate trajectory introduces rising reversal risk.",
+      "name": "Healthcare Defensive Growth",
+      "subtitle": "",
+      "thesis": "Healthcare has delivered +5.3% over 20 days, outperforming SPY, and remains near its 52‑week high, reflecting aging demographics, steady fiscal support and the sector's resilience amid higher volatility.",
+      "stage": "early_mid",
+      "stage_rationale": "Tailwinds are visible and early positioning is evident, but the narrative has not yet become mainstream across all asset classes.",
       "confidence": 0.7,
       "key_drivers": [
-        "Anticipated rate cuts",
-        "Improving loan‑loss provisions",
-        "Regulatory capital relief"
-      ],
-      "risks": [
-        "Unexpected rate hikes",
-        "Higher‑than‑expected loan defaults"
-      ],
-      "tickers_or_sectors": [
-        "XLF",
-        "KBE",
-        "JPM"
-      ]
-    },
-    {
-      "name": "Healthcare Innovation & Aging Demographics",
-      "subtitle": "Longevity spend",
-      "thesis": "Healthcare has been relatively flat (-0.1% vs SPY) with low volatility (13.6%). Aging populations and a pipeline of biotech breakthroughs are generating demand for new therapies and med‑tech, while fiscal support for R&D sustains growth potential.",
-      "stage": "early_mid",
-      "stage_rationale": "Macro tailwinds are evident and early investors are positioning, but the narrative is still spreading beyond core health‑care funds.",
-      "confidence": 0.68,
-      "key_drivers": [
-        "Aging global populations",
-        "Biotech pipeline advancements",
-        "Med‑tech adoption"
+        "Aging global population",
+        "Continued drug pipeline approvals",
+        "Stable cash‑flow models attracting risk‑averse capital"
       ],
       "risks": [
         "Regulatory pricing pressure",
-        "Patent‑expiry cliffs"
+        "Higher interest rates eroding valuation multiples",
+        "Potential slowdown in innovation funding"
       ],
       "tickers_or_sectors": [
         "XLV",
-        "IBB",
-        "XBI"
+        "VHT",
+        "IHF"
+      ]
+    },
+    {
+      "name": "Utilities & Renewable Transition",
+      "subtitle": "",
+      "thesis": "Utilities have outperformed SPY by +3.3pp in the last 20 days, benefitting from safe‑haven demand and ongoing policy incentives for clean‑energy assets, positioning the sector for continued relative strength.",
+      "stage": "mid",
+      "stage_rationale": "The theme is in expansion with earnings confirming demand, moderate crowding is present, and policy support for renewables is solidifying.",
+      "confidence": 0.65,
+      "key_drivers": [
+        "Policy subsidies for green power",
+        "Stable dividend yields",
+        "Low‑interest‑rate environment supporting capital projects"
+      ],
+      "risks": [
+        "Rate hikes reducing utility yields",
+        "Regulatory delays in renewable approvals",
+        "Technological disruption from storage solutions"
+      ],
+      "tickers_or_sectors": [
+        "XLU",
+        "UTSL",
+        "PUI"
+      ]
+    },
+    {
+      "name": "AI & Cloud Sector Rotation",
+      "subtitle": "",
+      "thesis": "AI (AIQ) and Cloud (SKYY) are lagging the market (-3.3% and -2.2% vs SPY -0.2%) while exhibiting elevated annualized volatilities (AI 23.6%, Cloud 32.0%), suggesting a nascent re‑allocation opportunity as policy and corporate spending on digital transformation regain momentum.",
+      "stage": "early",
+      "stage_rationale": "Macro tailwinds such as government AI initiatives and enterprise cloud adoption are forming, but the narrative is not yet consensus and pricing remains depressed.",
+      "confidence": 0.6,
+      "key_drivers": [
+        "Government AI funding programs",
+        "Enterprise digitalization push",
+        "Long‑term data‑center capacity expansion"
+      ],
+      "risks": [
+        "Valuation compression",
+        "Regulatory scrutiny on AI ethics",
+        "Potential slowdown in corporate capex"
+      ],
+      "tickers_or_sectors": [
+        "AIQ",
+        "SKYY",
+        "CLOU"
+      ]
+    },
+    {
+      "name": "Emerging Market Debt Diversification",
+      "subtitle": "",
+      "thesis": "With the VIX rising and risk‑off sentiment, investors are seeking yield outside the US; emerging market sovereign and corporate bonds offer higher spreads and benefit from a plateauing US rate path and a modest USD weakening trend.",
+      "stage": "early_mid",
+      "stage_rationale": "Early positioning is evident as fund flows shift to EM debt, but the broader market narrative remains focused on domestic defensive assets.",
+      "confidence": 0.55,
+      "key_drivers": [
+        "Stabilizing US monetary policy",
+        "Higher EM fiscal spending",
+        "Currency diversification benefits"
+      ],
+      "risks": [
+        "Sudden USD strength",
+        "Geopolitical escalation in key EM regions",
+        "Credit deterioration in vulnerable economies"
+      ],
+      "tickers_or_sectors": [
+        "EMB",
+        "VWOB",
+        "JNK"
       ]
     }
   ],
   "narrative_themes": [
     {
-      "name": "Dividend ETF Momentum",
-      "subtitle": "Steady payouts attract yield‑seeking investors",
-      "thesis": "Dividend‑focused ETFs are seeing renewed inflows as investors chase stable income amid a low‑interest‑rate environment.",
-      "stage": "early_mid",
-      "stage_rationale": "Recent dividend declarations from Altrius Global Dividend ETF and ETC Cabana Target Drawdown 10 signal growing investor interest before broader fund flows materialize.",
+      "name": "AI Chip Funding Surge",
+      "subtitle": "Tenstorrent Series E and semiconductor rebound",
+      "thesis": "Large‑scale financing for AI‑chip makers and a rebound in semiconductor equities signal the start of a new growth phase for the AI hardware ecosystem.",
+      "stage": "mid",
+      "stage_rationale": "Recent $1.5 B raise and futures rally indicate momentum but the sector is still early in the cycle.",
       "confidence": 0.7,
       "key_drivers": [
-        "Rising investor appetite for dividend‑paying ETFs (Altrius, ETC Cabana)"
+        "Tenstorrent $1.5 B Series E funding",
+        "Semiconductor futures rebound"
       ],
       "risks": [
-        "Regulatory changes affecting dividend ETF tax treatment"
+        "Valuation compression",
+        "Regulatory scrutiny on AI chips"
       ],
       "tickers_or_sectors": [
-        "ETF",
-        "Dividend",
-        "Fixed Income"
+        "TSN",
+        "Semiconductor sector"
       ]
     },
     {
-      "name": "Critical Minerals Rebranding",
-      "subtitle": "King Global pivots to strategic minerals",
-      "thesis": "Rebranding to a critical minerals focus positions the company to capture demand from the clean‑energy transition and defense sectors.",
-      "stage": "mid",
-      "stage_rationale": "The rebrand announcement marks a strategic shift, but revenue impact and execution remain to be demonstrated.",
+      "name": "Cloud Compute Upside",
+      "subtitle": "CoreWeave upgrade and strong contract economics",
+      "thesis": "Analyst upgrades and robust contract pipelines are boosting cloud‑GPU provider CoreWeave, reflecting heightened demand for AI compute capacity.",
+      "stage": "early_mid",
+      "stage_rationale": "Upgrade follows a clear earnings beat, suggesting early‑stage acceleration but broader market confirmation is pending.",
+      "confidence": 0.75,
+      "key_drivers": [
+        "Goldman Sachs upgrade of CoreWeave",
+        "Strong contract economics"
+      ],
+      "risks": [
+        "Competitive pressure from hyperscalers",
+        "Capital intensity"
+      ],
+      "tickers_or_sectors": [
+        "CORE",
+        "Cloud‑compute sector"
+      ]
+    },
+    {
+      "name": "Energy & Defense Centrifuge Consolidation",
+      "subtitle": "Centrus Energy expands with Westerman acquisition",
+      "thesis": "Centrus Energy’s $116 M purchase of Westerman strengthens its centrifuge supply chain, marking consolidation in the nuclear‑fuel segment and potential scale benefits.",
+      "stage": "early",
+      "stage_rationale": "Deal just announced; integration and market impact remain to be realized.",
       "confidence": 0.6,
       "key_drivers": [
-        "Accelerating demand for critical minerals (King Global)"
+        "Centrus acquisition of Westerman"
       ],
       "risks": [
-        "Geopolitical tensions disrupting critical minerals supply chains"
+        "Geopolitical/regulatory risk",
+        "Funding constraints"
       ],
       "tickers_or_sectors": [
-        "Critical Minerals",
-        "Mining",
-        "Clean Energy"
+        "LEU",
+        "Nuclear‑energy sector"
       ]
     },
     {
-      "name": "AI Enterprise Platforms Expansion",
-      "subtitle": "Meta launches enterprise AI suite",
-      "thesis": "Meta's new enterprise platform aims to monetize its AI capabilities, targeting corporate customers and diversifying revenue beyond advertising.",
+      "name": "E‑commerce Momentum",
+      "subtitle": "Global‑E bullish after Morgan Stanley upgrade",
+      "thesis": "Morgan Stanley’s bullish stance lifts Global‑E Online, indicating renewed optimism for cross‑border e‑commerce growth amid improving consumer sentiment.",
       "stage": "early",
-      "stage_rationale": "Platform unveiled and leadership appointed, yet adoption and monetization timelines are uncertain.",
+      "stage_rationale": "Analyst upgrade is a catalyst, but broader consumer spending trends will dictate sustainability.",
       "confidence": 0.65,
       "key_drivers": [
-        "Enterprise demand for AI tools (Meta)"
+        "Morgan Stanley bullish upgrade"
       ],
       "risks": [
-        "Execution and adoption risk for Meta's AI platform"
+        "Consumer‑spending slowdown"
       ],
       "tickers_or_sectors": [
-        "Technology",
-        "AI",
-        "Enterprise Software"
+        "GLBE",
+        "E‑commerce sector"
       ]
     }
   ],
   "markets_themes": [
     {
-      "name": "Tech momentum and valuation premium",
-      "subtitle": "XLK near 52‑week high with strong relative performance",
-      "thesis": "Tech leadership drives market upside; XLK trades just 0.7% below its 52‑week high, outperforms SPY by 3.9pp over 20 days, but carries a high trailing P/E of 34.7.",
+      "name": "Energy momentum & cheap valuation",
+      "subtitle": "",
+      "thesis": "Energy sector showing strong 20‑day momentum (+6.7%), near 52‑week high, outperforms SPY by +6.5pp and trades at a P/E of 19.4 versus SPY 24.2, indicating a value‑driven rally.",
       "stage": "mid",
-      "stage_rationale": "Outperformance is established but valuation remains elevated, suggesting a mid‑stage where upside may be limited.",
-      "confidence": 0.78,
-      "key_drivers": [
-        "Near‑term earnings beat expectations",
-        "Continued AI adoption",
-        "Strong corporate cash flows"
-      ],
-      "risks": [
-        "Valuation compression",
-        "Higher interest rates impacting growth multiples"
-      ],
-      "tickers_or_sectors": [
-        "XLK"
-      ]
-    },
-    {
-      "name": "Energy rebound with attractive valuation",
-      "subtitle": "XLE posts strong 60‑day gains at modest multiples",
-      "thesis": "Energy has rallied 18.2% over 60 days while trading at a trailing P/E of 17.2, offering a valuation edge as oil markets stabilize.",
-      "stage": "early",
-      "stage_rationale": "Recent price surge and low valuation indicate an early‑stage upside opportunity.",
-      "confidence": 0.71,
-      "key_drivers": [
-        "Higher crude prices",
-        "Supply‑side tightening",
-        "Renewable transition investments"
-      ],
-      "risks": [
-        "Geopolitical supply shocks",
-        "Accelerated shift to renewables reducing demand"
-      ],
-      "tickers_or_sectors": [
-        "XLE"
-      ]
-    },
-    {
-      "name": "Consumer discretionary slowdown",
-      "subtitle": "XLY underperforms with deep price weakness",
-      "thesis": "Consumer discretionary is down 4.4% over 20 days and 6.2% over 60 days, sitting 10.7% below its 52‑week high, indicating a potential value entry point.",
-      "stage": "mid_late",
-      "stage_rationale": "Prolonged underperformance suggests crowding at low valuations, moving the theme toward a later stage.",
-      "confidence": 0.65,
-      "key_drivers": [
-        "Weaker discretionary spending",
-        "Higher inflation impact",
-        "Shift to value‑oriented consumer brands"
-      ],
-      "risks": [
-        "Unexpected consumer spending rebound",
-        "Policy stimulus boosting demand"
-      ],
-      "tickers_or_sectors": [
-        "XLY"
-      ]
-    },
-    {
-      "name": "AI and Cloud growth amid elevated risk",
-      "subtitle": "AIQ and SKYY deliver multi‑month gains with high multiples",
-      "thesis": "AI (AIQ) and Cloud (SKYY) have posted 3.7% and 20.8% 60‑day returns respectively, but trade at trailing P/E of 24.9 and 29.3, reflecting premium valuations and higher volatility.",
-      "stage": "early_mid",
-      "stage_rationale": "Strong momentum exists but elevated multiples and volatility place the theme in an early‑mid stage.",
-      "confidence": 0.68,
-      "key_drivers": [
-        "Enterprise AI adoption",
-        "Cloud migration acceleration",
-        "Robust capital spending"
-      ],
-      "risks": [
-        "Regulatory scrutiny on AI",
-        "Cloud pricing pressure",
-        "Macro slowdown reducing IT spend"
-      ],
-      "tickers_or_sectors": [
-        "AIQ",
-        "SKYY"
-      ]
-    },
-    {
-      "name": "Low VIX regime with tech vol compression",
-      "subtitle": "VIX at 16.04 and tech vol at 21.7% annualized",
-      "thesis": "The VIX has fallen 1.8% to 16.04, marking a low‑vol environment, while tech's 20‑day annualized volatility has compressed to 21.7%, supporting continued price gains.",
-      "stage": "early",
-      "stage_rationale": "Volatility compression is early, offering limited downside protection.",
-      "confidence": 0.8,
-      "key_drivers": [
-        "Reduced macro uncertainty",
-        "Strong earnings momentum",
-        "Liquidity support from central banks"
-      ],
-      "risks": [
-        "Sudden macro shock",
-        "Geopolitical escalation"
-      ],
-      "tickers_or_sectors": [
-        "XLK"
-      ]
-    },
-    {
-      "name": "Energy volatility still elevated despite price rally",
-      "subtitle": "Energy 20‑day vol at 20.4% annualized",
-      "thesis": "Energy's price surge coexists with elevated 20‑day annualized volatility of 20.4%, indicating a risk premium that could attract volatility‑seeking capital.",
-      "stage": "mid",
-      "stage_rationale": "Volatility remains high while price momentum persists, placing the theme in a mid‑stage.",
-      "confidence": 0.72,
-      "key_drivers": [
-        "Oil price swings",
-        "Supply‑chain constraints",
-        "Geopolitical risk"
-      ],
-      "risks": [
-        "Rapid price correction",
-        "Policy shifts toward green energy"
-      ],
-      "tickers_or_sectors": [
-        "XLE"
-      ]
-    },
-    {
-      "name": "Healthcare stability in low‑vol backdrop",
-      "subtitle": "Healthcare vol at 13.6% annualized",
-      "thesis": "Healthcare exhibits the lowest 20‑day annualized volatility (13.6%) among major sectors, providing a defensive anchor in the current low‑vol regime.",
-      "stage": "mid",
-      "stage_rationale": "Stable volatility and modest returns suggest a mid‑stage defensive positioning.",
+      "stage_rationale": "Momentum is high and valuation remains attractive relative to the broader market, but price proximity to its high suggests crowding could build.",
       "confidence": 0.75,
       "key_drivers": [
-        "Predictable demand",
-        "Regulatory approvals",
-        "Aging demographics"
+        "20‑day price surge",
+        "low relative P/E",
+        "commodity price support"
       ],
       "risks": [
-        "Policy changes to drug pricing",
-        "Unexpected clinical trial failures"
+        "Commodity price reversal",
+        "Geopolitical shock",
+        "Overcrowding"
       ],
       "tickers_or_sectors": [
-        "XLV"
+        "XLE",
+        "Energy"
       ]
     },
     {
-      "name": "AI and Cloud high volatility premium",
-      "subtitle": "AI vol 21.3%, Cloud vol 29.8% annualized",
-      "thesis": "AI and Cloud sectors retain the highest 20‑day annualized volatilities (21.3% and 29.8% respectively), offering a risk premium for growth‑oriented investors.",
+      "name": "Healthcare premium growth",
+      "subtitle": "",
+      "thesis": "Healthcare delivers +5.3% 20‑day return, near 52‑week high, outperforms SPY by +5.1pp, but trades at a high P/E of 31.5, reflecting earnings‑driven optimism at a premium valuation.",
       "stage": "early_mid",
-      "stage_rationale": "Elevated volatility persists despite strong price performance, indicating an early‑mid stage risk‑return trade.",
-      "confidence": 0.69,
+      "stage_rationale": "Strong momentum despite elevated multiples points to an early‑mid earnings‑driven rally, yet valuation risk remains significant.",
+      "confidence": 0.65,
       "key_drivers": [
-        "Rapid technology cycles",
-        "Investor appetite for growth",
-        "Capital inflows into AI/Cloud funds"
+        "Earnings beat expectations",
+        "Aging demographics",
+        "Biotech pipeline"
       ],
       "risks": [
-        "Tech valuation pull‑back",
-        "Regulatory constraints on AI data usage"
+        "Regulatory headwinds",
+        "Valuation compression",
+        "Rising interest rates"
       ],
       "tickers_or_sectors": [
-        "AIQ",
-        "SKYY"
+        "XLV",
+        "Healthcare"
       ]
     }
   ],
