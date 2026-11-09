@@ -1,45 +1,45 @@
 {
-  "report_date": "2026-11-02",
-  "as_of_context": "As of November 02, 2026 (2026-11-02)",
-  "executive_summary": "Global equity markets are navigating a moderate‑volatility environment, with the VIX at 19.08 after a 27.1% 20‑day rise, signaling heightened risk‑aversion. Cyclical sectors—energy, consumer discretionary and financials—are posting strong relative momentum (energy +8.2% vs SPY +10.1pp, consumer +7.0% vs SPY +8.9pp, financials +6.5% vs SPY +8.4pp), while technology and AI remain under pressure, indicating a rotation toward rate‑sensitive and commodity‑linked assets. Central banks have largely paused rate hikes, keeping inflation near target, but policy uncertainty remains around the timing of future cuts. Headline tone: neutral. The market is witnessing a dual narrative: semiconductor giants are pursuing large-scale M&A to consolidate technology and market share, while a range of ETFs across fixed income and sector-specific themes are emphasizing regular dividend payouts to attract income-focused investors. Top themes: Energy, Semiconductor Consolidation Surge.",
-  "regime_view": "Global equity markets are navigating a moderate‑volatility environment, with the VIX at 19.08 after a 27.1% 20‑day rise, signaling heightened risk‑aversion. Cyclical sectors—energy, consumer discretionary and financials—are posting strong relative momentum (energy +8.2% vs SPY +10.1pp, consumer +7.0% vs SPY +8.9pp, financials +6.5% vs SPY +8.4pp), while technology and AI remain under pressure, indicating a rotation toward rate‑sensitive and commodity‑linked assets. Central banks have largely paused rate hikes, keeping inflation near target, but policy uncertainty remains around the timing of future cuts. Dominant regime: Late‑cycle rate normalization with sector rotation toward cyclical assets.",
-  "narrative_view": "The market is witnessing a dual narrative: semiconductor giants are pursuing large-scale M&A to consolidate technology and market share, while a range of ETFs across fixed income and sector-specific themes are emphasizing regular dividend payouts to attract income-focused investors.",
-  "markets_fundamentals_view": "Sector momentum is broadly positive, led by Energy, Healthcare, Consumer, Financials and Utilities, each posting 20‑day returns above 6%. Valuation spreads are wide: Energy (P/E 19.6) and Financials (P/E 16.3) trade at significant discounts to the market (SPY P/E 24.1), while Healthcare remains highly valued (P/E 32.8). This creates a landscape where cheap defensive and energy plays can attract capital, but growth‑oriented Healthcare may face crowding at premium multiples.",
-  "markets_vol_view": "The VIX has surged 27% in the past 20 days to 19.08, moving the market into an elevated volatility regime. Tech and AI exhibit the highest 20‑day annualized vol (≈29%) alongside sharp price declines, offering a volatility premium, whereas Energy, Healthcare and Financials enjoy lower vol levels (22.8%, 18.3% and 13.1% respectively) while still delivering strong returns, highlighting opportunities for low‑vol carry and defensive positioning.",
+  "report_date": "2026-11-09",
+  "as_of_context": "As of November 09, 2026 (2026-11-09)",
+  "executive_summary": "Global markets are navigating a moderate risk environment as the VIX has risen 38% to 21.07, signalling heightened volatility. Sector rotation is evident: consumer, financials, healthcare and utilities are posting strong 20‑day momentum and out‑performing the S&P 500, while AI, cloud and tech lag sharply. The macro backdrop points to a soft‑landing disinflation path with rates plateauing, supporting defensive and income‑oriented assets. Headline tone: neutral. The Q3 2026 earnings season opens with a cluster of high‑growth companies across AI, autonomous sensors, satellite communications, biotech and diversified holdings releasing preview analyses, highlighting investor focus on technology‑driven revenue expansion and sector‑specific catalysts. Top themes: Healthcare, Consumer.",
+  "regime_view": "Global markets are navigating a moderate risk environment as the VIX has risen 38% to 21.07, signalling heightened volatility. Sector rotation is evident: consumer, financials, healthcare and utilities are posting strong 20‑day momentum and out‑performing the S&P 500, while AI, cloud and tech lag sharply. The macro backdrop points to a soft‑landing disinflation path with rates plateauing, supporting defensive and income‑oriented assets. Dominant regime: disinflation soft landing with defensive tilt. Consumer momentum out‑performance Financials leading rate‑normalisation play Healthcare defensive strength near 52‑week high",
+  "narrative_view": "The Q3 2026 earnings season opens with a cluster of high‑growth companies across AI, autonomous sensors, satellite communications, biotech and diversified holdings releasing preview analyses, highlighting investor focus on technology‑driven revenue expansion and sector‑specific catalysts.",
+  "markets_fundamentals_view": "Consumer, healthcare, financials and utilities are the clear winners over the past 20 days, with consumer (+7.7% 20d) and healthcare (+8.5% 20d) showing the strongest momentum and both sectors beating the SPY by double‑digit points. Financials and utilities also post solid outperformance (+8.5pp and +8.5pp respectively) while maintaining attractive valuation multiples (Financials P/E 15.6, Utilities P/E 18.0, Utilities P/B 0.68). In contrast, tech‑heavy names such as XLK, AIQ and SKYY are under pressure, trading well below their 52‑week highs and lagging the market, suggesting a rotation toward defensive, value‑biased exposure.",
+  "markets_vol_view": "The VIX has jumped 38% to 21.07, pushing the market into an elevated volatility regime. Tech‑related assets are experiencing the highest annualized 20‑day vol (≈42%), reinforcing downside risk for the sector, while defensive areas like utilities and healthcare remain comparatively low‑vol (≈22%). Energy volatility sits in the mid‑range, hinting at possible expansion if price pressure continues. Overall, the market is balancing heightened risk perception with pockets of low‑vol carry in defensive stocks.",
   "narrative_citations": [
     {
-      "id": "tt-7529765501837635929",
-      "title": "Avago–Broadcom to Skyworks–Qorvo: 10 chip deals worth billions",
-      "source": "qz.com",
-      "url": "https://example.com/article/tt-7529765501837635929",
+      "id": "tt-1053603084505039265",
+      "title": "On Holding Q3 2026 Earnings Preview",
+      "source": "seekingalpha.com",
+      "url": "https://seekingalpha.com/article/tt-1053603084505039265",
       "published_at": ""
     },
     {
-      "id": "tt--7862440380839158144",
-      "title": "SPDR Barclays High Yield Bond ETF declares monthly distribution of $0.5436",
+      "id": "tt--8130210410553383175",
+      "title": "Liquidia Q3 2026 Earnings Preview",
       "source": "seekingalpha.com",
-      "url": "https://example.com/article/tt--7862440380839158144",
+      "url": "https://seekingalpha.com/article/tt--8130210410553383175",
       "published_at": ""
     },
     {
-      "id": "tt--7480151738954636281",
-      "title": "SPDR Portfolio Long Term Corporate Bond ETF declares monthly distribution of $0.1024",
+      "id": "tt-3780649268074166523",
+      "title": "Hesai Group Q3 2026 Earnings Preview",
       "source": "seekingalpha.com",
-      "url": "https://example.com/article/tt--7480151738954636281",
+      "url": "https://seekingalpha.com/article/tt-3780649268074166523",
       "published_at": ""
     },
     {
-      "id": "tt--7152613010273127079",
-      "title": "Roundhill Gold Miners WeeklyPay ETF declares $0.1721 dividend",
+      "id": "tt-5186709325986411902",
+      "title": "Palladyne AI Q3 2026 Earnings Preview",
       "source": "seekingalpha.com",
-      "url": "https://example.com/article/tt--7152613010273127079",
+      "url": "https://seekingalpha.com/article/tt-5186709325986411902",
       "published_at": ""
     },
     {
-      "id": "tt--1748648609055186932",
-      "title": "Roundhill GOOGL WeeklyPay ETF declares $0.1845 dividend",
+      "id": "tt-4867458608267607093",
+      "title": "Gilat Satellite Q3 2026 Earnings Preview",
       "source": "seekingalpha.com",
-      "url": "https://example.com/article/tt--1748648609055186932",
+      "url": "https://seekingalpha.com/article/tt-4867458608267607093",
       "published_at": ""
     }
   ],
@@ -53,26 +53,26 @@
     "Data plane: fundamentals:10 symbols; finnhub: skipped (no FINNHUB_API_KEY); tickertick:25 articles (q=T:curated)"
   ],
   "fundamentals_notes": [
-    "AI (AIQ) 20d -9.6%",
-    "Benchmark (SPY) 20d -1.9%",
-    "Cloud (SKYY) 20d -7.3%",
-    "Consumer (XLY) 20d +7.0%",
-    "Energy (XLE) 20d +8.2%",
-    "Financials (XLF) 20d +6.5%",
-    "Consumer: strong 20d momentum (+7.0%)",
-    "Consumer: outperforming SPY 20d by +8.9pp",
-    "Energy: strong 20d momentum (+8.2%)",
-    "Energy: near 52-week high (-1.9% vs high)"
+    "AI (AIQ) 20d -11.2%",
+    "Benchmark (SPY) 20d -3.7%",
+    "Cloud (SKYY) 20d -12.8%",
+    "Consumer (XLY) 20d +7.7%",
+    "Energy (XLE) 20d -6.4%",
+    "Financials (XLF) 20d +4.8%",
+    "Consumer: strong 20d momentum (+7.7%)",
+    "Consumer: outperforming SPY 20d by +11.4pp",
+    "Financials: outperforming SPY 20d by +8.5pp",
+    "Healthcare: strong 20d momentum (+8.5%)"
   ],
   "themes": [
     {
-      "name": "Energy",
-      "subtitle": "Low valuation, strong momentum",
-      "thesis": "Energy sector is delivering +8.2% 20‑day return, near 52‑week high, with a trailing P/E of 19.6 and P/B 1.32, offering attractive value relative to the broader market. Energy sector has delivered +8.2% over the past 20 days, outpacing the S&P 500 by 10.1 percentage points and sits near its 52‑week high, reflecting tight supply, geopolitical risk, and resilient demand as global growth steadies. The macro tailwind of slower rate cuts and modest inflation supports higher oil prices while the clean‑energy transition fuels capital allocation to renewables.",
-      "stage": "early_mid",
-      "stage_label": "Early-Mid",
+      "name": "Healthcare",
+      "subtitle": "Defensive Growth",
+      "thesis": "Healthcare is near its 52‑week high and posted the strongest 20‑day momentum (+8.5% vs SPY, +12.2pp out‑performance), reflecting demographic tailwinds and low rate sensitivity, making it a premier defensive play. Healthcare is delivering strong 20‑day (+8.5%) and 60‑day (+12%) returns while trading just 1.6% below its 52‑week high, suggesting a sustained rally supported by solid earnings outlook.",
+      "stage": "mid",
+      "stage_label": "Mid",
       "consensus_score": 0.6666666666666666,
-      "investability_score": 0.815,
+      "investability_score": 0.75,
       "agent_stages": {
         "regime": "mid",
         "markets": "early_mid"
@@ -81,88 +81,194 @@
         "markets",
         "regime"
       ],
-      "primary_agent": "markets",
-      "synthesis": "Earnings are confirming the price rally, relative performance is strong, and crowding is moderate; the theme is in expansion but not yet at peak. Momentum has just accelerated and valuation gap is still wide, suggesting early‑mid stage of sector outperformance.",
+      "primary_agent": "regime",
+      "synthesis": "Earnings are confirming the sector’s defensive narrative, crowding is moderate and the upside potential remains as demographic demand accelerates. Recent performance surge and proximity to the 52‑week high indicate the theme is building momentum but has room to run before valuation pressures emerge.",
       "key_drivers": [
-        "Oil price upside from supply constraints",
-        "Policy support for clean energy",
-        "Stable global demand",
-        "20d momentum +8.2%",
-        "Trailing P/E 19.6 vs SPY 24.1",
-        "Near 52‑week high"
+        "Aging global population",
+        "Robust biotech pipelines",
+        "Stable insurance reimbursements",
+        "Low interest‑rate sensitivity",
+        "20d momentum +8.5%",
+        "60d momentum +12%"
       ],
       "risks": [
-        "Accelerated rate cuts reducing commodity demand",
-        "Geopolitical de‑escalation easing supply shocks",
-        "Regulatory setbacks for renewables",
-        "Commodity price volatility",
-        "Geopolitical supply shocks"
+        "Regulatory pricing pressure",
+        "Biotech trial failures",
+        "Potential policy reforms",
+        "Regulatory headwinds",
+        "Valuation stretch (P/E 30.4)"
       ],
       "tickers_or_sectors": [
-        "XLE",
-        "ICLN",
-        "USO"
+        "XLV",
+        "IBB",
+        "VHT"
       ],
       "key_drivers_sourced": [],
       "risks_sourced": []
     },
     {
-      "name": "Semiconductor Consolidation Surge",
-      "subtitle": "M&A reshapes chip landscape",
-      "thesis": "Large‑scale acquisitions among chipmakers are set to create integrated platforms and cost efficiencies, positioning the sector for long‑term growth.",
-      "stage": "early",
-      "stage_label": "Early",
-      "consensus_score": 0.3333333333333333,
-      "investability_score": 0.78,
+      "name": "Consumer",
+      "subtitle": "Strong momentum and cheap valuation",
+      "thesis": "Consumer discretionary is leading the market with robust 20‑day gains and a low price‑to‑book ratio, positioning it for continued outperformance as discretionary spending remains resilient. US consumer spending remains resilient as inflation eases and real wages improve, driving a clear out‑performance of the consumer sector (+7.7% 20‑day return, +11.4pp vs SPY). This tailwind is gaining traction among investors seeking growth beyond the tech‑driven rally.",
+      "stage": "mid",
+      "stage_label": "Mid",
+      "consensus_score": 0.6666666666666666,
+      "investability_score": 0.745,
       "agent_stages": {
-        "narrative": "early"
+        "regime": "early_mid",
+        "markets": "mid"
       },
       "contributing_agents": [
-        "narrative"
+        "markets",
+        "regime"
       ],
-      "primary_agent": "narrative",
-      "synthesis": "The deals have just been announced, indicating the start of a consolidation wave.",
+      "primary_agent": "markets",
+      "synthesis": "The sector’s strong 20‑day momentum and out‑performance indicate visible tailwinds, but the narrative is still spreading and not yet mainstream across global portfolios. Momentum has persisted for two months and valuation metrics (P/B 0.72) are still attractive, indicating the theme is in the middle of its cycle.",
       "key_drivers": [
-        "Scale economies",
-        "Technology integration",
-        "Market share expansion"
+        "US wage growth",
+        "Decelerating inflation",
+        "Stabilising interest rates",
+        "Fiscal stimulus spill‑over",
+        "20d momentum +7.7%",
+        "Outperformance vs SPY +11.4pp"
       ],
       "risks": [
-        "Regulatory hurdles",
-        "Integration challenges"
+        "Persistently high inflation",
+        "Unexpected rate hikes",
+        "Rising consumer debt levels",
+        "Potential slowdown in consumer spending",
+        "Higher interest rates affecting credit costs"
       ],
       "tickers_or_sectors": [
-        "Semiconductors",
-        "AVGO",
-        "QCOM",
-        "NVDA"
+        "XLY",
+        "VCR",
+        "SPDR Consumer Discretionary (XLY)"
       ],
-      "key_drivers_sourced": [
-        {
-          "text": "Semiconductor firms are consolidating to achieve scale, diversify product portfolios, and accelerate technology integration.",
-          "citation_ids": [
-            "tt-7529765501837635929"
-          ]
-        }
-      ],
-      "risks_sourced": [
-        {
-          "text": "Sector‑specific ETFs (Gold miners, tech) face commodity price volatility and sector performance swings that could impact dividend sustainability.",
-          "citation_ids": [
-            "tt--7152613010273127079",
-            "tt--1748648609055186932"
-          ]
-        }
-      ]
+      "key_drivers_sourced": [],
+      "risks_sourced": []
     },
     {
-      "name": "Healthcare",
-      "subtitle": "High‑multiple rally",
-      "thesis": "Healthcare leads sector outperformance with +10.1% 20‑day return and +11.9pp vs SPY, but trades at a high trailing P/E of 32.8, indicating growth premium may be priced in.",
+      "name": "Utilities",
+      "subtitle": "Utilities and Healthcare offer carry",
+      "thesis": "Utilities and Healthcare exhibit the lowest 20‑day vol among major sectors (≈22‑23%) while delivering positive returns, making them attractive low‑vol carry positions in an elevated VIX environment. Utilities have delivered solid 20‑day returns (+4.8%) and out‑performed the S&P 500 by 8.5pp, offering low‑beta, high‑yield exposure that is attractive as risk aversion rises (VIX up 38%).",
+      "stage": "early_mid",
+      "stage_label": "Early-Mid",
+      "consensus_score": 0.6666666666666666,
+      "investability_score": 0.71,
+      "agent_stages": {
+        "regime": "mid_late",
+        "markets": "early_mid"
+      },
+      "contributing_agents": [
+        "markets",
+        "regime"
+      ],
+      "primary_agent": "markets",
+      "synthesis": "The defensive tilt is widely recognised and crowding is increasing, while rising rates pose a growing policy risk to valuations. Low volatility persists despite market‑wide VIX rise, indicating a defensive safe‑haven phase.",
+      "key_drivers": [
+        "Attractive dividend yields",
+        "Low volatility profile",
+        "Risk‑off investor flow",
+        "Stable cash generation",
+        "Utilities vol 22.6%",
+        "Healthcare vol 22.6%"
+      ],
+      "risks": [
+        "Rising interest rates compressing yields",
+        "Regulatory changes on rate bases",
+        "ESG‑driven divestment pressure",
+        "Interest‑rate driven bond yield pressure on utilities",
+        "Policy changes affecting healthcare reimbursement"
+      ],
+      "tickers_or_sectors": [
+        "XLU",
+        "VPU",
+        "DUK",
+        "XLV"
+      ],
+      "key_drivers_sourced": [],
+      "risks_sourced": []
+    },
+    {
+      "name": "Financials",
+      "subtitle": "Low valuation, modest outperformance",
+      "thesis": "Financials are providing modest upside (+4.8% 20d) while trading at a low P/E of 15.6, offering defensive carry in a risk‑on environment. Financials have out‑performed the broader market (+4.8% 20‑day return, +8.5pp vs SPY) as the Fed’s tightening cycle appears to be pausing, allowing net‑interest margins to stabilise and credit quality to hold.",
+      "stage": "mid",
+      "stage_label": "Mid",
+      "consensus_score": 0.6666666666666666,
+      "investability_score": 0.6950000000000001,
+      "agent_stages": {
+        "regime": "early_mid",
+        "markets": "mid"
+      },
+      "contributing_agents": [
+        "markets",
+        "regime"
+      ],
+      "primary_agent": "markets",
+      "synthesis": "Early positioning is evident with the sector’s out‑performance, but the full benefit of a rate plateau is still forming, keeping the theme in an early‑mid stage. Stable outperformance and attractive valuation suggest the sector is in the middle of a defensive carry phase.",
+      "key_drivers": [
+        "Fed policy plateau",
+        "NIM expansion",
+        "Loan growth in emerging markets",
+        "Stable credit outlook",
+        "20d outperformance vs SPY +8.5pp",
+        "P/E 15.6"
+      ],
+      "risks": [
+        "Sudden policy tightening",
+        "Credit deterioration from geopolitical stress",
+        "Higher default rates",
+        "Rising rates could pressure net interest margins",
+        "Credit quality deterioration"
+      ],
+      "tickers_or_sectors": [
+        "XLF",
+        "KBE",
+        "JPM",
+        "BAC"
+      ],
+      "key_drivers_sourced": [],
+      "risks_sourced": []
+    },
+    {
+      "name": "Broad Market Vol Expansion",
+      "subtitle": "VIX spike signals higher risk",
+      "thesis": "The VIX has surged 38% to 21.07, moving the market into an elevated volatility regime that could pressure risk assets across the board.",
+      "stage": "early_mid",
+      "stage_label": "Early-Mid",
+      "consensus_score": 0.3333333333333333,
+      "investability_score": 0.82,
+      "agent_stages": {
+        "markets": "early_mid"
+      },
+      "contributing_agents": [
+        "markets"
+      ],
+      "primary_agent": "markets",
+      "synthesis": "Rapid VIX increase indicates the market is transitioning from normal to elevated volatility, affecting all sectors.",
+      "key_drivers": [
+        "VIX 21.07",
+        "VIX 20d change +38%"
+      ],
+      "risks": [
+        "Unexpected macro data shocks",
+        "Policy tightening"
+      ],
+      "tickers_or_sectors": [
+        "^VIX"
+      ],
+      "key_drivers_sourced": [],
+      "risks_sourced": []
+    },
+    {
+      "name": "Tech",
+      "subtitle": "Tech sector leading vol spike",
+      "thesis": "Tech‑related assets are experiencing the highest 20‑day annualized volatility (≈42%), reinforcing downside risk as the sector remains sharply underperforming the market. Technology and AI‑focused ETFs have suffered steep declines (XLK -13.7%, AIQ -11.2% 20d) and sit well below 52‑week highs, indicating a valuation correction amid elevated sector volatility.",
       "stage": "mid",
       "stage_label": "Mid",
       "consensus_score": 0.3333333333333333,
-      "investability_score": 0.75,
+      "investability_score": 0.73,
       "agent_stages": {
         "markets": "mid"
       },
@@ -170,348 +276,446 @@
         "markets"
       ],
       "primary_agent": "markets",
-      "synthesis": "Strong price appreciation combined with elevated multiples suggests the theme is in a mid stage where further upside may be limited.",
+      "synthesis": "Sustained underperformance and widening gaps to 52‑week highs signal the theme is in the late stage of its cycle, with further downside risk. Volatility has risen sharply alongside price weakness, placing the sector in a mid‑cycle risk phase.",
       "key_drivers": [
-        "20d momentum +10.1%",
-        "Trailing P/E 32.8",
-        "Outperformance +11.9pp"
+        "20d return XLK -13.7%",
+        "AIQ -11.2%",
+        "Tech vol 42.1%",
+        "Tech 20d ann vol 42.1%",
+        "XLK -13.7% 20d return"
       ],
       "risks": [
-        "Earnings slowdown",
-        "Regulatory headwinds"
+        "Continued earnings misses",
+        "Higher cost of capital",
+        "Further earnings disappointments",
+        "Geopolitical tech supply chain shocks"
       ],
       "tickers_or_sectors": [
-        "XLV"
+        "XLK",
+        "AIQ",
+        "SKYY"
       ],
       "key_drivers_sourced": [],
       "risks_sourced": []
     },
     {
-      "name": "Consumer",
-      "subtitle": "Spend‑driven growth",
-      "thesis": "Consumer sector posted +7.0% over the past 20 days, beating the S&P 500 by 8.9 percentage points, indicating that household spending remains robust despite higher rates. Real‑wage growth in advanced economies and a shift to experience‑based consumption underpin the tailwind.",
-      "stage": "early_mid",
-      "stage_label": "Early-Mid",
+      "name": "Energy",
+      "subtitle": "Mid‑range vol with price weakness",
+      "thesis": "Energy shows moderate 20‑day vol (31.3%) but a 6.4% decline over 20 days, suggesting volatility could expand if price pressures intensify.",
+      "stage": "mid",
+      "stage_label": "Mid",
       "consensus_score": 0.3333333333333333,
-      "investability_score": 0.71,
+      "investability_score": 0.68,
       "agent_stages": {
-        "regime": "early_mid"
+        "markets": "mid"
       },
       "contributing_agents": [
-        "regime"
+        "markets"
       ],
-      "primary_agent": "regime",
-      "synthesis": "Relative outperformance is visible and the narrative of resilient consumer spend is spreading, but broader equity sentiment remains cautious, keeping the theme from full mainstream adoption.",
+      "primary_agent": "markets",
+      "synthesis": "Current vol is compressed relative to price decline, positioning the sector for potential vol expansion.",
       "key_drivers": [
-        "Real‑wage growth",
-        "Pent‑up demand post‑rate hikes",
-        "Shift to services and experiences"
+        "Energy 20d vol 31.3%",
+        "XLE -6.4% 20d return"
       ],
       "risks": [
-        "Further rate hikes eroding disposable income",
-        "Stagnating wages in emerging markets",
-        "Consumer confidence pullback"
+        "Accelerating transition to renewables",
+        "Geopolitical supply shocks"
       ],
       "tickers_or_sectors": [
-        "XLY",
-        "AMZN",
-        "HD"
+        "XLE"
       ],
       "key_drivers_sourced": [],
       "risks_sourced": []
     },
     {
-      "name": "Yield‑Focused Fixed Income ETFs",
-      "subtitle": "Steady distributions amid rate uncertainty",
-      "thesis": "High‑yield and corporate bond ETFs are emphasizing monthly payouts to attract investors seeking income in a potentially volatile rate environment.",
-      "stage": "mid",
-      "stage_label": "Mid",
-      "consensus_score": 0.3333333333333333,
-      "investability_score": 0.71,
-      "agent_stages": {
-        "narrative": "mid"
-      },
-      "contributing_agents": [
-        "narrative"
-      ],
-      "primary_agent": "narrative",
-      "synthesis": "Regular monthly distributions signal an ongoing strategy rather than a one‑off event.",
-      "key_drivers": [
-        "Investor demand for income",
-        "Stable cash flows from bond holdings"
-      ],
-      "risks": [
-        "Rising rates could pressure yields",
-        "Credit deterioration"
-      ],
-      "tickers_or_sectors": [
-        "SPDR Barclays High Yield Bond ETF",
-        "SPDR Portfolio Long Term Corporate Bond ETF"
-      ],
-      "key_drivers_sourced": [
-        {
-          "text": "ETF issuers are maintaining regular monthly distributions to meet demand from income‑seeking investors.",
-          "citation_ids": [
-            "tt--7862440380839158144",
-            "tt--7480151738954636281",
-            "tt--7152613010273127079",
-            "tt--1748648609055186932"
-          ]
-        }
-      ],
-      "risks_sourced": [
-        {
-          "text": "If interest rates rise sharply or credit conditions tighten, ETF dividend payouts could be reduced or suspended.",
-          "citation_ids": [
-            "tt--7862440380839158144",
-            "tt--7480151738954636281"
-          ]
-        },
-        {
-          "text": "Sector‑specific ETFs (Gold miners, tech) face commodity price volatility and sector performance swings that could impact dividend sustainability.",
-          "citation_ids": [
-            "tt--7152613010273127079",
-            "tt--1748648609055186932"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Sector‑Specific Income ETFs",
-      "subtitle": "Gold and tech ETFs deliver weekly dividends",
-      "thesis": "Specialty ETFs targeting gold miners and large‑cap tech are providing weekly dividends, catering to niche investors looking for sector exposure with regular cash flow.",
-      "stage": "mid",
-      "stage_label": "Mid",
-      "consensus_score": 0.3333333333333333,
-      "investability_score": 0.66,
-      "agent_stages": {
-        "narrative": "mid"
-      },
-      "contributing_agents": [
-        "narrative"
-      ],
-      "primary_agent": "narrative",
-      "synthesis": "Weekly dividend announcements indicate an established payout cadence.",
-      "key_drivers": [
-        "Sector performance expectations",
-        "Investor appetite for regular income"
-      ],
-      "risks": [
-        "Commodity price swings for gold",
-        "Tech sector volatility"
-      ],
-      "tickers_or_sectors": [
-        "Roundhill Gold Miners WeeklyPay ETF",
-        "Roundhill GOOGL WeeklyPay ETF"
-      ],
-      "key_drivers_sourced": [
-        {
-          "text": "ETF issuers are maintaining regular monthly distributions to meet demand from income‑seeking investors.",
-          "citation_ids": [
-            "tt--7862440380839158144",
-            "tt--7480151738954636281",
-            "tt--7152613010273127079",
-            "tt--1748648609055186932"
-          ]
-        }
-      ],
-      "risks_sourced": [
-        {
-          "text": "Sector‑specific ETFs (Gold miners, tech) face commodity price volatility and sector performance swings that could impact dividend sustainability.",
-          "citation_ids": [
-            "tt--7152613010273127079",
-            "tt--1748648609055186932"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Financials",
-      "subtitle": "Banking & insurance upside",
-      "thesis": "Financials gained +6.5% over the past 20 days, outpacing the S&P 500 by 8.4 percentage points and sit near 52‑week highs, reflecting the tailwind from a plateaued policy‑rate environment and improving credit conditions. Banks can re‑price loan portfolios while insurers benefit from higher investment yields.",
-      "stage": "mid_late",
-      "stage_label": "Mid-Late",
+      "name": "Growth",
+      "subtitle": "Gilat Satellite",
+      "thesis": "Increasing global demand for satellite‑based broadband supports Gilat's growth trajectory.",
+      "stage": "early",
+      "stage_label": "Early",
       "consensus_score": 0.3333333333333333,
       "investability_score": 0.65,
       "agent_stages": {
-        "regime": "mid_late"
+        "narrative": "early"
       },
       "contributing_agents": [
-        "regime"
+        "narrative"
       ],
-      "primary_agent": "regime",
-      "synthesis": "The theme is widely recognized; most capital is already positioned, and policy risk (unexpected rate cuts) is rising, indicating a late‑cycle positioning.",
+      "primary_agent": "narrative",
+      "synthesis": "Preview highlights macro‑level demand drivers ahead of earnings release.",
       "key_drivers": [
-        "Stabilized policy rates",
-        "Improving loan‑loss outlook",
-        "Higher net‑interest margins"
+        "Broadband‑via‑satellite initiatives"
       ],
       "risks": [
-        "Sudden rate cuts compressing NIMs",
-        "Credit deterioration from corporate debt stress",
-        "Regulatory tightening"
+        "Geopolitical tensions affecting launch schedules"
       ],
       "tickers_or_sectors": [
-        "XLF",
-        "JPM",
-        "BAC"
+        "GILAT SATELLITE"
       ],
-      "key_drivers_sourced": [],
-      "risks_sourced": []
+      "key_drivers_sourced": [
+        {
+          "text": "Enterprise AI adoption and expanding data‑center demand underpin Palladyne AI's growth outlook",
+          "citation_ids": [
+            "tt-5186709325986411902"
+          ]
+        },
+        {
+          "text": "Rising demand for high‑resolution LiDAR in autonomous vehicles fuels Hesai Group's revenue expectations",
+          "citation_ids": [
+            "tt-3780649268074166523"
+          ]
+        },
+        {
+          "text": "Global broadband‑via‑satellite initiatives boost Gilat Satellite's market opportunity",
+          "citation_ids": [
+            "tt-4867458608267607093"
+          ]
+        }
+      ],
+      "risks_sourced": [
+        {
+          "text": "Geopolitical tensions affecting satellite launch schedules may impact Gilat",
+          "citation_ids": [
+            "tt-4867458608267607093"
+          ]
+        }
+      ]
     }
   ],
   "regime_themes": [
     {
-      "name": "Energy Price Recovery & Clean Transition",
-      "subtitle": "Cyclical energy + renewables",
-      "thesis": "Energy sector has delivered +8.2% over the past 20 days, outpacing the S&P 500 by 10.1 percentage points and sits near its 52‑week high, reflecting tight supply, geopolitical risk, and resilient demand as global growth steadies. The macro tailwind of slower rate cuts and modest inflation supports higher oil prices while the clean‑energy transition fuels capital allocation to renewables.",
-      "stage": "mid",
-      "stage_rationale": "Earnings are confirming the price rally, relative performance is strong, and crowding is moderate; the theme is in expansion but not yet at peak.",
-      "confidence": 0.78,
-      "key_drivers": [
-        "Oil price upside from supply constraints",
-        "Policy support for clean energy",
-        "Stable global demand"
-      ],
-      "risks": [
-        "Accelerated rate cuts reducing commodity demand",
-        "Geopolitical de‑escalation easing supply shocks",
-        "Regulatory setbacks for renewables"
-      ],
-      "tickers_or_sectors": [
-        "XLE",
-        "ICLN",
-        "USO"
-      ]
-    },
-    {
-      "name": "Consumer Discretionary Resilience",
-      "subtitle": "Spend‑driven growth",
-      "thesis": "Consumer sector posted +7.0% over the past 20 days, beating the S&P 500 by 8.9 percentage points, indicating that household spending remains robust despite higher rates. Real‑wage growth in advanced economies and a shift to experience‑based consumption underpin the tailwind.",
+      "name": "Consumer Discretionary Rebound",
+      "subtitle": "Spend Recovery",
+      "thesis": "US consumer spending remains resilient as inflation eases and real wages improve, driving a clear out‑performance of the consumer sector (+7.7% 20‑day return, +11.4pp vs SPY). This tailwind is gaining traction among investors seeking growth beyond the tech‑driven rally.",
       "stage": "early_mid",
-      "stage_rationale": "Relative outperformance is visible and the narrative of resilient consumer spend is spreading, but broader equity sentiment remains cautious, keeping the theme from full mainstream adoption.",
+      "stage_rationale": "The sector’s strong 20‑day momentum and out‑performance indicate visible tailwinds, but the narrative is still spreading and not yet mainstream across global portfolios.",
       "confidence": 0.71,
       "key_drivers": [
-        "Real‑wage growth",
-        "Pent‑up demand post‑rate hikes",
-        "Shift to services and experiences"
+        "US wage growth",
+        "Decelerating inflation",
+        "Stabilising interest rates",
+        "Fiscal stimulus spill‑over"
       ],
       "risks": [
-        "Further rate hikes eroding disposable income",
-        "Stagnating wages in emerging markets",
-        "Consumer confidence pullback"
+        "Persistently high inflation",
+        "Unexpected rate hikes",
+        "Rising consumer debt levels"
       ],
       "tickers_or_sectors": [
         "XLY",
-        "AMZN",
-        "HD"
+        "VCR",
+        "SPDR Consumer Discretionary (XLY)"
       ]
     },
     {
-      "name": "Financials Benefit from Rate Normalization",
-      "subtitle": "Banking & insurance upside",
-      "thesis": "Financials gained +6.5% over the past 20 days, outpacing the S&P 500 by 8.4 percentage points and sit near 52‑week highs, reflecting the tailwind from a plateaued policy‑rate environment and improving credit conditions. Banks can re‑price loan portfolios while insurers benefit from higher investment yields.",
-      "stage": "mid_late",
-      "stage_rationale": "The theme is widely recognized; most capital is already positioned, and policy risk (unexpected rate cuts) is rising, indicating a late‑cycle positioning.",
-      "confidence": 0.65,
+      "name": "Healthcare Defensive Strength",
+      "subtitle": "Defensive Growth",
+      "thesis": "Healthcare is near its 52‑week high and posted the strongest 20‑day momentum (+8.5% vs SPY, +12.2pp out‑performance), reflecting demographic tailwinds and low rate sensitivity, making it a premier defensive play.",
+      "stage": "mid",
+      "stage_rationale": "Earnings are confirming the sector’s defensive narrative, crowding is moderate and the upside potential remains as demographic demand accelerates.",
+      "confidence": 0.76,
       "key_drivers": [
-        "Stabilized policy rates",
-        "Improving loan‑loss outlook",
-        "Higher net‑interest margins"
+        "Aging global population",
+        "Robust biotech pipelines",
+        "Stable insurance reimbursements",
+        "Low interest‑rate sensitivity"
       ],
       "risks": [
-        "Sudden rate cuts compressing NIMs",
-        "Credit deterioration from corporate debt stress",
-        "Regulatory tightening"
+        "Regulatory pricing pressure",
+        "Biotech trial failures",
+        "Potential policy reforms"
+      ],
+      "tickers_or_sectors": [
+        "XLV",
+        "IBB",
+        "VHT"
+      ]
+    },
+    {
+      "name": "Financials Rate Normalisation",
+      "subtitle": "Banking Yield Play",
+      "thesis": "Financials have out‑performed the broader market (+4.8% 20‑day return, +8.5pp vs SPY) as the Fed’s tightening cycle appears to be pausing, allowing net‑interest margins to stabilise and credit quality to hold.",
+      "stage": "early_mid",
+      "stage_rationale": "Early positioning is evident with the sector’s out‑performance, but the full benefit of a rate plateau is still forming, keeping the theme in an early‑mid stage.",
+      "confidence": 0.68,
+      "key_drivers": [
+        "Fed policy plateau",
+        "NIM expansion",
+        "Loan growth in emerging markets",
+        "Stable credit outlook"
+      ],
+      "risks": [
+        "Sudden policy tightening",
+        "Credit deterioration from geopolitical stress",
+        "Higher default rates"
       ],
       "tickers_or_sectors": [
         "XLF",
+        "KBE",
         "JPM",
         "BAC"
+      ]
+    },
+    {
+      "name": "Utilities Yield Safe Haven",
+      "subtitle": "Defensive Income",
+      "thesis": "Utilities have delivered solid 20‑day returns (+4.8%) and out‑performed the S&P 500 by 8.5pp, offering low‑beta, high‑yield exposure that is attractive as risk aversion rises (VIX up 38%).",
+      "stage": "mid_late",
+      "stage_rationale": "The defensive tilt is widely recognised and crowding is increasing, while rising rates pose a growing policy risk to valuations.",
+      "confidence": 0.65,
+      "key_drivers": [
+        "Attractive dividend yields",
+        "Low volatility profile",
+        "Risk‑off investor flow",
+        "Stable cash generation"
+      ],
+      "risks": [
+        "Rising interest rates compressing yields",
+        "Regulatory changes on rate bases",
+        "ESG‑driven divestment pressure"
+      ],
+      "tickers_or_sectors": [
+        "XLU",
+        "VPU",
+        "DUK"
+      ]
+    },
+    {
+      "name": "AI & Cloud Valuation Reset",
+      "subtitle": "Tech Pullback",
+      "thesis": "AI and cloud ETFs have underperformed sharply (AIQ -11.2%, SKYY -12.8% vs SPY) amid elevated annualised volatilities (AI 36.7%, Cloud 42.1%). The sector appears over‑priced and is now fully priced in, suggesting a potential reset and heightened downside risk.",
+      "stage": "late",
+      "stage_rationale": "Recent sharp under‑performance and high volatility indicate the theme is fully priced; macro risk aversion makes further upside unlikely in the near term.",
+      "confidence": 0.55,
+      "key_drivers": [
+        "Elevated valuation multiples",
+        "Tightening monetary conditions",
+        "Risk‑off sentiment"
+      ],
+      "risks": [
+        "Breakthrough AI breakthroughs reigniting demand",
+        "Policy support for digital infrastructure",
+        "Selective rebounds in high‑quality names"
+      ],
+      "tickers_or_sectors": [
+        "AIQ",
+        "SKYY",
+        "XLK",
+        "QQQ"
       ]
     }
   ],
   "narrative_themes": [
     {
-      "name": "Semiconductor Consolidation Surge",
-      "subtitle": "M&A reshapes chip landscape",
-      "thesis": "Large‑scale acquisitions among chipmakers are set to create integrated platforms and cost efficiencies, positioning the sector for long‑term growth.",
+      "name": "AI & Automation Earnings Spotlight",
+      "subtitle": "Palladyne AI & Hesai Group",
+      "thesis": "AI and sensor firms are positioned for revenue acceleration as enterprise AI adoption and autonomous‑vehicle sensor demand expand.",
       "stage": "early",
-      "stage_rationale": "The deals have just been announced, indicating the start of a consolidation wave.",
-      "confidence": 0.78,
+      "stage_rationale": "Earnings previews indicate upcoming data; market expectations are still forming.",
+      "confidence": 0.6,
       "key_drivers": [
-        "Scale economies",
-        "Technology integration",
-        "Market share expansion"
+        "Enterprise AI adoption (Palladyne AI)",
+        "LiDAR demand for autonomous vehicles (Hesai Group)"
       ],
       "risks": [
-        "Regulatory hurdles",
-        "Integration challenges"
+        "AI hardware supply constraints",
+        "Regulatory scrutiny of autonomous sensors"
       ],
       "tickers_or_sectors": [
-        "Semiconductors",
-        "AVGO",
-        "AVGO",
-        "QCOM",
-        "NVDA"
+        "PALLADYNE AI",
+        "HESAI GROUP"
       ]
     },
     {
-      "name": "Yield‑Focused Fixed Income ETFs",
-      "subtitle": "Steady distributions amid rate uncertainty",
-      "thesis": "High‑yield and corporate bond ETFs are emphasizing monthly payouts to attract investors seeking income in a potentially volatile rate environment.",
-      "stage": "mid",
-      "stage_rationale": "Regular monthly distributions signal an ongoing strategy rather than a one‑off event.",
-      "confidence": 0.71,
+      "name": "Satellite Connectivity Growth",
+      "subtitle": "Gilat Satellite",
+      "thesis": "Increasing global demand for satellite‑based broadband supports Gilat's growth trajectory.",
+      "stage": "early",
+      "stage_rationale": "Preview highlights macro‑level demand drivers ahead of earnings release.",
+      "confidence": 0.65,
       "key_drivers": [
-        "Investor demand for income",
-        "Stable cash flows from bond holdings"
+        "Broadband‑via‑satellite initiatives"
       ],
       "risks": [
-        "Rising rates could pressure yields",
-        "Credit deterioration"
+        "Geopolitical tensions affecting launch schedules"
       ],
       "tickers_or_sectors": [
-        "SPDR Barclays High Yield Bond ETF",
-        "SPDR Portfolio Long Term Corporate Bond ETF"
+        "GILAT SATELLITE"
       ]
     },
     {
-      "name": "Sector‑Specific Income ETFs",
-      "subtitle": "Gold and tech ETFs deliver weekly dividends",
-      "thesis": "Specialty ETFs targeting gold miners and large‑cap tech are providing weekly dividends, catering to niche investors looking for sector exposure with regular cash flow.",
-      "stage": "mid",
-      "stage_rationale": "Weekly dividend announcements indicate an established payout cadence.",
-      "confidence": 0.66,
+      "name": "Biotech Pipeline Momentum",
+      "subtitle": "Liquidia",
+      "thesis": "Liquidia's novel drug‑delivery technologies are generating investor optimism ahead of upcoming trial readouts.",
+      "stage": "early",
+      "stage_rationale": "Earnings preview underscores pipeline catalysts that have yet to be quantified.",
+      "confidence": 0.55,
       "key_drivers": [
-        "Sector performance expectations",
-        "Investor appetite for regular income"
+        "Innovative drug‑delivery platforms"
       ],
       "risks": [
-        "Commodity price swings for gold",
-        "Tech sector volatility"
+        "Potential clinical trial setbacks"
       ],
       "tickers_or_sectors": [
-        "Roundhill Gold Miners WeeklyPay ETF",
-        "Roundhill GOOGL WeeklyPay ETF"
+        "LIQUIDIA"
+      ]
+    },
+    {
+      "name": "Diversified Holding Performance",
+      "subtitle": "On Holding",
+      "thesis": "On Holding's diversified asset base across energy and infrastructure provides a stable earnings foundation amid sector volatility.",
+      "stage": "early",
+      "stage_rationale": "Preview suggests a balanced exposure but limited sector‑specific catalysts at this stage.",
+      "confidence": 0.5,
+      "key_drivers": [
+        "Diversified portfolio across energy and infrastructure"
+      ],
+      "risks": [
+        "Commodity price fluctuations"
+      ],
+      "tickers_or_sectors": [
+        "ON HOLDING"
       ]
     }
   ],
   "markets_themes": [
     {
-      "name": "Energy cheap rally",
-      "subtitle": "Low valuation, strong momentum",
-      "thesis": "Energy sector is delivering +8.2% 20‑day return, near 52‑week high, with a trailing P/E of 19.6 and P/B 1.32, offering attractive value relative to the broader market.",
-      "stage": "early_mid",
-      "stage_rationale": "Momentum has just accelerated and valuation gap is still wide, suggesting early‑mid stage of sector outperformance.",
-      "confidence": 0.85,
+      "name": "Consumer Resilience",
+      "subtitle": "Strong momentum and cheap valuation",
+      "thesis": "Consumer discretionary is leading the market with robust 20‑day gains and a low price‑to‑book ratio, positioning it for continued outperformance as discretionary spending remains resilient.",
+      "stage": "mid",
+      "stage_rationale": "Momentum has persisted for two months and valuation metrics (P/B 0.72) are still attractive, indicating the theme is in the middle of its cycle.",
+      "confidence": 0.78,
       "key_drivers": [
-        "20d momentum +8.2%",
-        "Trailing P/E 19.6 vs SPY 24.1",
-        "Near 52‑week high"
+        "20d momentum +7.7%",
+        "Outperformance vs SPY +11.4pp",
+        "P/B 0.72"
       ],
       "risks": [
-        "Commodity price volatility",
+        "Potential slowdown in consumer spending",
+        "Higher interest rates affecting credit costs"
+      ],
+      "tickers_or_sectors": [
+        "XLY"
+      ]
+    },
+    {
+      "name": "Healthcare Momentum Near High",
+      "subtitle": "Near 52‑week peak with strong returns",
+      "thesis": "Healthcare is delivering strong 20‑day (+8.5%) and 60‑day (+12%) returns while trading just 1.6% below its 52‑week high, suggesting a sustained rally supported by solid earnings outlook.",
+      "stage": "early_mid",
+      "stage_rationale": "Recent performance surge and proximity to the 52‑week high indicate the theme is building momentum but has room to run before valuation pressures emerge.",
+      "confidence": 0.74,
+      "key_drivers": [
+        "20d momentum +8.5%",
+        "60d momentum +12%",
+        "Near 52‑week high -1.6%"
+      ],
+      "risks": [
+        "Regulatory headwinds",
+        "Valuation stretch (P/E 30.4)"
+      ],
+      "tickers_or_sectors": [
+        "XLV"
+      ]
+    },
+    {
+      "name": "Financials Defensive Carry",
+      "subtitle": "Low valuation, modest outperformance",
+      "thesis": "Financials are providing modest upside (+4.8% 20d) while trading at a low P/E of 15.6, offering defensive carry in a risk‑on environment.",
+      "stage": "mid",
+      "stage_rationale": "Stable outperformance and attractive valuation suggest the sector is in the middle of a defensive carry phase.",
+      "confidence": 0.71,
+      "key_drivers": [
+        "20d outperformance vs SPY +8.5pp",
+        "P/E 15.6",
+        "P/B 1.70"
+      ],
+      "risks": [
+        "Rising rates could pressure net interest margins",
+        "Credit quality deterioration"
+      ],
+      "tickers_or_sectors": [
+        "XLF"
+      ]
+    },
+    {
+      "name": "Tech & AI Valuation Pressure",
+      "subtitle": "Broad weakness and high volatility",
+      "thesis": "Technology and AI‑focused ETFs have suffered steep declines (XLK -13.7%, AIQ -11.2% 20d) and sit well below 52‑week highs, indicating a valuation correction amid elevated sector volatility.",
+      "stage": "late",
+      "stage_rationale": "Sustained underperformance and widening gaps to 52‑week highs signal the theme is in the late stage of its cycle, with further downside risk.",
+      "confidence": 0.66,
+      "key_drivers": [
+        "20d return XLK -13.7%",
+        "AIQ -11.2%",
+        "Tech vol 42.1%"
+      ],
+      "risks": [
+        "Continued earnings misses",
+        "Higher cost of capital"
+      ],
+      "tickers_or_sectors": [
+        "XLK",
+        "AIQ"
+      ]
+    },
+    {
+      "name": "Elevated Tech Volatility Regime",
+      "subtitle": "Tech sector leading vol spike",
+      "thesis": "Tech‑related assets are experiencing the highest 20‑day annualized volatility (≈42%), reinforcing downside risk as the sector remains sharply underperforming the market.",
+      "stage": "mid",
+      "stage_rationale": "Volatility has risen sharply alongside price weakness, placing the sector in a mid‑cycle risk phase.",
+      "confidence": 0.8,
+      "key_drivers": [
+        "Tech 20d ann vol 42.1%",
+        "XLK -13.7% 20d return"
+      ],
+      "risks": [
+        "Further earnings disappointments",
+        "Geopolitical tech supply chain shocks"
+      ],
+      "tickers_or_sectors": [
+        "XLK",
+        "AIQ",
+        "SKYY"
+      ]
+    },
+    {
+      "name": "Low‑Vol Defensive Safe‑Haven",
+      "subtitle": "Utilities and Healthcare offer carry",
+      "thesis": "Utilities and Healthcare exhibit the lowest 20‑day vol among major sectors (≈22‑23%) while delivering positive returns, making them attractive low‑vol carry positions in an elevated VIX environment.",
+      "stage": "early_mid",
+      "stage_rationale": "Low volatility persists despite market‑wide VIX rise, indicating a defensive safe‑haven phase.",
+      "confidence": 0.77,
+      "key_drivers": [
+        "Utilities vol 22.6%",
+        "Healthcare vol 22.6%",
+        "Positive 20d returns"
+      ],
+      "risks": [
+        "Interest‑rate driven bond yield pressure on utilities",
+        "Policy changes affecting healthcare reimbursement"
+      ],
+      "tickers_or_sectors": [
+        "XLU",
+        "XLV"
+      ]
+    },
+    {
+      "name": "Energy Volatility Compression",
+      "subtitle": "Mid‑range vol with price weakness",
+      "thesis": "Energy shows moderate 20‑day vol (31.3%) but a 6.4% decline over 20 days, suggesting volatility could expand if price pressures intensify.",
+      "stage": "mid",
+      "stage_rationale": "Current vol is compressed relative to price decline, positioning the sector for potential vol expansion.",
+      "confidence": 0.68,
+      "key_drivers": [
+        "Energy 20d vol 31.3%",
+        "XLE -6.4% 20d return"
+      ],
+      "risks": [
+        "Accelerating transition to renewables",
         "Geopolitical supply shocks"
       ],
       "tickers_or_sectors": [
@@ -519,23 +723,22 @@
       ]
     },
     {
-      "name": "Healthcare premium growth",
-      "subtitle": "High‑multiple rally",
-      "thesis": "Healthcare leads sector outperformance with +10.1% 20‑day return and +11.9pp vs SPY, but trades at a high trailing P/E of 32.8, indicating growth premium may be priced in.",
-      "stage": "mid",
-      "stage_rationale": "Strong price appreciation combined with elevated multiples suggests the theme is in a mid stage where further upside may be limited.",
-      "confidence": 0.75,
+      "name": "Broad Market Vol Expansion",
+      "subtitle": "VIX spike signals higher risk",
+      "thesis": "The VIX has surged 38% to 21.07, moving the market into an elevated volatility regime that could pressure risk assets across the board.",
+      "stage": "early_mid",
+      "stage_rationale": "Rapid VIX increase indicates the market is transitioning from normal to elevated volatility, affecting all sectors.",
+      "confidence": 0.82,
       "key_drivers": [
-        "20d momentum +10.1%",
-        "Trailing P/E 32.8",
-        "Outperformance +11.9pp"
+        "VIX 21.07",
+        "VIX 20d change +38%"
       ],
       "risks": [
-        "Earnings slowdown",
-        "Regulatory headwinds"
+        "Unexpected macro data shocks",
+        "Policy tightening"
       ],
       "tickers_or_sectors": [
-        "XLV"
+        "^VIX"
       ]
     }
   ],
